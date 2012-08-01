@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'add_transaction.ui'
 #
-# Created: Fri Jul 27 11:45:05 2012
+# Created: Wed Aug  1 11:27:16 2012
 #      by: pyside-uic 0.2.13 running on PySide 1.1.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -146,7 +146,7 @@ class Ui_AddTransaction(object):
         QtCore.QMetaObject.connectSlotsByName(AddTransaction)
 
     def retranslateUi(self, AddTransaction):
-        AddTransaction.setWindowTitle(QtGui.QApplication.translate("AddTransaction", "Dialog", None, QtGui.QApplication.UnicodeUTF8))
+        AddTransaction.setWindowTitle(QtGui.QApplication.translate("AddTransaction", "Añadir transacción", None, QtGui.QApplication.UnicodeUTF8))
         self.ingredientButton.setText(QtGui.QApplication.translate("AddTransaction", "Ingredientes", None, QtGui.QApplication.UnicodeUTF8))
         self.productButton.setText(QtGui.QApplication.translate("AddTransaction", "Producto terminado", None, QtGui.QApplication.UnicodeUTF8))
         self.sackButton.setText(QtGui.QApplication.translate("AddTransaction", "Sacos", None, QtGui.QApplication.UnicodeUTF8))

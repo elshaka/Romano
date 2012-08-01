@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'close_ticket.ui'
 #
-# Created: Thu Jul 26 14:16:05 2012
+# Created: Wed Aug  1 11:27:01 2012
 #      by: pyside-uic 0.2.13 running on PySide 1.1.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -263,7 +263,7 @@ class Ui_CloseTicket(object):
         QtCore.QMetaObject.connectSlotsByName(CloseTicket)
 
     def retranslateUi(self, CloseTicket):
-        CloseTicket.setWindowTitle(QtGui.QApplication.translate("CloseTicket", "Dialog", None, QtGui.QApplication.UnicodeUTF8))
+        CloseTicket.setWindowTitle(QtGui.QApplication.translate("CloseTicket", "Cerrar ticket", None, QtGui.QApplication.UnicodeUTF8))
         self.numberLabel.setText(QtGui.QApplication.translate("CloseTicket", "Número", None, QtGui.QApplication.UnicodeUTF8))
         self.ticketTypeLabel.setText(QtGui.QApplication.translate("CloseTicket", "Tipo", None, QtGui.QApplication.UnicodeUTF8))
         self.driverLabel.setText(QtGui.QApplication.translate("CloseTicket", "Chofer", None, QtGui.QApplication.UnicodeUTF8))
