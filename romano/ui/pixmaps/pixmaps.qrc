@@ -1,0 +1,7 @@
+<RCC>
+  <qresource prefix="icons">
+    <file>refresh.svg</file>
+    <file>new-dispatch-ticket.svg</file>
+    <file>new-reception-ticket.svg</file>
+  </qresource>
+</RCC>
