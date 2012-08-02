@@ -67,16 +67,17 @@ class Main(QtGui.QMainWindow):
     self.api.print_ticket(self.currentTicket)
     
   def printTicketFinished(self, data):
-    filename = QtGui.QFileDialog.getSaveFileName(self, "Guardar ticket", "", "Archivo PDF (*.pdf)")
-    if filename[0] != '':
-      _file = QtCore.QFile(filename[0])
+    dialogStrings = QtGui.QFileDialog.getSaveFileName(self, "Guardar ticket", "", "Archivo PDF (*.pdf)")
+    filename = dialogStrings[0]
+    if filename != '':
+      _file = QtCore.QFile(filename)
       _file.open(QtCore.QIODevice.WriteOnly)
       _file.write(data)
       _file.close
       if os.name == "posix":
-        os.system("xdg-open " + filename[0])
+        os.system("xdg-open %s" % filename)
       elif os.name == "nt":
-        os.system("start " + filename[0])
+        os.startfile(filename)
 
   def loginFinished(self):
     self.enabled = True
