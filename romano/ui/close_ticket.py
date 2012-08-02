@@ -104,10 +104,8 @@ class CloseTicket(QtGui.QDialog):
         self.ticket.provider_weight = provider_weight
         self.ticket.provider_document_number = provider_document_number
       self.ticket.transactions_attributes = self.transactionsTableModel.getTransactions()
-      
       client_id = clientListModel.getClient(clientIndex).id
-      for transaction in self.ticket.transactions_attributes:
-        transaction.client_id = client_id
+      self.ticket.client_id = client_id
       
       self.accept()
     else:

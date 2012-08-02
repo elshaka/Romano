@@ -105,9 +105,8 @@ class API(QtCore.QObject):
     _ticket.outgoing_weight = ticket.outgoing_weight
     _ticket.provider_weight = ticket.provider_weight
     _ticket.provider_document_number = ticket.provider_document_number
+    _ticket.client_id = ticket.client_id
     _ticket.transactions_attributes = ticket.transactions_attributes
-    for transaction in _ticket.transactions_attributes:
-      transaction.user_id = self.user.id
     data = QtCore.QByteArray(_ticket.toJSON())
     self.closeTicketReply = self.manager.put(request, data)
     self.closeTicketReply.finished.connect(self.close_ticket_finished)
