@@ -6,13 +6,13 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>960</width>
+    <width>1200</width>
     <height>500</height>
    </rect>
   </property>
   <property name="minimumSize">
    <size>
-    <width>960</width>
+    <width>1024</width>
     <height>500</height>
    </size>
   </property>
@@ -23,7 +23,7 @@
    <item>
     <layout class="QHBoxLayout" name="dialogLayout">
      <item>
-      <layout class="QVBoxLayout" name="ticketLayout">
+      <layout class="QVBoxLayout" name="ticketLayout" stretch="0,0,0">
        <item>
         <layout class="QFormLayout" name="ticketFormLayout">
          <property name="fieldGrowthPolicy">
@@ -304,6 +304,9 @@
           <enum>QAbstractItemView::SelectRows</enum>
          </property>
          <attribute name="horizontalHeaderHighlightSections">
+          <bool>false</bool>
+         </attribute>
+         <attribute name="horizontalHeaderStretchLastSection">
           <bool>false</bool>
          </attribute>
          <attribute name="verticalHeaderVisible">

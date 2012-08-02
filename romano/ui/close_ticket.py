@@ -102,7 +102,7 @@ class CloseTicket(QtGui.QDialog):
       self.ticket.outgoing_weight = outgoing_weight
       if self.ticket.ticket_type_id == 1:
         self.ticket.provider_weight = provider_weight
-      self.ticket.provider_document_number = provider_document_number
+        self.ticket.provider_document_number = provider_document_number
       self.ticket.transactions_attributes = self.transactionsTableModel.getTransactions()
       
       client_id = clientListModel.getClient(clientIndex).id
@@ -182,7 +182,7 @@ class TransactionsTableModel(QtCore.QAbstractTableModel):
     super(TransactionsTableModel, self).__init__(parent)
     self._transactions = transactions
     self._warehouses = warehouses
-    self._headers = [u'Lote', u'Código', 'Nombre', 'Cantidad']
+    self._headers = [u'Lote', u'Código', 'Nombre', 'Sacos', 'Kg/Saco', 'Cantidad']
     
   def getTransactions(self):
     return self._transactions
@@ -232,9 +232,19 @@ class TransactionsTableModel(QtCore.QAbstractTableModel):
       elif column == 2:
         return self._warehouses[row].content_name
       elif column == 3:
+        if self._transactions[row].sack:
+          return self._transactions[row].sacks
+        else:
+          return "-"
+      elif column == 4:
+        if self._transactions[row].sack:
+          return self._transactions[row].sack_weight
+        else:
+          return "-"
+      elif column == 5:
         return "%s Kg" % self._transactions[row].amount
     elif role == QtCore.Qt.TextAlignmentRole:
-      if column == 3:
+      if column == 5:
         return QtCore.Qt.AlignRight
       else:
         return QtCore.Qt.AlignLeft

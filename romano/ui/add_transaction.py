@@ -46,8 +46,16 @@ class AddTransaction(QtGui.QDialog):
     
     if not errors:
       self.warehouse = warehousesModel.getWarehouse(warehouseTableRow)
-      self.transaction = Transaction(self.transaction_type_id,
-                                     self.warehouse.id, total)
+      if self.ui.sackButton.isChecked():
+        sacks = self.ui.sackSpinBox.value()
+        sack_weight = self.ui.kgSackSpinBox.value()
+        self.transaction = Transaction(self.transaction_type_id,
+                                       self.warehouse.id, True, sacks, 
+                                       sack_weight, total)
+      else:
+        self.transaction = Transaction(self.transaction_type_id,
+                                       self.warehouse.id, False, None, 
+                                       None, total)
       self.accept()
     else:
       ErrorMessageBox(errors).exec_()

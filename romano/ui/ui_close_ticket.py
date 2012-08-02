@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'close_ticket.ui'
 #
-# Created: Wed Aug  1 23:59:37 2012
+# Created: Thu Aug  2 15:38:37 2012
 #      by: pyside-uic 0.2.13 running on PySide 1.1.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -12,8 +12,8 @@ from PySide import QtCore, QtGui
 class Ui_CloseTicket(object):
     def setupUi(self, CloseTicket):
         CloseTicket.setObjectName("CloseTicket")
-        CloseTicket.resize(960, 500)
-        CloseTicket.setMinimumSize(QtCore.QSize(960, 500))
+        CloseTicket.resize(1200, 500)
+        CloseTicket.setMinimumSize(QtCore.QSize(1024, 500))
         self.verticalLayout = QtGui.QVBoxLayout(CloseTicket)
         self.verticalLayout.setObjectName("verticalLayout")
         self.dialogLayout = QtGui.QHBoxLayout()
@@ -148,6 +148,7 @@ class Ui_CloseTicket(object):
         self.transactionsTableView.setSelectionBehavior(QtGui.QAbstractItemView.SelectRows)
         self.transactionsTableView.setObjectName("transactionsTableView")
         self.transactionsTableView.horizontalHeader().setHighlightSections(False)
+        self.transactionsTableView.horizontalHeader().setStretchLastSection(False)
         self.transactionsTableView.verticalHeader().setVisible(False)
         self.transactionsLayout.addWidget(self.transactionsTableView)
         self.transactionsTotalLayout = QtGui.QHBoxLayout()
