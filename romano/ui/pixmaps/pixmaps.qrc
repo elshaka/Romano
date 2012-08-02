@@ -1,7 +1,10 @@
 <RCC>
   <qresource prefix="icons">
-    <file>refresh.svg</file>
-    <file>new-dispatch-ticket.svg</file>
-    <file>new-reception-ticket.svg</file>
+    <file>reception-icon.png</file>
+    <file>dispatch-icon.png</file>
+    <file>refresh-tickets.png</file>
+    <file>romano-icon.png</file>
+    <file>add-transaction.png</file>
+    <file>remove-transaction.png</file>
   </qresource>
 </RCC>

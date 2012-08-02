@@ -31,6 +31,7 @@ class Main(QtGui.QMainWindow):
     self.api.printTicketFinished.connect(self.printTicketFinished)
     self.ui.ticketsTableView.doubleClicked.connect(self.closeTicket)
     
+    self.center()
     self.show()
 
   def openTicket(self):
@@ -91,6 +92,12 @@ class Main(QtGui.QMainWindow):
   def getTicketsFinished(self, tickets):
     self.ui.ticketsTableView.model().refreshTickets(tickets)
     self.ui.refreshButton.setEnabled(True)
+    
+  def center(self):
+    qr = self.frameGeometry()
+    cp = QtGui.QDesktopWidget().availableGeometry().center()
+    qr.moveCenter(cp)
+    self.move(qr.topLeft())
     
 class TicketsTableModel(QtCore.QAbstractTableModel):
   def __init__(self, tickets, parent = None):

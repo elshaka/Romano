@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'close_ticket.ui'
 #
-# Created: Wed Aug  1 11:27:01 2012
+# Created: Wed Aug  1 23:59:37 2012
 #      by: pyside-uic 0.2.13 running on PySide 1.1.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -130,10 +130,16 @@ class Ui_CloseTicket(object):
         self.transactionsLabel.setObjectName("transactionsLabel")
         self.transactionsTitleLayout.addWidget(self.transactionsLabel)
         self.addTransactionButton = QtGui.QPushButton(CloseTicket)
+        icon = QtGui.QIcon()
+        icon.addPixmap(QtGui.QPixmap(":/icons/add-transaction.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.addTransactionButton.setIcon(icon)
         self.addTransactionButton.setObjectName("addTransactionButton")
         self.transactionsTitleLayout.addWidget(self.addTransactionButton)
         self.removeTransactionButton = QtGui.QPushButton(CloseTicket)
         self.removeTransactionButton.setEnabled(False)
+        icon1 = QtGui.QIcon()
+        icon1.addPixmap(QtGui.QPixmap(":/icons/remove-transaction.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.removeTransactionButton.setIcon(icon1)
         self.removeTransactionButton.setObjectName("removeTransactionButton")
         self.transactionsTitleLayout.addWidget(self.removeTransactionButton)
         self.transactionsLayout.addLayout(self.transactionsTitleLayout)
@@ -293,3 +299,4 @@ class Ui_CloseTicket(object):
         self.cancelButton.setText(QtGui.QApplication.translate("CloseTicket", "Cancelar", None, QtGui.QApplication.UnicodeUTF8))
         self.closeTicketButton.setText(QtGui.QApplication.translate("CloseTicket", "Cerrar ticket", None, QtGui.QApplication.UnicodeUTF8))
 
+import pixmaps_rc

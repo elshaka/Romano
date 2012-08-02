@@ -14,6 +14,10 @@
   <property name="windowTitle">
    <string>Romano</string>
   </property>
+  <property name="windowIcon">
+   <iconset resource="pixmaps/pixmaps.qrc">
+    <normaloff>:/icons/romano-icon.png</normaloff>:/icons/romano-icon.png</iconset>
+  </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QVBoxLayout" name="verticalLayout">
     <item>
@@ -51,7 +55,7 @@
         </property>
         <property name="icon">
          <iconset resource="pixmaps/pixmaps.qrc">
-          <normaloff>:/icons/refresh.svg</normaloff>:/icons/refresh.svg</iconset>
+          <normaloff>:/icons/refresh-tickets.png</normaloff>:/icons/refresh-tickets.png</iconset>
         </property>
         <property name="iconSize">
          <size>
@@ -97,6 +101,12 @@
    <property name="windowTitle">
     <string>toolBar</string>
    </property>
+   <property name="iconSize">
+    <size>
+     <width>32</width>
+     <height>32</height>
+    </size>
+   </property>
    <property name="toolButtonStyle">
     <enum>Qt::ToolButtonTextUnderIcon</enum>
    </property>
@@ -114,7 +124,7 @@
   <action name="actionNewReception">
    <property name="icon">
     <iconset resource="pixmaps/pixmaps.qrc">
-     <normaloff>:/icons/new-reception-ticket.svg</normaloff>:/icons/new-reception-ticket.svg</iconset>
+     <normaloff>:/icons/reception-icon.png</normaloff>:/icons/reception-icon.png</iconset>
    </property>
    <property name="text">
     <string>Nueva recepción</string>
@@ -132,7 +142,7 @@
   <action name="actionNewDispatch">
    <property name="icon">
     <iconset resource="pixmaps/pixmaps.qrc">
-     <normaloff>:/icons/new-dispatch-ticket.svg</normaloff>:/icons/new-dispatch-ticket.svg</iconset>
+     <normaloff>:/icons/dispatch-icon.png</normaloff>:/icons/dispatch-icon.png</iconset>
    </property>
    <property name="text">
     <string>Nuevo despacho</string>

@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'main.ui'
 #
-# Created: Sat Jul 14 18:49:06 2012
+# Created: Wed Aug  1 23:54:25 2012
 #      by: pyside-uic 0.2.13 running on PySide 1.1.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -13,6 +13,9 @@ class Ui_Main(object):
     def setupUi(self, Main):
         Main.setObjectName("Main")
         Main.resize(900, 600)
+        icon = QtGui.QIcon()
+        icon.addPixmap(QtGui.QPixmap(":/icons/romano-icon.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        Main.setWindowIcon(icon)
         self.centralwidget = QtGui.QWidget(Main)
         self.centralwidget.setObjectName("centralwidget")
         self.verticalLayout = QtGui.QVBoxLayout(self.centralwidget)
@@ -29,9 +32,9 @@ class Ui_Main(object):
         spacerItem = QtGui.QSpacerItem(40, 20, QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Minimum)
         self.horizontalLayout.addItem(spacerItem)
         self.refreshButton = QtGui.QPushButton(self.centralwidget)
-        icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap(":/icons/refresh.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.refreshButton.setIcon(icon)
+        icon1 = QtGui.QIcon()
+        icon1.addPixmap(QtGui.QPixmap(":/icons/refresh-tickets.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.refreshButton.setIcon(icon1)
         self.refreshButton.setIconSize(QtCore.QSize(24, 24))
         self.refreshButton.setObjectName("refreshButton")
         self.horizontalLayout.addWidget(self.refreshButton)
@@ -49,6 +52,7 @@ class Ui_Main(object):
         self.verticalLayout.addWidget(self.ticketsTableView)
         Main.setCentralWidget(self.centralwidget)
         self.toolBar = QtGui.QToolBar(Main)
+        self.toolBar.setIconSize(QtCore.QSize(32, 32))
         self.toolBar.setToolButtonStyle(QtCore.Qt.ToolButtonTextUnderIcon)
         self.toolBar.setObjectName("toolBar")
         Main.addToolBar(QtCore.Qt.TopToolBarArea, self.toolBar)
@@ -56,15 +60,15 @@ class Ui_Main(object):
         self.statusBar.setObjectName("statusBar")
         Main.setStatusBar(self.statusBar)
         self.actionNewReception = QtGui.QAction(Main)
-        icon1 = QtGui.QIcon()
-        icon1.addPixmap(QtGui.QPixmap(":/icons/new-reception-ticket.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.actionNewReception.setIcon(icon1)
+        icon2 = QtGui.QIcon()
+        icon2.addPixmap(QtGui.QPixmap(":/icons/reception-icon.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.actionNewReception.setIcon(icon2)
         self.actionNewReception.setIconVisibleInMenu(True)
         self.actionNewReception.setObjectName("actionNewReception")
         self.actionNewDispatch = QtGui.QAction(Main)
-        icon2 = QtGui.QIcon()
-        icon2.addPixmap(QtGui.QPixmap(":/icons/new-dispatch-ticket.svg"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.actionNewDispatch.setIcon(icon2)
+        icon3 = QtGui.QIcon()
+        icon3.addPixmap(QtGui.QPixmap(":/icons/dispatch-icon.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.actionNewDispatch.setIcon(icon3)
         self.actionNewDispatch.setIconVisibleInMenu(True)
         self.actionNewDispatch.setObjectName("actionNewDispatch")
         self.toolBar.addAction(self.actionNewReception)

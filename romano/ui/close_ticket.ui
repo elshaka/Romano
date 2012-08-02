@@ -273,6 +273,10 @@
            <property name="text">
             <string>Agregar</string>
            </property>
+           <property name="icon">
+            <iconset resource="pixmaps/pixmaps.qrc">
+             <normaloff>:/icons/add-transaction.png</normaloff>:/icons/add-transaction.png</iconset>
+           </property>
           </widget>
          </item>
          <item>
@@ -282,6 +286,10 @@
            </property>
            <property name="text">
             <string>Eliminar</string>
+           </property>
+           <property name="icon">
+            <iconset resource="pixmaps/pixmaps.qrc">
+             <normaloff>:/icons/remove-transaction.png</normaloff>:/icons/remove-transaction.png</iconset>
            </property>
           </widget>
          </item>
@@ -632,6 +640,8 @@
    </item>
   </layout>
  </widget>
- <resources/>
+ <resources>
+  <include location="pixmaps/pixmaps.qrc"/>
+ </resources>
  <connections/>
 </ui>
