@@ -172,7 +172,7 @@ class ClientsListModel(QtCore.QAbstractListModel):
   def data(self, index, role):
     row = index.row()
     if role == QtCore.Qt.DisplayRole or role == QtCore.Qt.EditRole:
-      return "%s - %s" % (self._clients[row].code, self._clients[row].name)
+      return self._clients[row].name
 
 class TransactionsTableModel(QtCore.QAbstractTableModel):
   totalChanged = QtCore.Signal(float)
