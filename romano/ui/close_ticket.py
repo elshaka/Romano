@@ -26,7 +26,7 @@ class CloseTicket(QtGui.QDialog):
     self.ui.incomingWeightSpinBox.setValue(ticket.incoming_weight)
     self.ui.commentTextEdit.setText(ticket.comment)
     
-    self.transactionsTableModel = TransactionsTableModel([], [])
+    self.transactionsTableModel = TransactionsTableModel([], [], self)
     self.ui.transactionsTableView.setModel(self.transactionsTableModel)
     
     horizontalHeader = self.ui.transactionsTableView.horizontalHeader()
@@ -127,11 +127,11 @@ class CloseTicket(QtGui.QDialog):
       self.ui.netWeightSpinBox.setValue(gross_weight - tare_weight)
       
   def getClientsFinished(self, clients):
-    self.clientsListModel = ClientsListModel(clients)
+    self.clientsListModel = ClientsListModel(clients, self)
     self.ui.clientButton.setEnabled(True)
 
   def getFactoriesFinished(self, factories):
-    self.factoriesListModel = ClientsListModel(factories)
+    self.factoriesListModel = ClientsListModel(factories, self)
     self.ui.factoryButton.setEnabled(True)
 
   def getWarehousesFinished(self, warehouses):
@@ -156,7 +156,7 @@ class CloseTicket(QtGui.QDialog):
     self.ui.clientsComboBox.setCurrentIndex(-1)
     
 class ClientsListModel(QtCore.QAbstractListModel):
-  def __init__(self, clients, parent = None):
+  def __init__(self, clients, parent):
     super(ClientsListModel, self).__init__(parent)
     self._clients = clients
     
@@ -178,7 +178,7 @@ class ClientsListModel(QtCore.QAbstractListModel):
 
 class TransactionsTableModel(QtCore.QAbstractTableModel):
   totalChanged = QtCore.Signal(float)
-  def __init__(self, transactions, warehouses, parent = None):
+  def __init__(self, transactions, warehouses, parent):
     super(TransactionsTableModel, self).__init__(parent)
     self._transactions = transactions
     self._warehouses = warehouses

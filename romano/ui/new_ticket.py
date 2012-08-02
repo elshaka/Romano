@@ -63,17 +63,17 @@ class NewTicket(QtGui.QDialog):
       self.ui.incomingWeightSpinBox.setValue(weight)
   
   def getDriversFinished(self, drivers):
-    self.driversListModel = DriversListModel(drivers)
+    self.driversListModel = DriversListModel(drivers, self)
     self.ui.driversComboBox.setModel(self.driversListModel)
     self.ui.driversComboBox.setCurrentIndex(-1)
 
   def getTrucksFinished(self, trucks):
-    self.trucksListModel = TrucksListModel(trucks)
+    self.trucksListModel = TrucksListModel(trucks, self)
     self.ui.trucksComboBox.setModel(self.trucksListModel)
     self.ui.trucksComboBox.setCurrentIndex(-1)
     
 class DriversListModel(QtCore.QAbstractListModel):
-  def __init__(self, drivers, parent = None):
+  def __init__(self, drivers, parent):
     super(DriversListModel, self).__init__(parent)
     self._drivers = drivers
 
@@ -94,7 +94,7 @@ class DriversListModel(QtCore.QAbstractListModel):
       return "%s - %s" % (self._drivers[row].ci, self._drivers[row].name)
 
 class TrucksListModel(QtCore.QAbstractListModel):
-  def __init__(self, trucks, parent = None):
+  def __init__(self, trucks, parent):
     super(TrucksListModel, self).__init__(parent)
     self._trucks = trucks
 

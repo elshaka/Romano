@@ -24,8 +24,8 @@ class AddTransaction(QtGui.QDialog):
     self.ui.sackSpinBox.valueChanged.connect(self.updateSackTotal)
     self.ui.kgSackSpinBox.valueChanged.connect(self.updateSackTotal)
     
-    self.ingredientWarehousesModel = WarehousesTableModel(ingredientWarehouses)
-    self.productWarehousesModel = WarehousesTableModel(productWarehouses)
+    self.ingredientWarehousesModel = WarehousesTableModel(ingredientWarehouses, self)
+    self.productWarehousesModel = WarehousesTableModel(productWarehouses, self)
     self.ui.warehousesTableView.setModel(self.ingredientWarehousesModel)
     horizontalHeader = self.ui.warehousesTableView.horizontalHeader()
     horizontalHeader.setResizeMode(QtGui.QHeaderView.Stretch)
@@ -71,7 +71,7 @@ class AddTransaction(QtGui.QDialog):
     self.ui.totalSackSpinBox.setValue(total)
 
 class WarehousesTableModel(QtCore.QAbstractTableModel):
-  def __init__(self, warehouses, parent = None):
+  def __init__(self, warehouses, parent):
     super(WarehousesTableModel, self).__init__(parent)
     self._warehouses = warehouses
     self._headers = ['Lote', u'Código', 'Nombre', 'Existencia']
