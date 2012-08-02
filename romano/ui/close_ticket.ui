@@ -23,223 +23,231 @@
    <item>
     <layout class="QHBoxLayout" name="dialogLayout">
      <item>
-      <layout class="QVBoxLayout" name="ticketLayout" stretch="0,0,0">
-       <item>
-        <layout class="QFormLayout" name="ticketFormLayout">
-         <property name="fieldGrowthPolicy">
-          <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
-         </property>
-         <item row="0" column="0">
-          <widget class="QLabel" name="numberLabel">
-           <property name="text">
-            <string>Número</string>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="1">
-          <layout class="QHBoxLayout" name="numberTypeLayout">
-           <item>
-            <widget class="QLineEdit" name="numberLineEdit">
-             <property name="enabled">
-              <bool>false</bool>
-             </property>
-             <property name="alignment">
-              <set>Qt::AlignCenter</set>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QLabel" name="ticketTypeLabel">
-             <property name="text">
-              <string>Tipo</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QLineEdit" name="ticketTypeLineEdit">
-             <property name="enabled">
-              <bool>false</bool>
-             </property>
-             <property name="alignment">
-              <set>Qt::AlignCenter</set>
-             </property>
-            </widget>
-           </item>
-          </layout>
-         </item>
-         <item row="1" column="0">
-          <widget class="QLabel" name="driverLabel">
-           <property name="text">
-            <string>Chofer</string>
-           </property>
-          </widget>
-         </item>
-         <item row="1" column="1">
-          <widget class="QLineEdit" name="driverLineEdit">
-           <property name="enabled">
-            <bool>false</bool>
-           </property>
-          </widget>
-         </item>
-         <item row="2" column="0">
-          <widget class="QLabel" name="truckLabel">
-           <property name="text">
-            <string>Camión</string>
-           </property>
-          </widget>
-         </item>
-         <item row="2" column="1">
-          <widget class="QLineEdit" name="truckLineEdit">
-           <property name="enabled">
-            <bool>false</bool>
-           </property>
-          </widget>
-         </item>
-         <item row="3" column="0">
-          <layout class="QVBoxLayout" name="weightLabelsLayout">
-           <item>
-            <widget class="QLabel" name="label_6">
-             <property name="text">
-              <string>Peso de entrada</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QLabel" name="label_4">
-             <property name="text">
-              <string>Peso de salida</string>
-             </property>
-            </widget>
-           </item>
-          </layout>
-         </item>
-         <item row="3" column="1">
-          <layout class="QGridLayout" name="gridLayout">
-           <item row="1" column="2">
-            <widget class="QPushButton" name="captureWeightButton">
-             <property name="minimumSize">
-              <size>
-               <width>120</width>
-               <height>0</height>
-              </size>
-             </property>
-             <property name="text">
-              <string>Capturar peso</string>
-             </property>
-             <property name="checkable">
-              <bool>true</bool>
-             </property>
-             <property name="checked">
-              <bool>false</bool>
-             </property>
-             <property name="autoDefault">
-              <bool>false</bool>
-             </property>
-             <property name="default">
-              <bool>false</bool>
-             </property>
-             <property name="flat">
-              <bool>false</bool>
-             </property>
-            </widget>
-           </item>
-           <item row="0" column="0">
-            <widget class="QDoubleSpinBox" name="incomingWeightSpinBox">
-             <property name="enabled">
-              <bool>false</bool>
-             </property>
-             <property name="alignment">
-              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-             </property>
-             <property name="buttonSymbols">
-              <enum>QAbstractSpinBox::NoButtons</enum>
-             </property>
-             <property name="suffix">
-              <string> Kg</string>
-             </property>
-             <property name="maximum">
-              <double>500000.000000000000000</double>
-             </property>
-             <property name="value">
-              <double>54430.400000000001455</double>
-             </property>
-            </widget>
-           </item>
-           <item row="1" column="0">
-            <widget class="QDoubleSpinBox" name="outgoingWeightSpinBox">
-             <property name="frame">
-              <bool>true</bool>
-             </property>
-             <property name="alignment">
-              <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-             </property>
-             <property name="readOnly">
-              <bool>true</bool>
-             </property>
-             <property name="buttonSymbols">
-              <enum>QAbstractSpinBox::NoButtons</enum>
-             </property>
-             <property name="suffix">
-              <string> Kg</string>
-             </property>
-             <property name="maximum">
-              <double>500000.000000000000000</double>
-             </property>
-            </widget>
-           </item>
-          </layout>
-         </item>
-         <item row="4" column="0">
-          <layout class="QHBoxLayout" name="clientSelectLayout">
-           <item>
-            <widget class="QRadioButton" name="factoryButton">
-             <property name="enabled">
-              <bool>false</bool>
-             </property>
-             <property name="text">
-              <string>Fábrica</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QRadioButton" name="clientButton">
-             <property name="enabled">
-              <bool>false</bool>
-             </property>
-             <property name="text">
-              <string>Cliente</string>
-             </property>
-            </widget>
-           </item>
-          </layout>
-         </item>
-         <item row="4" column="1">
-          <layout class="QVBoxLayout" name="weightsLayout">
-           <item>
-            <widget class="QComboBox" name="clientsComboBox">
-             <property name="editable">
-              <bool>true</bool>
-             </property>
-             <property name="insertPolicy">
-              <enum>QComboBox::NoInsert</enum>
-             </property>
-            </widget>
-           </item>
-          </layout>
-         </item>
-        </layout>
-       </item>
-       <item>
-        <widget class="QLabel" name="commentLabel">
-         <property name="text">
-          <string>Comentario</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QTextEdit" name="commentTextEdit"/>
-       </item>
-      </layout>
+      <widget class="QWidget" name="ticketWidget" native="true">
+       <property name="maximumSize">
+        <size>
+         <width>500</width>
+         <height>16777215</height>
+        </size>
+       </property>
+       <layout class="QVBoxLayout" name="ticketLayout" stretch="0,0,0">
+        <item>
+         <layout class="QFormLayout" name="ticketFormLayout">
+          <property name="fieldGrowthPolicy">
+           <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
+          </property>
+          <item row="0" column="0">
+           <widget class="QLabel" name="numberLabel">
+            <property name="text">
+             <string>Número</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="1">
+           <layout class="QHBoxLayout" name="numberTypeLayout">
+            <item>
+             <widget class="QLineEdit" name="numberLineEdit">
+              <property name="enabled">
+               <bool>false</bool>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignCenter</set>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="ticketTypeLabel">
+              <property name="text">
+               <string>Tipo</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLineEdit" name="ticketTypeLineEdit">
+              <property name="enabled">
+               <bool>false</bool>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignCenter</set>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item row="1" column="0">
+           <widget class="QLabel" name="driverLabel">
+            <property name="text">
+             <string>Chofer</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="1">
+           <widget class="QLineEdit" name="driverLineEdit">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="0">
+           <widget class="QLabel" name="truckLabel">
+            <property name="text">
+             <string>Camión</string>
+            </property>
+           </widget>
+          </item>
+          <item row="2" column="1">
+           <widget class="QLineEdit" name="truckLineEdit">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="0">
+           <layout class="QVBoxLayout" name="weightLabelsLayout">
+            <item>
+             <widget class="QLabel" name="label_6">
+              <property name="text">
+               <string>Peso de entrada</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QLabel" name="label_4">
+              <property name="text">
+               <string>Peso de salida</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item row="3" column="1">
+           <layout class="QGridLayout" name="gridLayout">
+            <item row="1" column="2">
+             <widget class="QPushButton" name="captureWeightButton">
+              <property name="minimumSize">
+               <size>
+                <width>120</width>
+                <height>0</height>
+               </size>
+              </property>
+              <property name="text">
+               <string>Capturar peso</string>
+              </property>
+              <property name="checkable">
+               <bool>true</bool>
+              </property>
+              <property name="checked">
+               <bool>false</bool>
+              </property>
+              <property name="autoDefault">
+               <bool>false</bool>
+              </property>
+              <property name="default">
+               <bool>false</bool>
+              </property>
+              <property name="flat">
+               <bool>false</bool>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="0">
+             <widget class="QDoubleSpinBox" name="incomingWeightSpinBox">
+              <property name="enabled">
+               <bool>false</bool>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+              </property>
+              <property name="buttonSymbols">
+               <enum>QAbstractSpinBox::NoButtons</enum>
+              </property>
+              <property name="suffix">
+               <string> Kg</string>
+              </property>
+              <property name="maximum">
+               <double>500000.000000000000000</double>
+              </property>
+              <property name="value">
+               <double>54430.400000000001455</double>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="0">
+             <widget class="QDoubleSpinBox" name="outgoingWeightSpinBox">
+              <property name="frame">
+               <bool>true</bool>
+              </property>
+              <property name="alignment">
+               <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+              </property>
+              <property name="readOnly">
+               <bool>true</bool>
+              </property>
+              <property name="buttonSymbols">
+               <enum>QAbstractSpinBox::NoButtons</enum>
+              </property>
+              <property name="suffix">
+               <string> Kg</string>
+              </property>
+              <property name="maximum">
+               <double>500000.000000000000000</double>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item row="4" column="0">
+           <layout class="QHBoxLayout" name="clientSelectLayout">
+            <item>
+             <widget class="QRadioButton" name="factoryButton">
+              <property name="enabled">
+               <bool>false</bool>
+              </property>
+              <property name="text">
+               <string>Fábrica</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QRadioButton" name="clientButton">
+              <property name="enabled">
+               <bool>false</bool>
+              </property>
+              <property name="text">
+               <string>Cliente</string>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+          <item row="4" column="1">
+           <layout class="QVBoxLayout" name="weightsLayout">
+            <item>
+             <widget class="QComboBox" name="clientsComboBox">
+              <property name="editable">
+               <bool>true</bool>
+              </property>
+              <property name="insertPolicy">
+               <enum>QComboBox::NoInsert</enum>
+              </property>
+             </widget>
+            </item>
+           </layout>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <widget class="QLabel" name="commentLabel">
+          <property name="text">
+           <string>Comentario</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QTextEdit" name="commentTextEdit"/>
+        </item>
+       </layout>
+      </widget>
      </item>
      <item>
       <spacer name="horizontalSpacer_3">
