@@ -24,7 +24,7 @@ class CloseTicket(QtGui.QDialog):
     self.ui.driverLineEdit.setText("%s - %s" % (ticket.driver.ci, ticket.driver.name))
     self.ui.truckLineEdit.setText("%s - %s" % (ticket.truck.license_plate, ticket.truck.carrier.name))
     self.ui.incomingWeightSpinBox.setValue(ticket.incoming_weight)
-    self.ui.commentTextEdit.setText(ticket.comment)
+    self.ui.commentPlainTextEdit.setPlainText(ticket.comment)
     
     self.transactionsTableModel = TransactionsTableModel([], [], self)
     self.ui.transactionsTableView.setModel(self.transactionsTableModel)
@@ -98,7 +98,7 @@ class CloseTicket(QtGui.QDialog):
         errors.append(u'El número de guía no ha sido indicado')
         
     if not errors:
-      self.ticket.comment = self.ui.commentTextEdit.toPlainText()
+      self.ticket.comment = self.ui.commentPlainTextEdit.toPlainText()
       self.ticket.outgoing_weight = outgoing_weight
       if self.ticket.ticket_type_id == 1:
         self.ticket.provider_weight = provider_weight

@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'close_ticket.ui'
 #
-# Created: Thu Aug  2 18:17:24 2012
+# Created: Fri Aug  3 17:02:43 2012
 #      by: pyside-uic 0.2.13 running on PySide 1.1.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -19,15 +19,17 @@ class Ui_CloseTicket(object):
         self.dialogLayout = QtGui.QHBoxLayout()
         self.dialogLayout.setObjectName("dialogLayout")
         self.ticketWidget = QtGui.QWidget(CloseTicket)
-        self.ticketWidget.setMaximumSize(QtCore.QSize(500, 16777215))
+        self.ticketWidget.setMaximumSize(QtCore.QSize(450, 16777215))
         self.ticketWidget.setObjectName("ticketWidget")
         self.ticketLayout = QtGui.QVBoxLayout(self.ticketWidget)
+        self.ticketLayout.setContentsMargins(0, 0, 0, 0)
         self.ticketLayout.setContentsMargins(0, 0, 0, 0)
         self.ticketLayout.setObjectName("ticketLayout")
         self.ticketFormLayout = QtGui.QFormLayout()
         self.ticketFormLayout.setFieldGrowthPolicy(QtGui.QFormLayout.AllNonFixedFieldsGrow)
         self.ticketFormLayout.setObjectName("ticketFormLayout")
         self.numberLabel = QtGui.QLabel(self.ticketWidget)
+        self.numberLabel.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignVCenter)
         self.numberLabel.setObjectName("numberLabel")
         self.ticketFormLayout.setWidget(0, QtGui.QFormLayout.LabelRole, self.numberLabel)
         self.numberTypeLayout = QtGui.QHBoxLayout()
@@ -89,6 +91,7 @@ class Ui_CloseTicket(object):
         self.incomingWeightSpinBox.setObjectName("incomingWeightSpinBox")
         self.gridLayout.addWidget(self.incomingWeightSpinBox, 0, 0, 1, 1)
         self.outgoingWeightSpinBox = QtGui.QDoubleSpinBox(self.ticketWidget)
+        self.outgoingWeightSpinBox.setFocusPolicy(QtCore.Qt.NoFocus)
         self.outgoingWeightSpinBox.setFrame(True)
         self.outgoingWeightSpinBox.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
         self.outgoingWeightSpinBox.setReadOnly(True)
@@ -120,9 +123,10 @@ class Ui_CloseTicket(object):
         self.commentLabel = QtGui.QLabel(self.ticketWidget)
         self.commentLabel.setObjectName("commentLabel")
         self.ticketLayout.addWidget(self.commentLabel)
-        self.commentTextEdit = QtGui.QTextEdit(self.ticketWidget)
-        self.commentTextEdit.setObjectName("commentTextEdit")
-        self.ticketLayout.addWidget(self.commentTextEdit)
+        self.commentPlainTextEdit = QtGui.QPlainTextEdit(self.ticketWidget)
+        self.commentPlainTextEdit.setTabChangesFocus(True)
+        self.commentPlainTextEdit.setObjectName("commentPlainTextEdit")
+        self.ticketLayout.addWidget(self.commentPlainTextEdit)
         self.dialogLayout.addWidget(self.ticketWidget)
         spacerItem = QtGui.QSpacerItem(10, 20, QtGui.QSizePolicy.Fixed, QtGui.QSizePolicy.Minimum)
         self.dialogLayout.addItem(spacerItem)
