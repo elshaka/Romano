@@ -51,7 +51,7 @@ class NewTicket(QtGui.QDialog):
       driver = self.ui.driversComboBox.model().getDriver(driverIndex)
       truck = self.ui.trucksComboBox.model().getTruck(truckIndex)
       incoming_weight = self.ui.incomingWeightSpinBox.value()
-      comment = self.ui.commentTextEdit.toPlainText()
+      comment = self.ui.commentPlainTextEdit.toPlainText()
       self.ticket = Ticket(self.ticket_type_id, driver.id, truck.id, 
                            incoming_weight, comment)
       self.accept()

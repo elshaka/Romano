@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'new_ticket.ui'
 #
-# Created: Mon Jul 30 10:26:25 2012
+# Created: Fri Aug  3 16:46:00 2012
 #      by: pyside-uic 0.2.13 running on PySide 1.1.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -41,6 +41,7 @@ class Ui_NewTicket(object):
         self.weightLayout = QtGui.QHBoxLayout()
         self.weightLayout.setObjectName("weightLayout")
         self.incomingWeightSpinBox = QtGui.QDoubleSpinBox(NewTicket)
+        self.incomingWeightSpinBox.setFocusPolicy(QtCore.Qt.NoFocus)
         self.incomingWeightSpinBox.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
         self.incomingWeightSpinBox.setButtonSymbols(QtGui.QAbstractSpinBox.NoButtons)
         self.incomingWeightSpinBox.setMaximum(999999.0)
@@ -57,14 +58,16 @@ class Ui_NewTicket(object):
         self.label = QtGui.QLabel(NewTicket)
         self.label.setObjectName("label")
         self.verticalLayout.addWidget(self.label)
-        self.commentTextEdit = QtGui.QTextEdit(NewTicket)
-        self.commentTextEdit.setObjectName("commentTextEdit")
-        self.verticalLayout.addWidget(self.commentTextEdit)
+        self.commentPlainTextEdit = QtGui.QPlainTextEdit(NewTicket)
+        self.commentPlainTextEdit.setTabChangesFocus(True)
+        self.commentPlainTextEdit.setObjectName("commentPlainTextEdit")
+        self.verticalLayout.addWidget(self.commentPlainTextEdit)
         self.buttonsLayout = QtGui.QHBoxLayout()
         self.buttonsLayout.setObjectName("buttonsLayout")
         spacerItem = QtGui.QSpacerItem(40, 20, QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Minimum)
         self.buttonsLayout.addItem(spacerItem)
         self.cancelButton = QtGui.QPushButton(NewTicket)
+        self.cancelButton.setFocusPolicy(QtCore.Qt.NoFocus)
         self.cancelButton.setObjectName("cancelButton")
         self.buttonsLayout.addWidget(self.cancelButton)
         self.createTicketButton = QtGui.QPushButton(NewTicket)
