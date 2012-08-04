@@ -4,7 +4,7 @@ import settings
 from PySide import QtGui, QtCore
 from ui_new_ticket import Ui_NewTicket
 from mango.models.ticket import Ticket
-from serial.serial_thread import SerialThread
+from serial_thread.serial_thread import SerialThread
 from error_message_box import ErrorMessageBox
 
 class NewTicket(QtGui.QDialog):

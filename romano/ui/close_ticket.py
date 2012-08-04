@@ -4,7 +4,7 @@ import settings
 from PySide import QtGui, QtCore
 from ui_close_ticket import Ui_CloseTicket
 from mango.models.ticket import Ticket
-from serial.serial_thread import SerialThread
+from serial_thread.serial_thread import SerialThread
 from add_transaction import AddTransaction
 from error_message_box import ErrorMessageBox
 
