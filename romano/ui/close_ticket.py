@@ -194,12 +194,14 @@ class TransactionsTableModel(QtCore.QAbstractTableModel):
     self._recalculateTotal()
   
   def removeTransaction(self, row):
-    self.beginRemoveRows(QtCore.QModelIndex(), row, 1)
+    #self.beginRemoveRows(QtCore.QModelIndex(), row, 1)
+    self.beginResetModel()
     transaction = self._transactions[row]
     warehouse = self._warehouses[row]
     self._transactions.remove(transaction)
     self._warehouses.remove(warehouse)
-    self.endRemoveRows()
+    #self.endRemoveRows()
+    self.endResetModel()
     self._recalculateTotal()
     
   def _recalculateTotal(self):
