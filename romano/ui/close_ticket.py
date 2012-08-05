@@ -9,7 +9,7 @@ from add_transaction import AddTransaction
 from error_message_box import ErrorMessageBox
 
 class CloseTicket(QtGui.QDialog):
-  def __init__(self, ticket, parent):
+  def __init__(self, ticket, allow_manual, parent):
     super(CloseTicket, self).__init__(parent)
     self.tolerance = settings.TOLERANCE
     self.ticket = ticket
@@ -18,6 +18,9 @@ class CloseTicket(QtGui.QDialog):
     self.setModal(True)
     clientsCompleter = self.ui.clientsComboBox.completer()
     clientsCompleter.setCompletionMode(QtGui.QCompleter.PopupCompletion)
+    
+    if not allow_manual:
+      self.ui.manualCheckBox.hide()
     
     self.ui.numberLineEdit.setText(str(ticket.number))
     self.ui.ticketTypeLineEdit.setText(ticket.ticket_type.code)
@@ -35,6 +38,8 @@ class CloseTicket(QtGui.QDialog):
     if self.ticket.ticket_type_id != 1:
       self.ui.providerWidget.hide()
     
+    self.ui.manualCheckBox.stateChanged.connect(self.setManualCapture)
+    self.ui.outgoingWeightSpinBox.valueChanged.connect(self.weightChanged)
     self.ui.clientButton.clicked.connect(self.showClients)
     self.ui.factoryButton.clicked.connect(self.showFactories)
     self.ui.addTransactionButton.clicked.connect(self.addTransaction)
@@ -71,12 +76,13 @@ class CloseTicket(QtGui.QDialog):
   def enableDeleteTransaction(self, index):
     if index.row() != -1:
       self.ui.removeTransactionButton.setEnabled(True)
-    
+  
   def closeTicket(self):
     clientIndex = self.ui.clientsComboBox.currentIndex()
     clientListModel = self.ui.clientsComboBox.model()
     outgoing_weight = self.ui.outgoingWeightSpinBox.value()
     weight_captured = self.ui.captureWeightButton.isChecked()
+    manualEnabled = self.ui.manualCheckBox.isChecked()
     net_weight = self.ui.netWeightSpinBox.value()
     provider_weight = self.ui.providerWeightSpinBox.value()
     provider_document_number = self.ui.providerDocumentNumberLineEdit.text()
@@ -85,7 +91,7 @@ class CloseTicket(QtGui.QDialog):
     errors = []
     if clientIndex == -1:
       errors.append('El cliente no ha sido seleccionado')
-    if not weight_captured:
+    if not weight_captured and not manualEnabled:
       errors.append('El peso de salida no ha sido capturado')
     if not (net_weight - self.tolerance < transactions_total < net_weight + self.tolerance):
       errors.append('El total de transacciones se encuentra fuera de la tolerancia del peso neto')
@@ -106,23 +112,36 @@ class CloseTicket(QtGui.QDialog):
       self.ticket.transactions_attributes = self.transactionsTableModel.getTransactions()
       client_id = clientListModel.getClient(clientIndex).id
       self.ticket.client_id = client_id
+      self.ticket.manual_outgoing = manualEnabled
       
       self.accept()
     else:
       ErrorMessageBox(errors).exec_()
+  
+  def setManualCapture(self):
+    if self.ui.manualCheckBox.isChecked():
+      self.ui.outgoingWeightSpinBox.setEnabled(True)
+      self.ui.captureWeightButton.setEnabled(False)
+      self.ui.captureWeightButton.setChecked(False)
+    else:
+      self.ui.outgoingWeightSpinBox.setEnabled(False)
+      self.ui.captureWeightButton.setEnabled(True)
     
   def getWeight(self, weight):
-    if not self.ui.captureWeightButton.isChecked():
+    if not self.ui.captureWeightButton.isChecked() and not self.ui.manualCheckBox.isChecked():
       self.ui.outgoingWeightSpinBox.setValue(weight)
-      if self.ticket.ticket_type_id == 2:
-        gross_weight = weight
-        tare_weight = self.ticket.incoming_weight
-      else:
-        gross_weight = self.ticket.incoming_weight
-        tare_weight = weight
-      self.ui.grossWeightSpinBox.setValue(gross_weight)
-      self.ui.tareWeightSpinBox.setValue(tare_weight)
-      self.ui.netWeightSpinBox.setValue(gross_weight - tare_weight)
+      
+  def weightChanged(self, weight):
+    if self.ticket.ticket_type_id == 2:
+      gross_weight = weight
+      tare_weight = self.ticket.incoming_weight
+    else:
+      gross_weight = self.ticket.incoming_weight
+      tare_weight = weight
+    net_weight = gross_weight - tare_weight
+    self.ui.grossWeightSpinBox.setValue(gross_weight)
+    self.ui.tareWeightSpinBox.setValue(tare_weight)
+    self.ui.netWeightSpinBox.setValue(net_weight)
       
   def getClientsFinished(self, clients):
     self.clientsListModel = ClientsListModel(clients, self)

@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'new_ticket.ui'
 #
-# Created: Fri Aug  3 16:46:00 2012
+# Created: Sun Aug  5 11:51:18 2012
 #      by: pyside-uic 0.2.13 running on PySide 1.1.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -12,7 +12,7 @@ from PySide import QtCore, QtGui
 class Ui_NewTicket(object):
     def setupUi(self, NewTicket):
         NewTicket.setObjectName("NewTicket")
-        NewTicket.resize(480, 300)
+        NewTicket.resize(530, 321)
         NewTicket.setMinimumSize(QtCore.QSize(480, 300))
         self.verticalLayout = QtGui.QVBoxLayout(NewTicket)
         self.verticalLayout.setObjectName("verticalLayout")
@@ -41,7 +41,9 @@ class Ui_NewTicket(object):
         self.weightLayout = QtGui.QHBoxLayout()
         self.weightLayout.setObjectName("weightLayout")
         self.incomingWeightSpinBox = QtGui.QDoubleSpinBox(NewTicket)
-        self.incomingWeightSpinBox.setFocusPolicy(QtCore.Qt.NoFocus)
+        self.incomingWeightSpinBox.setEnabled(False)
+        self.incomingWeightSpinBox.setMinimumSize(QtCore.QSize(0, 0))
+        self.incomingWeightSpinBox.setFocusPolicy(QtCore.Qt.ClickFocus)
         self.incomingWeightSpinBox.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
         self.incomingWeightSpinBox.setButtonSymbols(QtGui.QAbstractSpinBox.NoButtons)
         self.incomingWeightSpinBox.setMaximum(999999.0)
@@ -54,6 +56,9 @@ class Ui_NewTicket(object):
         self.captureWeightButton.setObjectName("captureWeightButton")
         self.weightLayout.addWidget(self.captureWeightButton)
         self.formLayout.setLayout(3, QtGui.QFormLayout.FieldRole, self.weightLayout)
+        self.manualCheckBox = QtGui.QCheckBox(NewTicket)
+        self.manualCheckBox.setObjectName("manualCheckBox")
+        self.formLayout.setWidget(4, QtGui.QFormLayout.FieldRole, self.manualCheckBox)
         self.verticalLayout.addLayout(self.formLayout)
         self.label = QtGui.QLabel(NewTicket)
         self.label.setObjectName("label")
@@ -85,6 +90,7 @@ class Ui_NewTicket(object):
         self.weightLabel.setText(QtGui.QApplication.translate("NewTicket", "Peso de entrada", None, QtGui.QApplication.UnicodeUTF8))
         self.incomingWeightSpinBox.setSuffix(QtGui.QApplication.translate("NewTicket", " Kg", None, QtGui.QApplication.UnicodeUTF8))
         self.captureWeightButton.setText(QtGui.QApplication.translate("NewTicket", "Capturar peso", None, QtGui.QApplication.UnicodeUTF8))
+        self.manualCheckBox.setText(QtGui.QApplication.translate("NewTicket", "Captura manual", None, QtGui.QApplication.UnicodeUTF8))
         self.label.setText(QtGui.QApplication.translate("NewTicket", "Comentario", None, QtGui.QApplication.UnicodeUTF8))
         self.cancelButton.setText(QtGui.QApplication.translate("NewTicket", "Cancelar", None, QtGui.QApplication.UnicodeUTF8))
         self.createTicketButton.setText(QtGui.QApplication.translate("NewTicket", "Crear ticket", None, QtGui.QApplication.UnicodeUTF8))

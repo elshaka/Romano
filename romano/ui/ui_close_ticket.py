@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'close_ticket.ui'
 #
-# Created: Fri Aug  3 17:02:43 2012
+# Created: Sun Aug  5 16:28:23 2012
 #      by: pyside-uic 0.2.13 running on PySide 1.1.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -12,8 +12,8 @@ from PySide import QtCore, QtGui
 class Ui_CloseTicket(object):
     def setupUi(self, CloseTicket):
         CloseTicket.setObjectName("CloseTicket")
-        CloseTicket.resize(1200, 500)
-        CloseTicket.setMinimumSize(QtCore.QSize(1024, 500))
+        CloseTicket.resize(1100, 530)
+        CloseTicket.setMinimumSize(QtCore.QSize(1000, 530))
         self.verticalLayout = QtGui.QVBoxLayout(CloseTicket)
         self.verticalLayout.setObjectName("verticalLayout")
         self.dialogLayout = QtGui.QHBoxLayout()
@@ -91,10 +91,11 @@ class Ui_CloseTicket(object):
         self.incomingWeightSpinBox.setObjectName("incomingWeightSpinBox")
         self.gridLayout.addWidget(self.incomingWeightSpinBox, 0, 0, 1, 1)
         self.outgoingWeightSpinBox = QtGui.QDoubleSpinBox(self.ticketWidget)
-        self.outgoingWeightSpinBox.setFocusPolicy(QtCore.Qt.NoFocus)
+        self.outgoingWeightSpinBox.setEnabled(False)
+        self.outgoingWeightSpinBox.setFocusPolicy(QtCore.Qt.ClickFocus)
         self.outgoingWeightSpinBox.setFrame(True)
         self.outgoingWeightSpinBox.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
-        self.outgoingWeightSpinBox.setReadOnly(True)
+        self.outgoingWeightSpinBox.setReadOnly(False)
         self.outgoingWeightSpinBox.setButtonSymbols(QtGui.QAbstractSpinBox.NoButtons)
         self.outgoingWeightSpinBox.setMaximum(500000.0)
         self.outgoingWeightSpinBox.setObjectName("outgoingWeightSpinBox")
@@ -110,7 +111,7 @@ class Ui_CloseTicket(object):
         self.clientButton.setEnabled(False)
         self.clientButton.setObjectName("clientButton")
         self.clientSelectLayout.addWidget(self.clientButton)
-        self.ticketFormLayout.setLayout(4, QtGui.QFormLayout.LabelRole, self.clientSelectLayout)
+        self.ticketFormLayout.setLayout(5, QtGui.QFormLayout.LabelRole, self.clientSelectLayout)
         self.weightsLayout = QtGui.QVBoxLayout()
         self.weightsLayout.setObjectName("weightsLayout")
         self.clientsComboBox = QtGui.QComboBox(self.ticketWidget)
@@ -118,7 +119,10 @@ class Ui_CloseTicket(object):
         self.clientsComboBox.setInsertPolicy(QtGui.QComboBox.NoInsert)
         self.clientsComboBox.setObjectName("clientsComboBox")
         self.weightsLayout.addWidget(self.clientsComboBox)
-        self.ticketFormLayout.setLayout(4, QtGui.QFormLayout.FieldRole, self.weightsLayout)
+        self.ticketFormLayout.setLayout(5, QtGui.QFormLayout.FieldRole, self.weightsLayout)
+        self.manualCheckBox = QtGui.QCheckBox(self.ticketWidget)
+        self.manualCheckBox.setObjectName("manualCheckBox")
+        self.ticketFormLayout.setWidget(4, QtGui.QFormLayout.FieldRole, self.manualCheckBox)
         self.ticketLayout.addLayout(self.ticketFormLayout)
         self.commentLabel = QtGui.QLabel(self.ticketWidget)
         self.commentLabel.setObjectName("commentLabel")
@@ -290,6 +294,7 @@ class Ui_CloseTicket(object):
         self.outgoingWeightSpinBox.setSuffix(QtGui.QApplication.translate("CloseTicket", " Kg", None, QtGui.QApplication.UnicodeUTF8))
         self.factoryButton.setText(QtGui.QApplication.translate("CloseTicket", "Fábrica", None, QtGui.QApplication.UnicodeUTF8))
         self.clientButton.setText(QtGui.QApplication.translate("CloseTicket", "Cliente", None, QtGui.QApplication.UnicodeUTF8))
+        self.manualCheckBox.setText(QtGui.QApplication.translate("CloseTicket", "Captura manual", None, QtGui.QApplication.UnicodeUTF8))
         self.commentLabel.setText(QtGui.QApplication.translate("CloseTicket", "Comentario", None, QtGui.QApplication.UnicodeUTF8))
         self.transactionsLabel.setText(QtGui.QApplication.translate("CloseTicket", "Transacciones", None, QtGui.QApplication.UnicodeUTF8))
         self.addTransactionButton.setText(QtGui.QApplication.translate("CloseTicket", "Agregar", None, QtGui.QApplication.UnicodeUTF8))

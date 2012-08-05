@@ -32,6 +32,8 @@ class SerialThread(QtCore.QThread):
       except:
         data = -1
       self.dataReady.emit(data)
-    
+    if not self.simulate:
+      self.s.close()
+
   def isAlive(self):
     return self.alive

@@ -8,7 +8,7 @@ from serial_thread.serial_thread import SerialThread
 from error_message_box import ErrorMessageBox
 
 class NewTicket(QtGui.QDialog):
-  def __init__(self, ticket_type_id, parent):
+  def __init__(self, ticket_type_id, allow_manual, parent):
     super(NewTicket, self).__init__(parent)
     self.ticket_type_id = ticket_type_id    
     self.ui = Ui_NewTicket()
@@ -17,7 +17,7 @@ class NewTicket(QtGui.QDialog):
       self.setWindowTitle(u"Nueva Recepción")
     else:
       self.setWindowTitle(u"Nuevo Despacho")
-    self.setModal(True)    
+    self.setModal(True)
     driverLineEdit = self.ui.driversComboBox.lineEdit()
     driverLineEdit.setPlaceholderText(u"Buscar por cédula")
     driverCompleter = self.ui.driversComboBox.completer()
@@ -27,6 +27,10 @@ class NewTicket(QtGui.QDialog):
     trucksCompleter = self.ui.trucksComboBox.completer()
     trucksCompleter.setCompletionMode(QtGui.QCompleter.PopupCompletion)
     
+    if not allow_manual:
+      self.ui.manualCheckBox.hide()
+    
+    self.ui.manualCheckBox.stateChanged.connect(self.setManualCapture)
     self.ui.createTicketButton.clicked.connect(self.createTicket)
     self.ui.cancelButton.clicked.connect(self.reject)
     
@@ -38,13 +42,14 @@ class NewTicket(QtGui.QDialog):
     driverIndex = self.ui.driversComboBox.currentIndex()
     truckIndex = self.ui.trucksComboBox.currentIndex()
     weightCaptured = self.ui.captureWeightButton.isChecked()
+    manualEnabled = self.ui.manualCheckBox.isChecked()
     
     errors = []
     if driverIndex == -1:
       errors.append("El chofer no ha sido seleccionado")
     if truckIndex == -1:
       errors.append(u"El camión no ha sido seleccionado")
-    if not weightCaptured:
+    if not manualEnabled and not weightCaptured:
       errors.append("El peso de entrada no ha sido capturado")
     
     if not errors:
@@ -54,12 +59,22 @@ class NewTicket(QtGui.QDialog):
       comment = self.ui.commentPlainTextEdit.toPlainText()
       self.ticket = Ticket(self.ticket_type_id, driver.id, truck.id, 
                            incoming_weight, comment)
+      self.ticket.manual_incoming = manualEnabled
       self.accept()
     else:
       ErrorMessageBox(errors).exec_()
-      
+  
+  def setManualCapture(self):
+    if self.ui.manualCheckBox.isChecked():
+      self.ui.incomingWeightSpinBox.setEnabled(True)
+      self.ui.captureWeightButton.setEnabled(False)
+      self.ui.captureWeightButton.setChecked(False)
+    else:
+      self.ui.incomingWeightSpinBox.setEnabled(False)
+      self.ui.captureWeightButton.setEnabled(True)
+
   def getWeight(self, weight):
-    if not self.ui.captureWeightButton.isChecked():
+    if not self.ui.captureWeightButton.isChecked() and not self.ui.manualCheckBox.isChecked():
       self.ui.incomingWeightSpinBox.setValue(weight)
   
   def getDriversFinished(self, drivers):

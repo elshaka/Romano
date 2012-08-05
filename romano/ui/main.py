@@ -35,9 +35,9 @@ class Main(QtGui.QMainWindow):
   def openTicket(self):
     actionSender = self.sender()
     if actionSender == self.ui.actionNewReception:
-      newTicketDialog = NewTicket(1, self)
+      newTicketDialog = NewTicket(1, self.user.allow_manual, self)
     elif actionSender == self.ui.actionNewDispatch:
-      newTicketDialog = NewTicket(2, self)
+      newTicketDialog = NewTicket(2, self.user.allow_manual, self)
     self.api.get_drivers()
     self.api.getDriversFinished.connect(newTicketDialog.getDriversFinished)
     self.api.get_trucks()
@@ -49,7 +49,7 @@ class Main(QtGui.QMainWindow):
 
   def closeTicket(self, tableIndex):
     ticket = self.ticketsTableModel.getTicket(tableIndex.row())
-    closeTicketDialog = CloseTicket(ticket, self)
+    closeTicketDialog = CloseTicket(ticket, self.user.allow_manual, self)
     self.api.get_clients()
     self.api.getClientsFinished.connect(closeTicketDialog.getClientsFinished)
     self.api.get_factories()

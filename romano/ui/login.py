@@ -28,6 +28,7 @@ class Login(QtGui.QDialog):
     
   def loginFailed(self):
     msgBox = QtGui.QMessageBox()
+    msgBox.setWindowTitle("Error")
     msgBox.setText(u"Credenciales inválidas")
     msgBox.exec_()
     self.enabled = True

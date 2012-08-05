@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>480</width>
-    <height>300</height>
+    <width>530</width>
+    <height>321</height>
    </rect>
   </property>
   <property name="minimumSize">
@@ -70,8 +70,17 @@
       <layout class="QHBoxLayout" name="weightLayout">
        <item>
         <widget class="QDoubleSpinBox" name="incomingWeightSpinBox">
+         <property name="enabled">
+          <bool>false</bool>
+         </property>
+         <property name="minimumSize">
+          <size>
+           <width>0</width>
+           <height>0</height>
+          </size>
+         </property>
          <property name="focusPolicy">
-          <enum>Qt::NoFocus</enum>
+          <enum>Qt::ClickFocus</enum>
          </property>
          <property name="alignment">
           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -107,6 +116,13 @@
         </widget>
        </item>
       </layout>
+     </item>
+     <item row="4" column="1">
+      <widget class="QCheckBox" name="manualCheckBox">
+       <property name="text">
+        <string>Captura manual</string>
+       </property>
+      </widget>
      </item>
     </layout>
    </item>

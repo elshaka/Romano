@@ -9,4 +9,5 @@ class User(JSONableModel):
   def fromDict(cls, dict_):
     user = cls(dict_['login'], dict_['name'])
     user.id = dict_['id']
+    user.allow_manual = dict_['allow_manual']
     return user
