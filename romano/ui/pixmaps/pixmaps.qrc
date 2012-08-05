@@ -1,5 +1,6 @@
 <RCC>
   <qresource prefix="icons">
+    <file>log-out.png</file>
     <file>reception-icon.png</file>
     <file>dispatch-icon.png</file>
     <file>refresh-tickets.png</file>

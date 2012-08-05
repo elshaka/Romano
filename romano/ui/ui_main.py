@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'main.ui'
 #
-# Created: Wed Aug  1 23:54:25 2012
+# Created: Sun Aug  5 11:14:20 2012
 #      by: pyside-uic 0.2.13 running on PySide 1.1.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -52,6 +52,7 @@ class Ui_Main(object):
         self.verticalLayout.addWidget(self.ticketsTableView)
         Main.setCentralWidget(self.centralwidget)
         self.toolBar = QtGui.QToolBar(Main)
+        self.toolBar.setMovable(False)
         self.toolBar.setIconSize(QtCore.QSize(32, 32))
         self.toolBar.setToolButtonStyle(QtCore.Qt.ToolButtonTextUnderIcon)
         self.toolBar.setObjectName("toolBar")
@@ -59,6 +60,13 @@ class Ui_Main(object):
         self.statusBar = QtGui.QStatusBar(Main)
         self.statusBar.setObjectName("statusBar")
         Main.setStatusBar(self.statusBar)
+        self.sessionToolbar = QtGui.QToolBar(Main)
+        self.sessionToolbar.setLayoutDirection(QtCore.Qt.RightToLeft)
+        self.sessionToolbar.setMovable(False)
+        self.sessionToolbar.setIconSize(QtCore.QSize(24, 24))
+        self.sessionToolbar.setToolButtonStyle(QtCore.Qt.ToolButtonTextUnderIcon)
+        self.sessionToolbar.setObjectName("sessionToolbar")
+        Main.addToolBar(QtCore.Qt.TopToolBarArea, self.sessionToolbar)
         self.actionNewReception = QtGui.QAction(Main)
         icon2 = QtGui.QIcon()
         icon2.addPixmap(QtGui.QPixmap(":/icons/reception-icon.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
@@ -71,9 +79,19 @@ class Ui_Main(object):
         self.actionNewDispatch.setIcon(icon3)
         self.actionNewDispatch.setIconVisibleInMenu(True)
         self.actionNewDispatch.setObjectName("actionNewDispatch")
+        self.actionLogout = QtGui.QAction(Main)
+        icon4 = QtGui.QIcon()
+        icon4.addPixmap(QtGui.QPixmap(":/icons/log-out.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.actionLogout.setIcon(icon4)
+        self.actionLogout.setObjectName("actionLogout")
+        self.actionUserName = QtGui.QAction(Main)
+        self.actionUserName.setEnabled(False)
+        self.actionUserName.setObjectName("actionUserName")
         self.toolBar.addAction(self.actionNewReception)
         self.toolBar.addSeparator()
         self.toolBar.addAction(self.actionNewDispatch)
+        self.sessionToolbar.addAction(self.actionLogout)
+        self.sessionToolbar.addAction(self.actionUserName)
 
         self.retranslateUi(Main)
         QtCore.QMetaObject.connectSlotsByName(Main)
@@ -83,11 +101,15 @@ class Ui_Main(object):
         self.label.setText(QtGui.QApplication.translate("Main", "Camiones en tránsito", None, QtGui.QApplication.UnicodeUTF8))
         self.refreshButton.setText(QtGui.QApplication.translate("Main", "Actualizar lista", None, QtGui.QApplication.UnicodeUTF8))
         self.toolBar.setWindowTitle(QtGui.QApplication.translate("Main", "toolBar", None, QtGui.QApplication.UnicodeUTF8))
+        self.sessionToolbar.setWindowTitle(QtGui.QApplication.translate("Main", "toolBar_2", None, QtGui.QApplication.UnicodeUTF8))
         self.actionNewReception.setText(QtGui.QApplication.translate("Main", "Nueva recepción", None, QtGui.QApplication.UnicodeUTF8))
         self.actionNewReception.setToolTip(QtGui.QApplication.translate("Main", "Crear nuevo ticket de recepción", None, QtGui.QApplication.UnicodeUTF8))
         self.actionNewReception.setShortcut(QtGui.QApplication.translate("Main", "Ctrl+R", None, QtGui.QApplication.UnicodeUTF8))
         self.actionNewDispatch.setText(QtGui.QApplication.translate("Main", "Nuevo despacho", None, QtGui.QApplication.UnicodeUTF8))
         self.actionNewDispatch.setToolTip(QtGui.QApplication.translate("Main", "Crear nuevo ticket de despacho", None, QtGui.QApplication.UnicodeUTF8))
         self.actionNewDispatch.setShortcut(QtGui.QApplication.translate("Main", "Ctrl+D", None, QtGui.QApplication.UnicodeUTF8))
+        self.actionLogout.setText(QtGui.QApplication.translate("Main", "Cerrar sesión", None, QtGui.QApplication.UnicodeUTF8))
+        self.actionLogout.setToolTip(QtGui.QApplication.translate("Main", "Cerrar sesión", None, QtGui.QApplication.UnicodeUTF8))
+        self.actionUserName.setText(QtGui.QApplication.translate("Main", "username", None, QtGui.QApplication.UnicodeUTF8))
 
 import pixmaps_rc

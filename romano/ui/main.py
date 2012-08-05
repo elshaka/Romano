@@ -4,6 +4,7 @@ import os
 import settings
 from PySide import QtGui, QtCore
 from ui_main import Ui_Main
+from login import Login
 from new_ticket import NewTicket
 from close_ticket import CloseTicket
 from mango.api import API
@@ -13,26 +14,23 @@ class Main(QtGui.QMainWindow):
     super(Main, self).__init__()
     self.ui = Ui_Main()
     self.ui.setupUi(self)
-    self.enabled = False
     self.ticketsTableModel = TicketsTableModel([])
     self.ui.ticketsTableView.setModel(self.ticketsTableModel)
     horizontalHeader = self.ui.ticketsTableView.horizontalHeader()
     horizontalHeader.setResizeMode(QtGui.QHeaderView.ResizeToContents)
     self.api = API(settings.SERVERNAME, settings.SERVERPORT)
-    self.api.login(settings.USERNAME, settings.USERPASSWORD)
-    
+
     self.ui.actionNewReception.triggered.connect(self.openTicket)
     self.ui.actionNewDispatch.triggered.connect(self.openTicket)
+    self.ui.actionLogout.triggered.connect(self.logout)
     self.ui.refreshButton.clicked.connect(self.getTickets)
-    self.api.loginFinished.connect(self.loginFinished)
     self.api.getTicketsFinished.connect(self.getTicketsFinished)
     self.api.createTicketFinished.connect(self.getTickets)
     self.api.closeTicketFinished.connect(self.printTicket)
     self.api.printTicketFinished.connect(self.printTicketFinished)
     self.ui.ticketsTableView.doubleClicked.connect(self.closeTicket)
     
-    self.center()
-    self.show()
+    self.login()
 
   def openTicket(self):
     actionSender = self.sender()
@@ -80,10 +78,22 @@ class Main(QtGui.QMainWindow):
       elif os.name == "nt":
         os.startfile(filename)
 
-  def loginFinished(self):
-    self.enabled = True
-    self.ui.refreshButton.setEnabled(False)
-    self.api.get_tickets()
+  def login(self):
+    loginDialog = Login(self.api, self)
+    if loginDialog.exec_() == QtGui.QDialog.Accepted:
+      self.user = loginDialog.user
+      self.ui.refreshButton.setEnabled(False)
+      self.api.get_tickets()
+      
+      self.ui.actionUserName.setText(self.user.name)
+      self.center()
+      self.show()
+    else:
+      self.close()
+      
+  def logout(self):
+    self.hide()
+    self.login()
 
   def getTickets(self):
     self.ui.refreshButton.setEnabled(False)

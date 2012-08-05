@@ -9,7 +9,8 @@ from mango.models.client import Client
 from mango.models.warehouse import Warehouse
 
 class API(QtCore.QObject):
-  loginFinished = QtCore.Signal()
+  loginFinished = QtCore.Signal(object)
+  loginFailed = QtCore.Signal()
   createTicketFinished = QtCore.Signal()
   getTicketsFinished = QtCore.Signal(list)
   getDriversFinished = QtCore.Signal(list)
@@ -40,8 +41,12 @@ class API(QtCore.QObject):
     self.loginReply.finished.connect(self.login_finished)
     
   def login_finished(self):
-    self.user = User.fromJSON(self.loginReply.readAll().data())
-    self.loginFinished.emit()
+    error = self.loginReply.error()
+    if error == QtNetwork.QNetworkReply.NoError:
+      user = User.fromJSON(self.loginReply.readAll().data())
+      self.loginFinished.emit(user)
+    elif error == QtNetwork.QNetworkReply.AuthenticationRequiredError:
+      self.loginFailed.emit()
     
   def get_tickets(self):
     request = self._new_request("tickets")
