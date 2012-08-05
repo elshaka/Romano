@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'login.ui'
 #
-# Created: Sun Aug  5 11:14:12 2012
+# Created: Sun Aug  5 11:31:02 2012
 #      by: pyside-uic 0.2.13 running on PySide 1.1.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -12,7 +12,14 @@ from PySide import QtCore, QtGui
 class Ui_Login(object):
     def setupUi(self, Login):
         Login.setObjectName("Login")
-        Login.resize(276, 365)
+        Login.resize(250, 365)
+        sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Fixed, QtGui.QSizePolicy.Fixed)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(Login.sizePolicy().hasHeightForWidth())
+        Login.setSizePolicy(sizePolicy)
+        Login.setMinimumSize(QtCore.QSize(250, 365))
+        Login.setMaximumSize(QtCore.QSize(250, 365))
         self.verticalLayout = QtGui.QVBoxLayout(Login)
         self.verticalLayout.setObjectName("verticalLayout")
         self.label_3 = QtGui.QLabel(Login)
