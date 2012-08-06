@@ -26,38 +26,74 @@
       <enum>QFormLayout::AllNonFixedFieldsGrow</enum>
      </property>
      <item row="0" column="0">
-      <widget class="QLabel" name="driverLabel">
+      <widget class="QLabel" name="label_2">
        <property name="text">
         <string>Chofer</string>
        </property>
       </widget>
      </item>
      <item row="0" column="1">
-      <widget class="QComboBox" name="driversComboBox">
-       <property name="editable">
-        <bool>true</bool>
-       </property>
-       <property name="insertPolicy">
-        <enum>QComboBox::NoInsert</enum>
-       </property>
-      </widget>
+      <layout class="QHBoxLayout" name="horizontalLayout_3">
+       <item>
+        <widget class="QComboBox" name="driversComboBox">
+         <property name="editable">
+          <bool>true</bool>
+         </property>
+         <property name="insertPolicy">
+          <enum>QComboBox::NoInsert</enum>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QToolButton" name="addDriverButton">
+         <property name="toolTip">
+          <string>Crear nuevo chofer</string>
+         </property>
+         <property name="text">
+          <string>...</string>
+         </property>
+         <property name="icon">
+          <iconset resource="pixmaps/pixmaps.qrc">
+           <normaloff>:/icons/add-transaction.png</normaloff>:/icons/add-transaction.png</iconset>
+         </property>
+        </widget>
+       </item>
+      </layout>
      </item>
      <item row="1" column="0">
-      <widget class="QLabel" name="truckLabel">
+      <widget class="QLabel" name="label_3">
        <property name="text">
         <string>Camión</string>
        </property>
       </widget>
      </item>
      <item row="1" column="1">
-      <widget class="QComboBox" name="trucksComboBox">
-       <property name="editable">
-        <bool>true</bool>
-       </property>
-       <property name="insertPolicy">
-        <enum>QComboBox::NoInsert</enum>
-       </property>
-      </widget>
+      <layout class="QHBoxLayout" name="horizontalLayout_4">
+       <item>
+        <widget class="QComboBox" name="trucksComboBox">
+         <property name="editable">
+          <bool>true</bool>
+         </property>
+         <property name="insertPolicy">
+          <enum>QComboBox::NoInsert</enum>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QToolButton" name="addTruckButton">
+         <property name="toolTip">
+          <string>Crear nuevo camión</string>
+         </property>
+         <property name="text">
+          <string>...</string>
+         </property>
+         <property name="icon">
+          <iconset resource="pixmaps/pixmaps.qrc">
+           <normaloff>:/icons/add-transaction.png</normaloff>:/icons/add-transaction.png</iconset>
+         </property>
+        </widget>
+       </item>
+      </layout>
      </item>
      <item row="3" column="0">
       <widget class="QLabel" name="weightLabel">
@@ -178,6 +214,8 @@
   <zorder>commentPlainTextEdit</zorder>
   <zorder>label</zorder>
  </widget>
- <resources/>
+ <resources>
+  <include location="pixmaps/pixmaps.qrc"/>
+ </resources>
  <connections/>
 </ui>
