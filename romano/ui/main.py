@@ -109,7 +109,7 @@ class TicketsTableModel(QtCore.QAbstractTableModel):
   def __init__(self, tickets, parent = None):
     super(TicketsTableModel, self).__init__(parent)
     self._tickets = tickets
-    self._headers = [u'Número', 'Tipo', 'Placa', 'Peso de entrada', 'Fecha de entrada', 'Comentario']
+    self._headers = [u'Número', 'Tipo', 'Chofer', 'Placa', 'Peso de entrada', 'Fecha de entrada', 'Comentario']
     
   def getTicket(self, row):
     return self._tickets[row]
@@ -140,17 +140,19 @@ class TicketsTableModel(QtCore.QAbstractTableModel):
       elif column == 1:
         return self._tickets[row].ticket_type.code
       elif column == 2:
-        return self._tickets[row].truck.license_plate
+        return self._tickets[row].driver.name
       elif column == 3:
-        return "%s Kg" % self._tickets[row].incoming_weight
+        return self._tickets[row].truck.license_plate
       elif column == 4:
-        return self._tickets[row].incoming_date
+        return "%s Kg" % self._tickets[row].incoming_weight
       elif column == 5:
+        return self._tickets[row].incoming_date
+      elif column == 6:
         return self._tickets[row].comment
     elif role == QtCore.Qt.TextAlignmentRole:
-      if column == 3:
+      if column == 4:
         return QtCore.Qt.AlignRight
-      elif column == 5:
+      elif column == 6:
         return QtCore.Qt.AlignLeft
       else:
         return QtCore.Qt.AlignCenter
