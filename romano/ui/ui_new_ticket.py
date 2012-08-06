@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'new_ticket.ui'
 #
-# Created: Sun Aug  5 11:51:18 2012
+# Created: Mon Aug  6 10:47:35 2012
 #      by: pyside-uic 0.2.13 running on PySide 1.1.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -19,22 +19,38 @@ class Ui_NewTicket(object):
         self.formLayout = QtGui.QFormLayout()
         self.formLayout.setFieldGrowthPolicy(QtGui.QFormLayout.AllNonFixedFieldsGrow)
         self.formLayout.setObjectName("formLayout")
-        self.driverLabel = QtGui.QLabel(NewTicket)
-        self.driverLabel.setObjectName("driverLabel")
-        self.formLayout.setWidget(0, QtGui.QFormLayout.LabelRole, self.driverLabel)
+        self.label_2 = QtGui.QLabel(NewTicket)
+        self.label_2.setObjectName("label_2")
+        self.formLayout.setWidget(0, QtGui.QFormLayout.LabelRole, self.label_2)
+        self.horizontalLayout_3 = QtGui.QHBoxLayout()
+        self.horizontalLayout_3.setObjectName("horizontalLayout_3")
         self.driversComboBox = QtGui.QComboBox(NewTicket)
         self.driversComboBox.setEditable(True)
         self.driversComboBox.setInsertPolicy(QtGui.QComboBox.NoInsert)
         self.driversComboBox.setObjectName("driversComboBox")
-        self.formLayout.setWidget(0, QtGui.QFormLayout.FieldRole, self.driversComboBox)
-        self.truckLabel = QtGui.QLabel(NewTicket)
-        self.truckLabel.setObjectName("truckLabel")
-        self.formLayout.setWidget(1, QtGui.QFormLayout.LabelRole, self.truckLabel)
+        self.horizontalLayout_3.addWidget(self.driversComboBox)
+        self.addDriverButton = QtGui.QToolButton(NewTicket)
+        icon = QtGui.QIcon()
+        icon.addPixmap(QtGui.QPixmap(":/icons/add-transaction.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.addDriverButton.setIcon(icon)
+        self.addDriverButton.setObjectName("addDriverButton")
+        self.horizontalLayout_3.addWidget(self.addDriverButton)
+        self.formLayout.setLayout(0, QtGui.QFormLayout.FieldRole, self.horizontalLayout_3)
+        self.label_3 = QtGui.QLabel(NewTicket)
+        self.label_3.setObjectName("label_3")
+        self.formLayout.setWidget(1, QtGui.QFormLayout.LabelRole, self.label_3)
+        self.horizontalLayout_4 = QtGui.QHBoxLayout()
+        self.horizontalLayout_4.setObjectName("horizontalLayout_4")
         self.trucksComboBox = QtGui.QComboBox(NewTicket)
         self.trucksComboBox.setEditable(True)
         self.trucksComboBox.setInsertPolicy(QtGui.QComboBox.NoInsert)
         self.trucksComboBox.setObjectName("trucksComboBox")
-        self.formLayout.setWidget(1, QtGui.QFormLayout.FieldRole, self.trucksComboBox)
+        self.horizontalLayout_4.addWidget(self.trucksComboBox)
+        self.addTruckButton = QtGui.QToolButton(NewTicket)
+        self.addTruckButton.setIcon(icon)
+        self.addTruckButton.setObjectName("addTruckButton")
+        self.horizontalLayout_4.addWidget(self.addTruckButton)
+        self.formLayout.setLayout(1, QtGui.QFormLayout.FieldRole, self.horizontalLayout_4)
         self.weightLabel = QtGui.QLabel(NewTicket)
         self.weightLabel.setObjectName("weightLabel")
         self.formLayout.setWidget(3, QtGui.QFormLayout.LabelRole, self.weightLabel)
@@ -85,8 +101,12 @@ class Ui_NewTicket(object):
 
     def retranslateUi(self, NewTicket):
         NewTicket.setWindowTitle(QtGui.QApplication.translate("NewTicket", "Dialog", None, QtGui.QApplication.UnicodeUTF8))
-        self.driverLabel.setText(QtGui.QApplication.translate("NewTicket", "Chofer", None, QtGui.QApplication.UnicodeUTF8))
-        self.truckLabel.setText(QtGui.QApplication.translate("NewTicket", "Camión", None, QtGui.QApplication.UnicodeUTF8))
+        self.label_2.setText(QtGui.QApplication.translate("NewTicket", "Chofer", None, QtGui.QApplication.UnicodeUTF8))
+        self.addDriverButton.setToolTip(QtGui.QApplication.translate("NewTicket", "Crear nuevo chofer", None, QtGui.QApplication.UnicodeUTF8))
+        self.addDriverButton.setText(QtGui.QApplication.translate("NewTicket", "...", None, QtGui.QApplication.UnicodeUTF8))
+        self.label_3.setText(QtGui.QApplication.translate("NewTicket", "Camión", None, QtGui.QApplication.UnicodeUTF8))
+        self.addTruckButton.setToolTip(QtGui.QApplication.translate("NewTicket", "Crear nuevo camión", None, QtGui.QApplication.UnicodeUTF8))
+        self.addTruckButton.setText(QtGui.QApplication.translate("NewTicket", "...", None, QtGui.QApplication.UnicodeUTF8))
         self.weightLabel.setText(QtGui.QApplication.translate("NewTicket", "Peso de entrada", None, QtGui.QApplication.UnicodeUTF8))
         self.incomingWeightSpinBox.setSuffix(QtGui.QApplication.translate("NewTicket", " Kg", None, QtGui.QApplication.UnicodeUTF8))
         self.captureWeightButton.setText(QtGui.QApplication.translate("NewTicket", "Capturar peso", None, QtGui.QApplication.UnicodeUTF8))
@@ -95,3 +115,4 @@ class Ui_NewTicket(object):
         self.cancelButton.setText(QtGui.QApplication.translate("NewTicket", "Cancelar", None, QtGui.QApplication.UnicodeUTF8))
         self.createTicketButton.setText(QtGui.QApplication.translate("NewTicket", "Crear ticket", None, QtGui.QApplication.UnicodeUTF8))
 
+import pixmaps_rc

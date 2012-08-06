@@ -38,10 +38,6 @@ class Main(QtGui.QMainWindow):
       newTicketDialog = NewTicket(1, self.user.allow_manual, self)
     elif actionSender == self.ui.actionNewDispatch:
       newTicketDialog = NewTicket(2, self.user.allow_manual, self)
-    self.api.get_drivers()
-    self.api.getDriversFinished.connect(newTicketDialog.getDriversFinished)
-    self.api.get_trucks()
-    self.api.getTrucksFinished.connect(newTicketDialog.getTrucksFinished)
     
     if newTicketDialog.exec_() == QtGui.QDialog.Accepted:
       self.api.create_ticket(newTicketDialog.ticket)

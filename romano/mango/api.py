@@ -20,6 +20,7 @@ class API(QtCore.QObject):
   getWarehousesFinished = QtCore.Signal(list)
   closeTicketFinished = QtCore.Signal()
   printTicketFinished = QtCore.Signal(QtCore.QByteArray)
+  createDriverFinished = QtCore.Signal()
   
   def __init__(self, host = "localhost", port = 3000):
     super(API, self).__init__()
@@ -136,3 +137,13 @@ class API(QtCore.QObject):
   def get_warehouses_finished(self):
     warehouses = Warehouse.fromJSON(self.getWarehousesReply.readAll().data())
     self.getWarehousesFinished.emit(warehouses)
+    
+  def create_driver(self, driver):
+    request = self._new_request("drivers")
+    data = QtCore.QByteArray(driver.toJSON())
+    self.createDriverReply = self.manager.post(request, data)
+    self.createDriverReply.finished.connect(self.create_driver_finished)
+  
+  def create_driver_finished(self):
+    print self.createDriverReply.readAll().data()
+    self.createDriverFinished.emit()

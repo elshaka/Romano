@@ -1,8 +1,7 @@
 from jsonable import JSONableModel
 
 class Driver(JSONableModel):
-  def __init__(self, id, ci, name, address, tel1, tel2):
-    self.id = id
+  def __init__(self, ci, name, address, tel1, tel2):
     self.ci = ci
     self.name = name
     self.address = address
@@ -11,6 +10,7 @@ class Driver(JSONableModel):
   
   @classmethod
   def fromDict(cls, dict_):
-    driver = cls(dict_['id'], dict_['ci'], dict_['name'], 
-                 dict_['address'], dict_['tel1'], dict_['tel2'])
+    driver = cls(dict_['ci'], dict_['name'], dict_['address'],
+                 dict_['tel1'], dict_['tel2'])
+    driver.id = dict_['id']
     return driver

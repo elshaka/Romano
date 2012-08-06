@@ -6,10 +6,12 @@ from ui_new_ticket import Ui_NewTicket
 from mango.models.ticket import Ticket
 from serial_thread.serial_thread import SerialThread
 from error_message_box import ErrorMessageBox
+from new_driver import NewDriver
 
 class NewTicket(QtGui.QDialog):
   def __init__(self, ticket_type_id, allow_manual, parent):
     super(NewTicket, self).__init__(parent)
+    self.api = parent.api
     self.ticket_type_id = ticket_type_id    
     self.ui = Ui_NewTicket()
     self.ui.setupUi(self)
@@ -30,6 +32,13 @@ class NewTicket(QtGui.QDialog):
     if not allow_manual:
       self.ui.manualCheckBox.hide()
     
+    self.api.get_drivers()
+    self.api.get_trucks()
+    
+    self.api.createDriverFinished.connect(self.refreshDrivers)
+    self.api.getDriversFinished.connect(self.getDriversFinished)
+    self.api.getTrucksFinished.connect(self.getTrucksFinished)
+    self.ui.addDriverButton.clicked.connect(self.newDriver)
     self.ui.manualCheckBox.stateChanged.connect(self.setManualCapture)
     self.ui.createTicketButton.clicked.connect(self.createTicket)
     self.ui.cancelButton.clicked.connect(self.reject)
@@ -63,6 +72,14 @@ class NewTicket(QtGui.QDialog):
       self.accept()
     else:
       ErrorMessageBox(errors).exec_()
+  
+  def newDriver(self):
+    newDriverDialog = NewDriver(self)
+    if newDriverDialog.exec_() == QtGui.QDialog.Accepted:
+      self.api.create_driver(newDriverDialog.driver)
+      
+  def refreshDrivers(self):
+    self.api.get_drivers()
   
   def setManualCapture(self):
     if self.ui.manualCheckBox.isChecked():
