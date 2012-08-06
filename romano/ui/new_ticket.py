@@ -7,6 +7,7 @@ from mango.models.ticket import Ticket
 from serial_thread.serial_thread import SerialThread
 from error_message_box import ErrorMessageBox
 from new_driver import NewDriver
+from new_truck import NewTruck
 
 class NewTicket(QtGui.QDialog):
   def __init__(self, ticket_type_id, allow_manual, parent):
@@ -36,9 +37,11 @@ class NewTicket(QtGui.QDialog):
     self.api.get_trucks()
     
     self.api.createDriverFinished.connect(self.refreshDrivers)
+    self.api.createTruckFinished.connect(self.refreshTrucks)
     self.api.getDriversFinished.connect(self.getDriversFinished)
     self.api.getTrucksFinished.connect(self.getTrucksFinished)
     self.ui.addDriverButton.clicked.connect(self.newDriver)
+    self.ui.addTruckButton.clicked.connect(self.newTruck)
     self.ui.manualCheckBox.stateChanged.connect(self.setManualCapture)
     self.ui.createTicketButton.clicked.connect(self.createTicket)
     self.ui.cancelButton.clicked.connect(self.reject)
@@ -80,6 +83,14 @@ class NewTicket(QtGui.QDialog):
       
   def refreshDrivers(self):
     self.api.get_drivers()
+  
+  def newTruck(self):
+    newTruckDialog = NewTruck(self)
+    if newTruckDialog.exec_() == QtGui.QDialog.Accepted:
+      self.api.create_truck(newTruckDialog.truck)
+    
+  def refreshTrucks(self):
+    self.api.get_trucks()
   
   def setManualCapture(self):
     if self.ui.manualCheckBox.isChecked():

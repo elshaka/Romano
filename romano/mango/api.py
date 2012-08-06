@@ -7,6 +7,7 @@ from mango.models.driver import Driver
 from mango.models.truck import Truck
 from mango.models.client import Client
 from mango.models.warehouse import Warehouse
+from mango.models.carrier import Carrier
 
 class API(QtCore.QObject):
   loginFinished = QtCore.Signal(object)
@@ -21,6 +22,9 @@ class API(QtCore.QObject):
   closeTicketFinished = QtCore.Signal()
   printTicketFinished = QtCore.Signal(QtCore.QByteArray)
   createDriverFinished = QtCore.Signal()
+  createTruckFinished = QtCore.Signal()
+  getCarriersFinished = QtCore.Signal(list)
+  createCarrierFinished = QtCore.Signal()
   
   def __init__(self, host = "localhost", port = 3000):
     super(API, self).__init__()
@@ -146,3 +150,32 @@ class API(QtCore.QObject):
   
   def create_driver_finished(self):
     self.createDriverFinished.emit()
+    
+  def create_truck(self, truck):
+    request = self._new_request("trucks")
+    data = QtCore.QByteArray(truck.toJSON())
+    self.createTruckReply = self.manager.post(request, data)
+    self.createTruckReply.finished.connect(self.create_truck_finished)
+    
+  def create_truck_finished(self):
+    print self.createTruckReply.readAll().data()
+    self.createTruckFinished.emit()
+    
+  def get_carriers(self):
+    request = self._new_request("carriers")
+    self.getCarriersReply = self.manager.get(request)
+    self.getCarriersReply.finished.connect(self.get_carriers_finished)
+    
+  def get_carriers_finished(self):
+    carriers = Carrier.fromJSON(self.getCarriersReply.readAll().data())
+    self.getCarriersFinished.emit(carriers)
+    
+  def create_carrier(self, carrier):
+    request = self._new_request("carriers")
+    data = QtCore.QByteArray(carrier.toJSON())
+    self.createCarrierReply = self.manager.post(request, data)
+    self.createCarrierReply.finished.connect(self.create_carrier_finished)
+
+  def create_carrier_finished(self):
+    print self.createCarrierReply.readAll().data()
+    self.createCarrierFinished.emit()

@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'add_transaction.ui'
 #
-# Created: Mon Aug  6 10:35:15 2012
+# Created: Mon Aug  6 14:46:29 2012
 #      by: pyside-uic 0.2.13 running on PySide 1.1.1
 #
 # WARNING! All changes made in this file will be lost!

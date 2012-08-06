@@ -1,8 +1,7 @@
 from jsonable import JSONableModel
 
 class Carrier(JSONableModel):
-  def __init__(self, id, code, name, rif):
-    self.id = id
+  def __init__(self, code, name, rif):
     self.code = code
     self.name = name
     self.rif = rif
@@ -13,7 +12,8 @@ class Carrier(JSONableModel):
   
   @classmethod
   def fromDict(cls, dict_):
-    carrier = cls(dict_['id'], dict_['code'], dict_['name'], dict_['rif'])
+    carrier = cls(dict_['code'], dict_['name'], dict_['rif'])
+    carrier.id = dict_['id']
     carrier.email = dict_['email']
     carrier.tel1 = dict_['tel1']
     carrier.tel2 = dict_['tel2']

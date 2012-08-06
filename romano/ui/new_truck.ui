@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>newTruck</class>
- <widget class="QDialog" name="newTruck">
+ <class>NewTruck</class>
+ <widget class="QDialog" name="NewTruck">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Dialog</string>
+   <string>Nuevo camión</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
@@ -36,7 +36,11 @@
      <item row="1" column="1">
       <layout class="QHBoxLayout" name="horizontalLayout">
        <item>
-        <widget class="QComboBox" name="carriersComboBox"/>
+        <widget class="QComboBox" name="carriersComboBox">
+         <property name="editable">
+          <bool>true</bool>
+         </property>
+        </widget>
        </item>
        <item>
         <widget class="QToolButton" name="addCarrierButton">
