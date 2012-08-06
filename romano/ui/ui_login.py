@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'login.ui'
 #
-# Created: Sun Aug  5 11:31:02 2012
+# Created: Sun Aug  5 23:17:59 2012
 #      by: pyside-uic 0.2.13 running on PySide 1.1.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -12,13 +12,13 @@ from PySide import QtCore, QtGui
 class Ui_Login(object):
     def setupUi(self, Login):
         Login.setObjectName("Login")
-        Login.resize(250, 365)
+        Login.resize(250, 293)
         sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Fixed, QtGui.QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(Login.sizePolicy().hasHeightForWidth())
         Login.setSizePolicy(sizePolicy)
-        Login.setMinimumSize(QtCore.QSize(250, 365))
+        Login.setMinimumSize(QtCore.QSize(250, 0))
         Login.setMaximumSize(QtCore.QSize(250, 365))
         self.verticalLayout = QtGui.QVBoxLayout(Login)
         self.verticalLayout.setObjectName("verticalLayout")
@@ -31,31 +31,13 @@ class Ui_Login(object):
         self.label_3.setAlignment(QtCore.Qt.AlignCenter)
         self.label_3.setObjectName("label_3")
         self.verticalLayout.addWidget(self.label_3)
-        self.logoWidget = QtGui.QWidget(Login)
-        self.logoWidget.setMinimumSize(QtCore.QSize(0, 200))
-        palette = QtGui.QPalette()
-        brush = QtGui.QBrush(QtGui.QColor(255, 255, 255))
-        brush.setStyle(QtCore.Qt.SolidPattern)
-        palette.setBrush(QtGui.QPalette.Active, QtGui.QPalette.Base, brush)
-        brush = QtGui.QBrush(QtGui.QColor(255, 255, 255))
-        brush.setStyle(QtCore.Qt.SolidPattern)
-        palette.setBrush(QtGui.QPalette.Active, QtGui.QPalette.Window, brush)
-        brush = QtGui.QBrush(QtGui.QColor(255, 255, 255))
-        brush.setStyle(QtCore.Qt.SolidPattern)
-        palette.setBrush(QtGui.QPalette.Inactive, QtGui.QPalette.Base, brush)
-        brush = QtGui.QBrush(QtGui.QColor(255, 255, 255))
-        brush.setStyle(QtCore.Qt.SolidPattern)
-        palette.setBrush(QtGui.QPalette.Inactive, QtGui.QPalette.Window, brush)
-        brush = QtGui.QBrush(QtGui.QColor(255, 255, 255))
-        brush.setStyle(QtCore.Qt.SolidPattern)
-        palette.setBrush(QtGui.QPalette.Disabled, QtGui.QPalette.Base, brush)
-        brush = QtGui.QBrush(QtGui.QColor(255, 255, 255))
-        brush.setStyle(QtCore.Qt.SolidPattern)
-        palette.setBrush(QtGui.QPalette.Disabled, QtGui.QPalette.Window, brush)
-        self.logoWidget.setPalette(palette)
-        self.logoWidget.setAutoFillBackground(True)
-        self.logoWidget.setObjectName("logoWidget")
-        self.verticalLayout.addWidget(self.logoWidget)
+        self.logoLabel = QtGui.QLabel(Login)
+        self.logoLabel.setText("")
+        self.logoLabel.setPixmap(QtGui.QPixmap(":/icons/romano-icon.png"))
+        self.logoLabel.setScaledContents(False)
+        self.logoLabel.setAlignment(QtCore.Qt.AlignCenter)
+        self.logoLabel.setObjectName("logoLabel")
+        self.verticalLayout.addWidget(self.logoLabel)
         self.formLayout = QtGui.QFormLayout()
         self.formLayout.setObjectName("formLayout")
         self.usernameLineEdit = QtGui.QLineEdit(Login)
@@ -93,3 +75,4 @@ class Ui_Login(object):
         self.loginButton.setText(QtGui.QApplication.translate("Login", "Iniciar sesión", None, QtGui.QApplication.UnicodeUTF8))
         self.exitButton.setText(QtGui.QApplication.translate("Login", "Salir", None, QtGui.QApplication.UnicodeUTF8))
 
+import pixmaps_rc
