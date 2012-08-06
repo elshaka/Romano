@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'add_transaction.ui'
 #
-# Created: Wed Aug  1 11:27:16 2012
+# Created: Mon Aug  6 10:35:15 2012
 #      by: pyside-uic 0.2.13 running on PySide 1.1.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -82,7 +82,7 @@ class Ui_AddTransaction(object):
         self.sackSpinBox = QtGui.QSpinBox(self.sackWidget)
         self.sackSpinBox.setMinimumSize(QtCore.QSize(80, 0))
         self.sackSpinBox.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
-        self.sackSpinBox.setMaximum(9999)
+        self.sackSpinBox.setMaximum(999999)
         self.sackSpinBox.setObjectName("sackSpinBox")
         self.horizontalLayout_4.addWidget(self.sackSpinBox)
         self.label_3 = QtGui.QLabel(self.sackWidget)
@@ -91,7 +91,7 @@ class Ui_AddTransaction(object):
         self.kgSackSpinBox = QtGui.QSpinBox(self.sackWidget)
         self.kgSackSpinBox.setMinimumSize(QtCore.QSize(80, 0))
         self.kgSackSpinBox.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
-        self.kgSackSpinBox.setMaximum(999)
+        self.kgSackSpinBox.setMaximum(999999)
         self.kgSackSpinBox.setProperty("value", 60)
         self.kgSackSpinBox.setObjectName("kgSackSpinBox")
         self.horizontalLayout_4.addWidget(self.kgSackSpinBox)
