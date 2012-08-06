@@ -145,5 +145,4 @@ class API(QtCore.QObject):
     self.createDriverReply.finished.connect(self.create_driver_finished)
   
   def create_driver_finished(self):
-    print self.createDriverReply.readAll().data()
     self.createDriverFinished.emit()
