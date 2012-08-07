@@ -98,9 +98,7 @@ class CloseTicket(QtGui.QDialog):
       errors.append('El total de transacciones se encuentra fuera de la tolerancia del peso neto')
     if self.ticket.ticket_type_id == 1:
       if provider_weight == 0:
-        errors.append('El peso SADA no ha sido indicado')
-      elif not (net_weight - self.tolerance < provider_weight < net_weight + self.tolerance):
-        errors.append('El peso SADA se encuentra fuera de la tolerancia del peso neto')
+        errors.append('El peso del proveedor no ha sido indicado')
       if provider_document_number == '':
         errors.append(u'El número de guía no ha sido indicado')
         

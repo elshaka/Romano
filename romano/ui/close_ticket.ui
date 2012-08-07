@@ -602,7 +602,7 @@
          </size>
         </property>
         <property name="text">
-         <string>Peso SADA</string>
+         <string>Peso Proveedor</string>
         </property>
         <property name="alignment">
          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>

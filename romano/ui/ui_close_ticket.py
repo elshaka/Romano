@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'close_ticket.ui'
 #
-# Created: Sun Aug  5 16:28:23 2012
+# Created: Tue Aug  7 16:47:42 2012
 #      by: pyside-uic 0.2.13 running on PySide 1.1.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -308,7 +308,7 @@ class Ui_CloseTicket(object):
         self.label_11.setText(QtGui.QApplication.translate("CloseTicket", "Peso neto", None, QtGui.QApplication.UnicodeUTF8))
         self.netWeightSpinBox.setSuffix(QtGui.QApplication.translate("CloseTicket", " Kg", None, QtGui.QApplication.UnicodeUTF8))
         self.label.setText(QtGui.QApplication.translate("CloseTicket", "Número de guia", None, QtGui.QApplication.UnicodeUTF8))
-        self.label_9.setText(QtGui.QApplication.translate("CloseTicket", "Peso SADA", None, QtGui.QApplication.UnicodeUTF8))
+        self.label_9.setText(QtGui.QApplication.translate("CloseTicket", "Peso Proveedor", None, QtGui.QApplication.UnicodeUTF8))
         self.providerWeightSpinBox.setSuffix(QtGui.QApplication.translate("CloseTicket", " Kg", None, QtGui.QApplication.UnicodeUTF8))
         self.cancelButton.setText(QtGui.QApplication.translate("CloseTicket", "Cancelar", None, QtGui.QApplication.UnicodeUTF8))
         self.closeTicketButton.setText(QtGui.QApplication.translate("CloseTicket", "Cerrar ticket", None, QtGui.QApplication.UnicodeUTF8))
