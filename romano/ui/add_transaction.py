@@ -50,8 +50,8 @@ class AddTransaction(QtGui.QDialog):
         sacks = self.ui.sackSpinBox.value()
         sack_weight = self.ui.kgSackSpinBox.value()
         self.transaction = Transaction(self.transaction_type_id,
-                                       self.warehouse.id, True, sacks, 
-                                       sack_weight, total)
+                                       self.warehouse.id, True, sack_weight, 
+                                       sacks, total)
       else:
         self.transaction = Transaction(self.transaction_type_id,
                                        self.warehouse.id, False, None, 

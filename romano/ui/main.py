@@ -62,8 +62,9 @@ class Main(QtGui.QMainWindow):
     self.api.print_ticket(self.currentTicket)
     
   def printTicketFinished(self, data):
-    dialogStrings = QtGui.QFileDialog.getSaveFileName(self, "Guardar ticket", QtCore.QDir.homePath(), "Archivo PDF (*.pdf)")
-    filename = dialogStrings[0]
+    filename = QtCore.QDir.tempPath() + "/ticket.pdf"
+    #dialogStrings = QtGui.QFileDialog.getSaveFileName(self, "Guardar ticket", QtCore.QDir.homePath(), "Archivo PDF (*.pdf)")
+    #filename = dialogStrings[0]
     if filename != '':
       _file = QtCore.QFile(filename)
       _file.open(QtCore.QIODevice.WriteOnly)
