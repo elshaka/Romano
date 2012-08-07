@@ -12,6 +12,7 @@ class CloseTicket(QtGui.QDialog):
   def __init__(self, ticket, allow_manual, parent):
     super(CloseTicket, self).__init__(parent)
     self.tolerance = settings.TOLERANCE
+    self.api = parent.api
     self.ticket = ticket
     self.ui = Ui_CloseTicket()
     self.ui.setupUi(self)
@@ -58,9 +59,9 @@ class CloseTicket(QtGui.QDialog):
       transaction_type_id = 4
     else:
       transaction_type_id = 5
-    addTransactionDialog = AddTransaction(self.ingredientWarehouses, 
-                                          self.productWarehouses, 
-                                          transaction_type_id, self)
+    self.api.get_warehouses()
+    addTransactionDialog = AddTransaction(transaction_type_id, self)
+    self.api.getWarehousesFinished.connect(addTransactionDialog.getWarehousesFinished)
     if addTransactionDialog.exec_() == QtGui.QDialog.Accepted:
       transaction = addTransactionDialog.transaction
       warehouse = addTransactionDialog.warehouse
@@ -150,15 +151,6 @@ class CloseTicket(QtGui.QDialog):
   def getFactoriesFinished(self, factories):
     self.factoriesListModel = ClientsListModel(factories, self)
     self.ui.factoryButton.setEnabled(True)
-
-  def getWarehousesFinished(self, warehouses):
-    self.ingredientWarehouses = []
-    self.productWarehouses = []
-    for warehouse in warehouses:
-      if warehouse.warehouse_type_id == 1:
-        self.ingredientWarehouses.append(warehouse)
-      else:
-        self.productWarehouses.append(warehouse)
     
   def showClients(self):
     self.ui.clientsComboBox.setModel(self.clientsListModel)

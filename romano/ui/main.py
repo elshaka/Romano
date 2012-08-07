@@ -50,8 +50,6 @@ class Main(QtGui.QMainWindow):
     self.api.getClientsFinished.connect(closeTicketDialog.getClientsFinished)
     self.api.get_factories()
     self.api.getFactoriesFinished.connect(closeTicketDialog.getFactoriesFinished)
-    self.api.get_warehouses()
-    self.api.getWarehousesFinished.connect(closeTicketDialog.getWarehousesFinished)
     if closeTicketDialog.exec_() == QtGui.QDialog.Accepted:
       self.api.close_ticket(closeTicketDialog.ticket)
       self.currentTicket = closeTicketDialog.ticket
@@ -62,7 +60,7 @@ class Main(QtGui.QMainWindow):
     self.api.print_ticket(self.currentTicket)
     
   def printTicketFinished(self, data):
-    filename = QtCore.QDir.tempPath() + "/ticket.pdf"
+    filename = QtCore.QDir.tempPath() + "/ticket_%s.pdf" % self.currentTicket.number
     #dialogStrings = QtGui.QFileDialog.getSaveFileName(self, "Guardar ticket", QtCore.QDir.homePath(), "Archivo PDF (*.pdf)")
     #filename = dialogStrings[0]
     if filename != '':

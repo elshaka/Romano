@@ -6,7 +6,7 @@ from mango.models.transaction import Transaction
 from error_message_box import ErrorMessageBox
 
 class AddTransaction(QtGui.QDialog):
-  def __init__(self, ingredientWarehouses, productWarehouses, transaction_type_id, parent = None):
+  def __init__(self, transaction_type_id, parent = None):
     super(AddTransaction, self).__init__(parent)
     self.ui = Ui_AddTransaction()
     self.ui.setupUi(self)
@@ -24,8 +24,8 @@ class AddTransaction(QtGui.QDialog):
     self.ui.sackSpinBox.valueChanged.connect(self.updateSackTotal)
     self.ui.kgSackSpinBox.valueChanged.connect(self.updateSackTotal)
     
-    self.ingredientWarehousesModel = WarehousesTableModel(ingredientWarehouses, self)
-    self.productWarehousesModel = WarehousesTableModel(productWarehouses, self)
+    self.ingredientWarehousesModel = WarehousesTableModel([], self)
+    self.productWarehousesModel = WarehousesTableModel([], self)
     self.ui.warehousesTableView.setModel(self.ingredientWarehousesModel)
     horizontalHeader = self.ui.warehousesTableView.horizontalHeader()
     horizontalHeader.setResizeMode(QtGui.QHeaderView.Stretch)
@@ -78,6 +78,17 @@ class AddTransaction(QtGui.QDialog):
     total = self.ui.sackSpinBox.value() * self.ui.kgSackSpinBox.value()
     self.ui.totalSackSpinBox.setValue(total)
 
+  def getWarehousesFinished(self, warehouses):
+    ingredientWarehouses = []
+    productWarehouses = []
+    for warehouse in warehouses:
+      if warehouse.warehouse_type_id == 1:
+        ingredientWarehouses.append(warehouse)
+      else:
+        productWarehouses.append(warehouse)
+    self.ingredientWarehousesModel.refreshWarehouses(ingredientWarehouses)
+    self.productWarehousesModel.refreshWarehouses(productWarehouses)
+
 class WarehousesTableModel(QtCore.QAbstractTableModel):
   def __init__(self, warehouses, parent):
     super(WarehousesTableModel, self).__init__(parent)
@@ -86,6 +97,11 @@ class WarehousesTableModel(QtCore.QAbstractTableModel):
     
   def getWarehouse(self, row):
     return self._warehouses[row]
+    
+  def refreshWarehouses(self, warehouses):
+    self.beginResetModel()
+    self._warehouses = warehouses
+    self.endResetModel()
   
   def headerData(self, section, orientation, role):
     if role == QtCore.Qt.DisplayRole:
