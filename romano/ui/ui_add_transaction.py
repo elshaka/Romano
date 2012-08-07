@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'add_transaction.ui'
 #
-# Created: Mon Aug  6 14:46:29 2012
+# Created: Tue Aug  7 16:34:58 2012
 #      by: pyside-uic 0.2.13 running on PySide 1.1.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -12,7 +12,7 @@ from PySide import QtCore, QtGui
 class Ui_AddTransaction(object):
     def setupUi(self, AddTransaction):
         AddTransaction.setObjectName("AddTransaction")
-        AddTransaction.resize(584, 540)
+        AddTransaction.resize(569, 542)
         self.verticalLayout = QtGui.QVBoxLayout(AddTransaction)
         self.verticalLayout.setObjectName("verticalLayout")
         self.groupBox = QtGui.QGroupBox(AddTransaction)
@@ -88,22 +88,20 @@ class Ui_AddTransaction(object):
         self.label_3 = QtGui.QLabel(self.sackWidget)
         self.label_3.setObjectName("label_3")
         self.horizontalLayout_4.addWidget(self.label_3)
-        self.kgSackSpinBox = QtGui.QSpinBox(self.sackWidget)
-        self.kgSackSpinBox.setMinimumSize(QtCore.QSize(80, 0))
+        self.kgSackSpinBox = QtGui.QDoubleSpinBox(self.sackWidget)
         self.kgSackSpinBox.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
-        self.kgSackSpinBox.setMaximum(999999)
-        self.kgSackSpinBox.setProperty("value", 60)
+        self.kgSackSpinBox.setMaximum(999999.0)
         self.kgSackSpinBox.setObjectName("kgSackSpinBox")
         self.horizontalLayout_4.addWidget(self.kgSackSpinBox)
         self.label_4 = QtGui.QLabel(self.sackWidget)
         self.label_4.setObjectName("label_4")
         self.horizontalLayout_4.addWidget(self.label_4)
-        self.totalSackSpinBox = QtGui.QSpinBox(self.sackWidget)
+        self.totalSackSpinBox = QtGui.QDoubleSpinBox(self.sackWidget)
         self.totalSackSpinBox.setEnabled(False)
         self.totalSackSpinBox.setMinimumSize(QtCore.QSize(150, 0))
         self.totalSackSpinBox.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
         self.totalSackSpinBox.setButtonSymbols(QtGui.QAbstractSpinBox.NoButtons)
-        self.totalSackSpinBox.setMaximum(999999)
+        self.totalSackSpinBox.setMaximum(999999.0)
         self.totalSackSpinBox.setObjectName("totalSackSpinBox")
         self.horizontalLayout_4.addWidget(self.totalSackSpinBox)
         spacerItem5 = QtGui.QSpacerItem(40, 20, QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Minimum)
@@ -135,6 +133,7 @@ class Ui_AddTransaction(object):
         spacerItem8 = QtGui.QSpacerItem(40, 20, QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Minimum)
         self.horizontalLayout.addItem(spacerItem8)
         self.cancelButton = QtGui.QPushButton(AddTransaction)
+        self.cancelButton.setFocusPolicy(QtCore.Qt.NoFocus)
         self.cancelButton.setObjectName("cancelButton")
         self.horizontalLayout.addWidget(self.cancelButton)
         self.addTransactionButton = QtGui.QPushButton(AddTransaction)
@@ -155,7 +154,6 @@ class Ui_AddTransaction(object):
         self.label_3.setText(QtGui.QApplication.translate("AddTransaction", "Kg/Saco", None, QtGui.QApplication.UnicodeUTF8))
         self.kgSackSpinBox.setSuffix(QtGui.QApplication.translate("AddTransaction", " Kg", None, QtGui.QApplication.UnicodeUTF8))
         self.label_4.setText(QtGui.QApplication.translate("AddTransaction", "Total", None, QtGui.QApplication.UnicodeUTF8))
-        self.totalSackSpinBox.setSuffix(QtGui.QApplication.translate("AddTransaction", " Kg", None, QtGui.QApplication.UnicodeUTF8))
         self.label_2.setText(QtGui.QApplication.translate("AddTransaction", "Total granel", None, QtGui.QApplication.UnicodeUTF8))
         self.totalGrainSpinBox.setSuffix(QtGui.QApplication.translate("AddTransaction", " Kg", None, QtGui.QApplication.UnicodeUTF8))
         self.cancelButton.setText(QtGui.QApplication.translate("AddTransaction", "Cancelar", None, QtGui.QApplication.UnicodeUTF8))
