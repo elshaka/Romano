@@ -134,7 +134,7 @@ class DriversListModel(QtCore.QAbstractListModel):
   def data(self, index, role):
     row = index.row()
     if role == QtCore.Qt.EditRole or role == QtCore.Qt.DisplayRole:
-      return "%s - %s" % (self._drivers[row].ci, self._drivers[row].name)
+      return "%s - %s" % (self._drivers[row].name, self._drivers[row].ci)
 
 class TrucksListModel(QtCore.QAbstractListModel):
   def __init__(self, trucks, parent):
