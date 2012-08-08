@@ -94,8 +94,6 @@ class CloseTicket(QtGui.QDialog):
       errors.append('El cliente no ha sido seleccionado')
     if not weight_captured and not manualEnabled:
       errors.append('El peso de salida no ha sido capturado')
-    if not (net_weight - self.tolerance < transactions_total < net_weight + self.tolerance):
-      errors.append('El total de transacciones se encuentra fuera de la tolerancia del peso neto')
     if self.ticket.ticket_type_id == 1:
       if provider_weight == 0:
         errors.append('El peso del proveedor no ha sido indicado')
