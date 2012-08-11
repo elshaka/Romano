@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'new_ticket.ui'
 #
-# Created: Mon Aug  6 10:47:35 2012
+# Created: Sat Aug 11 01:42:45 2012
 #      by: pyside-uic 0.2.13 running on PySide 1.1.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -12,7 +12,7 @@ from PySide import QtCore, QtGui
 class Ui_NewTicket(object):
     def setupUi(self, NewTicket):
         NewTicket.setObjectName("NewTicket")
-        NewTicket.resize(530, 321)
+        NewTicket.resize(530, 341)
         NewTicket.setMinimumSize(QtCore.QSize(480, 300))
         self.verticalLayout = QtGui.QVBoxLayout(NewTicket)
         self.verticalLayout.setObjectName("verticalLayout")
@@ -59,10 +59,18 @@ class Ui_NewTicket(object):
         self.incomingWeightSpinBox = QtGui.QDoubleSpinBox(NewTicket)
         self.incomingWeightSpinBox.setEnabled(False)
         self.incomingWeightSpinBox.setMinimumSize(QtCore.QSize(0, 0))
+        font = QtGui.QFont()
+        font.setPointSize(16)
+        font.setWeight(75)
+        font.setBold(True)
+        self.incomingWeightSpinBox.setFont(font)
         self.incomingWeightSpinBox.setFocusPolicy(QtCore.Qt.ClickFocus)
+        self.incomingWeightSpinBox.setStyleSheet("color: rgb(0, 170, 0);\n"
+"background-color: rgb(0, 0, 0);")
         self.incomingWeightSpinBox.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
         self.incomingWeightSpinBox.setButtonSymbols(QtGui.QAbstractSpinBox.NoButtons)
         self.incomingWeightSpinBox.setMaximum(999999.0)
+        self.incomingWeightSpinBox.setProperty("value", 100000.0)
         self.incomingWeightSpinBox.setObjectName("incomingWeightSpinBox")
         self.weightLayout.addWidget(self.incomingWeightSpinBox)
         self.captureWeightButton = QtGui.QPushButton(NewTicket)

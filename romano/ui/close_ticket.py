@@ -22,25 +22,30 @@ class CloseTicket(QtGui.QDialog):
     
     if not allow_manual:
       self.ui.manualCheckBox.hide()
-    
+
     self.ui.numberLineEdit.setText(str(ticket.number))
-    self.ui.ticketTypeLineEdit.setText(ticket.ticket_type.code)
     self.ui.driverLineEdit.setText("%s - %s" % (ticket.driver.ci, ticket.driver.name))
     self.ui.truckLineEdit.setText("%s - %s" % (ticket.truck.license_plate, ticket.truck.carrier.name))
     self.ui.incomingWeightSpinBox.setValue(ticket.incoming_weight)
     self.ui.commentPlainTextEdit.setPlainText(ticket.comment)
-    
+
     self.transactionsTableModel = TransactionsTableModel([], [], self)
     self.ui.transactionsTableView.setModel(self.transactionsTableModel)
     
     horizontalHeader = self.ui.transactionsTableView.horizontalHeader()
     horizontalHeader.setResizeMode(QtGui.QHeaderView.Stretch)
     
-    if self.ticket.ticket_type_id != 1:
+    if self.ticket.ticket_type_id == 1:
+      self.ui.providerWidget.show()
+      self.ui.receptionButton.setChecked(True)
+    else:
       self.ui.providerWidget.hide()
-    
+      self.ui.dispatchButton.setChecked(True)
+
     self.ui.manualCheckBox.stateChanged.connect(self.setManualCapture)
     self.ui.outgoingWeightSpinBox.valueChanged.connect(self.weightChanged)
+    self.ui.receptionButton.clicked.connect(self.updateTicketType)
+    self.ui.dispatchButton.clicked.connect(self.updateTicketType)
     self.ui.clientButton.clicked.connect(self.showClients)
     self.ui.factoryButton.clicked.connect(self.showFactories)
     self.ui.addTransactionButton.clicked.connect(self.addTransaction)
@@ -53,6 +58,21 @@ class CloseTicket(QtGui.QDialog):
     self.st = SerialThread(settings.PORTNAME, settings.SIMULATE_WEIGHT)
     self.st.dataReady.connect(self.getWeight, QtCore.Qt.QueuedConnection)
     self.st.start()
+    
+  def updateTicketType(self):
+    weight = self.ui.outgoingWeightSpinBox.value()
+    if self.ui.receptionButton.isChecked():
+      self.ui.providerWidget.show()
+      gross_weight = self.ticket.incoming_weight
+      tare_weight = weight
+    else:
+      self.ui.providerWidget.hide()
+      gross_weight = weight
+      tare_weight = self.ticket.incoming_weight
+    net_weight = gross_weight - tare_weight
+    self.ui.grossWeightSpinBox.setValue(gross_weight)
+    self.ui.tareWeightSpinBox.setValue(tare_weight)
+    self.ui.netWeightSpinBox.setValue(net_weight)
     
   def addTransaction(self):
     if self.ticket.ticket_type_id == 1:
@@ -88,10 +108,17 @@ class CloseTicket(QtGui.QDialog):
     provider_weight = self.ui.providerWeightSpinBox.value()
     provider_document_number = self.ui.providerDocumentNumberLineEdit.text()
     transactions_total = self.ui.transactionsTotalSpinBox.value()
-    
+
+    if self.ui.receptionButton.isChecked():
+      self.ticket.ticket_type_id = 1
+    elif self.ui.dispatchButton.isChecked():
+      self.ticket.ticket_type_id = 2
+
     errors = []
+    if net_weight == 0:
+      errors.append(u'El peso neto no puede ser 0')
     if clientIndex == -1:
-      errors.append('El cliente no ha sido seleccionado')
+      errors.append(u'El cliente/fábrica no ha sido seleccionado')
     if not weight_captured and not manualEnabled:
       errors.append('El peso de salida no ha sido capturado')
     if self.ticket.ticket_type_id == 1:
@@ -107,6 +134,13 @@ class CloseTicket(QtGui.QDialog):
         self.ticket.provider_weight = provider_weight
         self.ticket.provider_document_number = provider_document_number
       self.ticket.transactions_attributes = self.transactionsTableModel.getTransactions()
+      
+      for transaction in self.ticket.transactions_attributes:
+        if self.ticket.ticket_type_id == 1:
+          transaction.transaction_type_id = 4
+        else:
+          transaction.transaction_type_id = 5
+      
       client_id = clientListModel.getClient(clientIndex).id
       self.ticket.client_id = client_id
       self.ticket.manual_outgoing = manualEnabled
@@ -129,7 +163,7 @@ class CloseTicket(QtGui.QDialog):
       self.ui.outgoingWeightSpinBox.setValue(weight)
       
   def weightChanged(self, weight):
-    if self.ticket.ticket_type_id == 2:
+    if self.ui.dispatchButton.isChecked():
       gross_weight = weight
       tare_weight = self.ticket.incoming_weight
     else:
@@ -139,7 +173,7 @@ class CloseTicket(QtGui.QDialog):
     self.ui.grossWeightSpinBox.setValue(gross_weight)
     self.ui.tareWeightSpinBox.setValue(tare_weight)
     self.ui.netWeightSpinBox.setValue(net_weight)
-      
+
   def getClientsFinished(self, clients):
     self.clientsListModel = ClientsListModel(clients, self)
     self.ui.clientButton.setEnabled(True)
