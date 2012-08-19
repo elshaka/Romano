@@ -5,6 +5,7 @@ class Truck(JSONableModel):
   def __init__(self, carrier_id, license_plate):
     self.carrier_id = carrier_id
     self.license_plate = license_plate
+    self.frequent = False
     
   @classmethod
   def fromDict(cls, dict_):

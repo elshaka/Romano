@@ -1,0 +1,111 @@
+# -*- coding: utf-8 -*-
+
+from PySide import QtGui, QtCore
+from ui_add_truck import Ui_AddTruck
+from mango.models.truck import Truck
+from add_carrier import AddCarrier
+from error_message_box import ErrorMessageBox
+
+class AddTruck(QtGui.QDialog):
+  def __init__(self, parent):
+    super(AddTruck, self).__init__(parent)
+    self.ui = Ui_AddTruck()
+    self.ui.setupUi(self)
+    self.api = parent.api
+    self.api.get_trucks()
+    self.ui.frequentWidget.setEnabled(False)
+    self.trucksTableModel = TrucksTableModel([], self)
+    self.ui.trucksTableView.setModel(self.trucksTableModel)
+    self.carrier = None
+    
+    self.api.getTrucksFinished.connect(self.trucksTableModel.refreshTrucks)
+    self.api.createCarrierFinished.connect(self.setCarrier)
+    self.ui.newButton.clicked.connect(self.enableTruckType)
+    self.ui.frequentButton.clicked.connect(self.enableTruckType)
+    self.ui.addCarrier.clicked.connect(self.addCarrier)
+    self.ui.addButton.clicked.connect(self.addTruck)
+    self.ui.trucksTableView.doubleClicked.connect(self.addTruck)
+    self.ui.cancelButton.clicked.connect(self.reject)
+
+  def addCarrier(self):
+    addCarrierDialog = AddCarrier(self)
+    if addCarrierDialog.exec_() == QtGui.QDialog.Accepted:
+      if addCarrierDialog.new:
+        self.api.create_carrier(addCarrierDialog.carrier)
+      else:
+        self.setCarrier(addCarrierDialog.carrier)
+  
+  def addTruck(self):
+    if self.ui.newButton.isChecked():
+      errors = []
+      license_plate = self.ui.licensePlateLineEdit.text()
+      
+      if license_plate == "":
+        errors.append(u"Debe indicar un número de placa")
+      if self.carrier == None:
+        errors.append("Debe indicar una transportista")
+      if not errors:
+        self.new = True
+        self.truck = Truck(self.carrier.id, license_plate)
+        if self.ui.saveAsFrequentBox.isChecked():
+          self.truck.frequent = True
+        self.accept()
+      else:
+        ErrorMessageBox(errors).exec_()
+    else:
+      errors = []
+      truckIndex = self.ui.trucksTableView.currentIndex().row()
+      if truckIndex == -1:
+        errors.append("Debe seleccionar un camión")
+      if not errors:
+        self.new = False
+        self.truck = self.trucksTableModel.getTruck(truckIndex)        
+        self.accept()
+  
+  def setCarrier(self, carrier):
+    self.carrier = carrier
+    self.ui.carrierLineEdit.setText(carrier.name)
+  
+  def enableTruckType(self):
+    if self.ui.newButton.isChecked():
+      self.ui.newWidget.setEnabled(True)
+      self.ui.frequentWidget.setEnabled(False)
+    else:
+      self.ui.newWidget.setEnabled(False)
+      self.ui.frequentWidget.setEnabled(True)
+  
+    
+class TrucksTableModel(QtCore.QAbstractTableModel):
+  def __init__(self, trucks, parent):
+    super(TrucksTableModel, self).__init__(parent)
+    self._trucks = trucks
+    self._headers = ['Placa', 'Transportista']
+    
+  def getTruck(self, row):
+    return self._trucks[row]
+    
+  def refreshTrucks(self, trucks):
+    self.beginResetModel()
+    self._trucks = trucks
+    self.endResetModel()
+
+  def headerData(self, section, orientation, role):
+    if role == QtCore.Qt.DisplayRole:
+      if orientation == QtCore.Qt.Horizontal:
+        return self._headers[section]
+        
+  def rowCount(self, parent):
+    return len(self._trucks)
+    
+  def columnCount(self, parent):
+    return len(self._headers)
+    
+  def data(self, index, role):
+    row = index.row()
+    column = index.column()
+    
+    if role == QtCore.Qt.DisplayRole:
+      if column == 0:
+        return self._trucks[row].license_plate
+      elif column == 1:
+        return self._trucks[row].carrier.name

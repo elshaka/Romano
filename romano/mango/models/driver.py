@@ -7,6 +7,7 @@ class Driver(JSONableModel):
     self.address = address
     self.tel1 = tel1
     self.tel2 = tel2
+    self.frequent = False
   
   @classmethod
   def fromDict(cls, dict_):

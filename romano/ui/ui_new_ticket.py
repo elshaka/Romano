@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'new_ticket.ui'
 #
-# Created: Sat Aug 11 01:42:45 2012
+# Created: Fri Aug 17 14:15:10 2012
 #      by: pyside-uic 0.2.13 running on PySide 1.1.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -24,11 +24,11 @@ class Ui_NewTicket(object):
         self.formLayout.setWidget(0, QtGui.QFormLayout.LabelRole, self.label_2)
         self.horizontalLayout_3 = QtGui.QHBoxLayout()
         self.horizontalLayout_3.setObjectName("horizontalLayout_3")
-        self.driversComboBox = QtGui.QComboBox(NewTicket)
-        self.driversComboBox.setEditable(True)
-        self.driversComboBox.setInsertPolicy(QtGui.QComboBox.NoInsert)
-        self.driversComboBox.setObjectName("driversComboBox")
-        self.horizontalLayout_3.addWidget(self.driversComboBox)
+        self.driverLineEdit = QtGui.QLineEdit(NewTicket)
+        self.driverLineEdit.setFocusPolicy(QtCore.Qt.StrongFocus)
+        self.driverLineEdit.setReadOnly(True)
+        self.driverLineEdit.setObjectName("driverLineEdit")
+        self.horizontalLayout_3.addWidget(self.driverLineEdit)
         self.addDriverButton = QtGui.QToolButton(NewTicket)
         icon = QtGui.QIcon()
         icon.addPixmap(QtGui.QPixmap(":/icons/add-transaction.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
@@ -41,11 +41,10 @@ class Ui_NewTicket(object):
         self.formLayout.setWidget(1, QtGui.QFormLayout.LabelRole, self.label_3)
         self.horizontalLayout_4 = QtGui.QHBoxLayout()
         self.horizontalLayout_4.setObjectName("horizontalLayout_4")
-        self.trucksComboBox = QtGui.QComboBox(NewTicket)
-        self.trucksComboBox.setEditable(True)
-        self.trucksComboBox.setInsertPolicy(QtGui.QComboBox.NoInsert)
-        self.trucksComboBox.setObjectName("trucksComboBox")
-        self.horizontalLayout_4.addWidget(self.trucksComboBox)
+        self.truckLineEdit = QtGui.QLineEdit(NewTicket)
+        self.truckLineEdit.setReadOnly(True)
+        self.truckLineEdit.setObjectName("truckLineEdit")
+        self.horizontalLayout_4.addWidget(self.truckLineEdit)
         self.addTruckButton = QtGui.QToolButton(NewTicket)
         self.addTruckButton.setIcon(icon)
         self.addTruckButton.setObjectName("addTruckButton")
@@ -110,7 +109,7 @@ class Ui_NewTicket(object):
     def retranslateUi(self, NewTicket):
         NewTicket.setWindowTitle(QtGui.QApplication.translate("NewTicket", "Dialog", None, QtGui.QApplication.UnicodeUTF8))
         self.label_2.setText(QtGui.QApplication.translate("NewTicket", "Chofer", None, QtGui.QApplication.UnicodeUTF8))
-        self.addDriverButton.setToolTip(QtGui.QApplication.translate("NewTicket", "Crear nuevo chofer", None, QtGui.QApplication.UnicodeUTF8))
+        self.addDriverButton.setToolTip(QtGui.QApplication.translate("NewTicket", "Agregar chofer", None, QtGui.QApplication.UnicodeUTF8))
         self.addDriverButton.setText(QtGui.QApplication.translate("NewTicket", "...", None, QtGui.QApplication.UnicodeUTF8))
         self.label_3.setText(QtGui.QApplication.translate("NewTicket", "Camión", None, QtGui.QApplication.UnicodeUTF8))
         self.addTruckButton.setToolTip(QtGui.QApplication.translate("NewTicket", "Crear nuevo camión", None, QtGui.QApplication.UnicodeUTF8))

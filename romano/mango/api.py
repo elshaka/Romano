@@ -16,15 +16,15 @@ class API(QtCore.QObject):
   getTicketsFinished = QtCore.Signal(list)
   getDriversFinished = QtCore.Signal(list)
   getTrucksFinished = QtCore.Signal(list)
+  getCarriersFinished = QtCore.Signal(list)
   getClientsFinished = QtCore.Signal(list)
   getFactoriesFinished = QtCore.Signal(list)
   getWarehousesFinished = QtCore.Signal(list)
   closeTicketFinished = QtCore.Signal()
   printTicketFinished = QtCore.Signal(QtCore.QByteArray)
-  createDriverFinished = QtCore.Signal()
-  createTruckFinished = QtCore.Signal()
-  getCarriersFinished = QtCore.Signal(list)
-  createCarrierFinished = QtCore.Signal()
+  createDriverFinished = QtCore.Signal(object)
+  createTruckFinished = QtCore.Signal(object)
+  createCarrierFinished = QtCore.Signal(object)
   
   def __init__(self, host = "localhost", port = 3000):
     super(API, self).__init__()
@@ -149,7 +149,13 @@ class API(QtCore.QObject):
     self.createDriverReply.finished.connect(self.create_driver_finished)
   
   def create_driver_finished(self):
-    self.createDriverFinished.emit()
+    error = self.createDriverReply.error()
+    if error == QtNetwork.QNetworkReply.NoError:
+      driver = Driver.fromJSON((self.createDriverReply.readAll().data()))
+      self.createDriverFinished.emit(driver)
+    else:
+      print error
+      print self.createDriverReply.readAll().data()
     
   def create_truck(self, truck):
     request = self._new_request("trucks")
@@ -158,8 +164,13 @@ class API(QtCore.QObject):
     self.createTruckReply.finished.connect(self.create_truck_finished)
     
   def create_truck_finished(self):
-    print self.createTruckReply.readAll().data()
-    self.createTruckFinished.emit()
+    error = self.createTruckReply.error()
+    if error == QtNetwork.QNetworkReply.NoError:
+      truck = Truck.fromJSON(self.createTruckReply.readAll().data())
+      self.createTruckFinished.emit(truck)
+    else:
+      print error
+      print self.createTruckReply.readAll().data()
     
   def get_carriers(self):
     request = self._new_request("carriers")
@@ -177,5 +188,10 @@ class API(QtCore.QObject):
     self.createCarrierReply.finished.connect(self.create_carrier_finished)
 
   def create_carrier_finished(self):
-    print self.createCarrierReply.readAll().data()
-    self.createCarrierFinished.emit()
+    error = self.createCarrierReply.error()
+    if error == QtNetwork.QNetworkReply.NoError:
+      carrier = Carrier.fromJSON(self.createCarrierReply.readAll().data())
+      self.createCarrierFinished.emit(carrier)
+    else:
+      print error
+      print self.createCarrierReply.readAll().data()

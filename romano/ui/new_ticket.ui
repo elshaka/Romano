@@ -35,19 +35,19 @@
      <item row="0" column="1">
       <layout class="QHBoxLayout" name="horizontalLayout_3">
        <item>
-        <widget class="QComboBox" name="driversComboBox">
-         <property name="editable">
-          <bool>true</bool>
+        <widget class="QLineEdit" name="driverLineEdit">
+         <property name="focusPolicy">
+          <enum>Qt::StrongFocus</enum>
          </property>
-         <property name="insertPolicy">
-          <enum>QComboBox::NoInsert</enum>
+         <property name="readOnly">
+          <bool>true</bool>
          </property>
         </widget>
        </item>
        <item>
         <widget class="QToolButton" name="addDriverButton">
          <property name="toolTip">
-          <string>Crear nuevo chofer</string>
+          <string>Agregar chofer</string>
          </property>
          <property name="text">
           <string>...</string>
@@ -70,12 +70,9 @@
      <item row="1" column="1">
       <layout class="QHBoxLayout" name="horizontalLayout_4">
        <item>
-        <widget class="QComboBox" name="trucksComboBox">
-         <property name="editable">
+        <widget class="QLineEdit" name="truckLineEdit">
+         <property name="readOnly">
           <bool>true</bool>
-         </property>
-         <property name="insertPolicy">
-          <enum>QComboBox::NoInsert</enum>
          </property>
         </widget>
        </item>

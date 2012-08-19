@@ -6,8 +6,8 @@ from ui_new_ticket import Ui_NewTicket
 from mango.models.ticket import Ticket
 from serial_thread.serial_thread import SerialThread
 from error_message_box import ErrorMessageBox
-from new_driver import NewDriver
-from new_truck import NewTruck
+from add_driver import AddDriver
+from add_truck import AddTruck
 
 class NewTicket(QtGui.QDialog):
   def __init__(self, ticket_type_id, allow_manual, parent):
@@ -21,77 +21,74 @@ class NewTicket(QtGui.QDialog):
     else:
       self.setWindowTitle(u"Nuevo Despacho")
     self.setModal(True)
-    driverLineEdit = self.ui.driversComboBox.lineEdit()
-    driverLineEdit.setPlaceholderText(u"Buscar por cédula")
-    driverCompleter = self.ui.driversComboBox.completer()
-    driverCompleter.setCompletionMode(QtGui.QCompleter.PopupCompletion)
-    truckLineEdit = self.ui.trucksComboBox.lineEdit()
-    truckLineEdit.setPlaceholderText("Buscar por placa")
-    trucksCompleter = self.ui.trucksComboBox.completer()
-    trucksCompleter.setCompletionMode(QtGui.QCompleter.PopupCompletion)
-    
+
+    self.driver = None
+    self.truck = None
+
     if not allow_manual:
       self.ui.manualCheckBox.hide()
-    
+
     self.api.get_drivers()
     self.api.get_trucks()
-    
-    self.api.createDriverFinished.connect(self.refreshDrivers)
-    self.api.createTruckFinished.connect(self.refreshTrucks)
-    self.api.getDriversFinished.connect(self.getDriversFinished)
-    self.api.getTrucksFinished.connect(self.getTrucksFinished)
-    self.ui.addDriverButton.clicked.connect(self.newDriver)
-    self.ui.addTruckButton.clicked.connect(self.newTruck)
+
+    self.api.createDriverFinished.connect(self.setDriver)
+    self.api.createTruckFinished.connect(self.setTruck)
+    self.ui.addDriverButton.clicked.connect(self.addDriver)
+    self.ui.addTruckButton.clicked.connect(self.addTruck)
     self.ui.manualCheckBox.stateChanged.connect(self.setManualCapture)
     self.ui.createTicketButton.clicked.connect(self.createTicket)
     self.ui.cancelButton.clicked.connect(self.reject)
-    
+
     self.st = SerialThread(settings.PORTNAME, settings.SIMULATE_WEIGHT)
     self.st.dataReady.connect(self.getWeight, QtCore.Qt.QueuedConnection)
     self.st.start()
-        
+
   def createTicket(self):
-    driverIndex = self.ui.driversComboBox.currentIndex()
-    truckIndex = self.ui.trucksComboBox.currentIndex()
     weightCaptured = self.ui.captureWeightButton.isChecked()
     manualEnabled = self.ui.manualCheckBox.isChecked()
-    
+
     errors = []
-    if driverIndex == -1:
+    if self.driver == None:
       errors.append("El chofer no ha sido seleccionado")
-    if truckIndex == -1:
+    if self.truck == None:
       errors.append(u"El camión no ha sido seleccionado")
     if not manualEnabled and not weightCaptured:
       errors.append("El peso de entrada no ha sido capturado")
     
     if not errors:
-      driver = self.ui.driversComboBox.model().getDriver(driverIndex)
-      truck = self.ui.trucksComboBox.model().getTruck(truckIndex)
       incoming_weight = self.ui.incomingWeightSpinBox.value()
       comment = self.ui.commentPlainTextEdit.toPlainText()
-      self.ticket = Ticket(self.ticket_type_id, driver.id, truck.id, 
+      self.ticket = Ticket(self.ticket_type_id, self.driver.id, self.truck.id, 
                            incoming_weight, comment)
       self.ticket.manual_incoming = manualEnabled
       self.accept()
     else:
       ErrorMessageBox(errors).exec_()
-  
-  def newDriver(self):
-    newDriverDialog = NewDriver(self)
-    if newDriverDialog.exec_() == QtGui.QDialog.Accepted:
-      self.api.create_driver(newDriverDialog.driver)
-      
-  def refreshDrivers(self):
-    self.api.get_drivers()
-  
-  def newTruck(self):
-    newTruckDialog = NewTruck(self)
-    if newTruckDialog.exec_() == QtGui.QDialog.Accepted:
-      self.api.create_truck(newTruckDialog.truck)
-    
-  def refreshTrucks(self):
-    self.api.get_trucks()
-  
+
+  def addDriver(self):
+    addDriverDialog = AddDriver(self)
+    if addDriverDialog.exec_() == QtGui.QDialog.Accepted:
+      if addDriverDialog.new:
+        self.api.create_driver(addDriverDialog.driver)
+      else:
+        self.setDriver(addDriverDialog.driver)
+
+  def setDriver(self, driver):
+    self.driver = driver
+    self.ui.driverLineEdit.setText("%s - %s" % (self.driver.name, self.driver.ci))
+
+  def addTruck(self):
+    addTruckDialog = AddTruck(self)
+    if addTruckDialog.exec_() == QtGui.QDialog.Accepted:
+      if addTruckDialog.new:
+        self.api.create_truck(addTruckDialog.truck)
+      else:
+        self.setTruck(addTruckDialog.truck)
+
+  def setTruck(self, truck):
+    self.truck = truck
+    self.ui.truckLineEdit.setText("%s - %s" % (self.truck.license_plate, self.truck.carrier.name))
+
   def setManualCapture(self):
     if self.ui.manualCheckBox.isChecked():
       self.ui.incomingWeightSpinBox.setEnabled(True)
@@ -104,11 +101,6 @@ class NewTicket(QtGui.QDialog):
   def getWeight(self, weight):
     if not self.ui.captureWeightButton.isChecked() and not self.ui.manualCheckBox.isChecked():
       self.ui.incomingWeightSpinBox.setValue(weight)
-  
-  def getDriversFinished(self, drivers):
-    self.driversListModel = DriversListModel(drivers, self)
-    self.ui.driversComboBox.setModel(self.driversListModel)
-    self.ui.driversComboBox.setCurrentIndex(-1)
 
   def getTrucksFinished(self, trucks):
     self.trucksListModel = TrucksListModel(trucks, self)
