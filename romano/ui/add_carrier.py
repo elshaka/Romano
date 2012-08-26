@@ -14,9 +14,15 @@ class AddCarrier(QtGui.QDialog):
     self.ui.setupUi(self)
     self.api.get_carriers()
     self.ui.frequentWidget.setEnabled(False)
+
     self.carriersTableModel = CarriersTableModel([], self)
-    self.ui.carriersTableView.setModel(self.carriersTableModel)
-    
+    self.filterCarriersProxyModel = QtGui.QSortFilterProxyModel()
+    self.filterCarriersProxyModel.setSourceModel(self.carriersTableModel)
+    self.filterCarriersProxyModel.setFilterKeyColumn(-1)
+    self.filterCarriersProxyModel.setFilterCaseSensitivity(QtCore.Qt.CaseInsensitive)
+    self.ui.carriersTableView.setModel(self.filterCarriersProxyModel)
+    self.ui.filterLineEdit.textChanged.connect(self.filterCarriersProxyModel.setFilterRegExp)
+
     self.api.getCarriersFinished.connect(self.carriersTableModel.refreshCarriers)
     self.ui.newButton.clicked.connect(self.enableCarrierType)
     self.ui.frequentButton.clicked.connect(self.enableCarrierType)
@@ -40,13 +46,16 @@ class AddCarrier(QtGui.QDialog):
         ErrorMessageBox(errors).exec_()
     else:
       errors = []
-      carrierIndex = self.ui.carriersTableView.currentIndex().row()
-      if carrierIndex == -1:
+      carrierFilteredIndex = self.ui.carriersTableView.currentIndex()
+      if carrierFilteredIndex.row() == -1:
         errors.append("Debe seleccionar una transportista")
       if not errors:
         self.new = False
-        self.carrier = self.carriersTableModel.getCarrier(carrierIndex)        
+        carrierIndex = self.filterCarriersProxyModel.mapToSource(carrierFilteredIndex)
+        self.carrier = self.carriersTableModel.getCarrier(carrierIndex.row())        
         self.accept()
+      else:
+        ErrorMessageBox(errors).exec_()
 
   def enableCarrierType(self):
     if self.ui.newButton.isChecked():
@@ -88,4 +97,3 @@ class CarriersTableModel(QtCore.QAbstractTableModel):
     if role == QtCore.Qt.DisplayRole:
       if column == 0:
         return self._carriers[row].name
-

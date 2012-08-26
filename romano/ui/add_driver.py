@@ -13,9 +13,15 @@ class AddDriver(QtGui.QDialog):
     self.api = parent.api
     self.api.get_drivers()
     self.ui.frequentWidget.setEnabled(False)
+    
     self.driversTableModel = DriversTableModel([], self)
-    self.ui.driversTableView.setModel(self.driversTableModel)
-
+    self.filterDriversProxyModel = QtGui.QSortFilterProxyModel()
+    self.filterDriversProxyModel.setSourceModel(self.driversTableModel)
+    self.filterDriversProxyModel.setFilterKeyColumn(-1)
+    self.filterDriversProxyModel.setFilterCaseSensitivity(QtCore.Qt.CaseInsensitive)
+    self.ui.driversTableView.setModel(self.filterDriversProxyModel)
+    self.ui.filterLineEdit.textChanged.connect(self.filterDriversProxyModel.setFilterRegExp)
+    
     self.api.getDriversFinished.connect(self.driversTableModel.refreshDrivers)
     self.ui.newButton.clicked.connect(self.enableDriverType)
     self.ui.frequentButton.clicked.connect(self.enableDriverType)
@@ -47,15 +53,17 @@ class AddDriver(QtGui.QDialog):
         ErrorMessageBox(errors).exec_()
     else:
       errors = []
-      driverIndex = self.ui.driversTableView.currentIndex().row()
-      if driverIndex == -1:
+      driverFilteredIndex = self.ui.driversTableView.currentIndex()
+      if driverFilteredIndex.row() == -1:
         errors.append("Debe seleccionar un chofer")
-      
       if not errors:
         self.new = False
-        self.driver = self.driversTableModel.getDriver(driverIndex)        
+        driverIndex = self.filterDriversProxyModel.mapToSource(driverFilteredIndex)
+        self.driver = self.driversTableModel.getDriver(driverIndex.row())
         self.accept()
-  
+      else:
+        ErrorMessageBox(errors).exec_()
+
   def enableDriverType(self):
     if self.ui.newButton.isChecked():
       self.ui.newWidget.setEnabled(True)

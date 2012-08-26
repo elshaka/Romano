@@ -14,10 +14,16 @@ class AddTruck(QtGui.QDialog):
     self.api = parent.api
     self.api.get_trucks()
     self.ui.frequentWidget.setEnabled(False)
-    self.trucksTableModel = TrucksTableModel([], self)
-    self.ui.trucksTableView.setModel(self.trucksTableModel)
     self.carrier = None
     
+    self.trucksTableModel = TrucksTableModel([], self)
+    self.filterTrucksProxyModel = QtGui.QSortFilterProxyModel()
+    self.filterTrucksProxyModel.setSourceModel(self.trucksTableModel)
+    self.filterTrucksProxyModel.setFilterKeyColumn(-1)
+    self.filterTrucksProxyModel.setFilterCaseSensitivity(QtCore.Qt.CaseInsensitive)
+    self.ui.trucksTableView.setModel(self.filterTrucksProxyModel)
+    self.ui.filterLineEdit.textChanged.connect(self.filterTrucksProxyModel.setFilterRegExp)
+
     self.api.getTrucksFinished.connect(self.trucksTableModel.refreshTrucks)
     self.api.createCarrierFinished.connect(self.setCarrier)
     self.ui.newButton.clicked.connect(self.enableTruckType)
@@ -54,13 +60,16 @@ class AddTruck(QtGui.QDialog):
         ErrorMessageBox(errors).exec_()
     else:
       errors = []
-      truckIndex = self.ui.trucksTableView.currentIndex().row()
-      if truckIndex == -1:
+      truckFilteredIndex = self.ui.trucksTableView.currentIndex()
+      if truckFilteredIndex.row() == -1:
         errors.append("Debe seleccionar un camión")
       if not errors:
         self.new = False
-        self.truck = self.trucksTableModel.getTruck(truckIndex)        
+        truckIndex = self.filterTrucksProxyModel.mapToSource(truckFilteredIndex)
+        self.truck = self.trucksTableModel.getTruck(truckIndex.row())
         self.accept()
+      else:
+        ErrorMessageBox(errors).exec_()
   
   def setCarrier(self, carrier):
     self.carrier = carrier

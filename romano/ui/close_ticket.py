@@ -18,8 +18,8 @@ class CloseTicket(QtGui.QDialog):
     self.ui.setupUi(self)
     self.setModal(True)
     clientsCompleter = self.ui.clientsComboBox.completer()
-    clientsCompleter.setCompletionMode(QtGui.QCompleter.PopupCompletion)
-    
+    clientsCompleter.setCompletionMode(QtGui.QCompleter.UnfilteredPopupCompletion)
+
     if not allow_manual:
       self.ui.manualCheckBox.hide()
 
@@ -115,6 +115,8 @@ class CloseTicket(QtGui.QDialog):
       self.ticket.ticket_type_id = 2
 
     errors = []
+    if transactions_total == 0:
+      errors.append(u'El total de transacciones no puede ser igual a 0')
     if net_weight == 0:
       errors.append(u'El peso neto no puede ser 0')
     if clientIndex == -1:
