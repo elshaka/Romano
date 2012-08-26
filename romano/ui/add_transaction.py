@@ -22,13 +22,11 @@ class AddTransaction(QtGui.QDialog):
     self.ui.grainButton.clicked.connect(self.showGrain)
     self.ui.sackButton.clicked.connect(self.showSack)
 
-    doubleValidator = QtGui.QDoubleValidator(0, 999999, 2, self)
-    intValidator = QtGui.QIntValidator(0,999999,self)
-    self.ui.sackLineEdit.setValidator(intValidator)
-    self.ui.kgSackLineEdit.setValidator(doubleValidator)
-    self.ui.totalSackLineEdit.setValidator(doubleValidator)
-    self.ui.totalGrainLineEdit.setValidator(doubleValidator)
-    
+    self.ui.sackLineEdit.setValidator(QtGui.QIntValidator(0,999999,self.ui.sackLineEdit))
+    self.ui.kgSackLineEdit.setValidator(QtGui.QDoubleValidator(0, 999999, 2, self.ui.kgSackLineEdit))
+    self.ui.totalSackLineEdit.setValidator(QtGui.QDoubleValidator(0, 999999, 2, self.ui.totalSackLineEdit))
+    self.ui.totalGrainLineEdit.setValidator(QtGui.QDoubleValidator(0, 999999, 2, self.ui.totalGrainLineEdit))
+
     self.ui.sackLineEdit.textChanged.connect(self.updateSackTotal)
     self.ui.kgSackLineEdit.textChanged.connect(self.updateSackTotal)
 
@@ -65,7 +63,7 @@ class AddTransaction(QtGui.QDialog):
       self.warehouse = warehousesModel.getWarehouse(warehouseIndex.row())
       if self.ui.sackButton.isChecked():
         sacks = float(self.ui.sackLineEdit.text())
-        sack_weight = float(self.ui.kgSackLineEdit.text())
+        sack_weight = float(self.ui.kgSackLineEdit.text().replace(",","."))
         self.transaction = Transaction(self.transaction_type_id,
                                        self.warehouse.id, True, sack_weight, 
                                        sacks, total)
@@ -94,7 +92,7 @@ class AddTransaction(QtGui.QDialog):
   def updateSackTotal(self):
     try:
       sack = float(self.ui.sackLineEdit.text())
-      kgSack = float(self.ui.kgSackLineEdit.text())
+      kgSack = float(self.ui.kgSackLineEdit.text().replace(",","."))
       total = sack * kgSack
     except:
       total = 0
