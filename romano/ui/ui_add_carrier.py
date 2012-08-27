@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'add_carrier.ui'
 #
-# Created: Fri Aug 17 22:08:52 2012
+# Created: Mon Aug 27 16:37:42 2012
 #      by: pyside-uic 0.2.13 running on PySide 1.1.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -97,7 +97,7 @@ class Ui_AddCarrier(object):
         self.newButton.setText(QtGui.QApplication.translate("AddCarrier", "Nuevo", None, QtGui.QApplication.UnicodeUTF8))
         self.frequentButton.setText(QtGui.QApplication.translate("AddCarrier", "Frecuente", None, QtGui.QApplication.UnicodeUTF8))
         self.label.setText(QtGui.QApplication.translate("AddCarrier", "Nombre", None, QtGui.QApplication.UnicodeUTF8))
-        self.saveAsFrequentBox.setText(QtGui.QApplication.translate("AddCarrier", "Guardar como frequente", None, QtGui.QApplication.UnicodeUTF8))
+        self.saveAsFrequentBox.setText(QtGui.QApplication.translate("AddCarrier", "Guardar como frecuente", None, QtGui.QApplication.UnicodeUTF8))
         self.label_2.setText(QtGui.QApplication.translate("AddCarrier", "Filtrar", None, QtGui.QApplication.UnicodeUTF8))
         self.addButton.setText(QtGui.QApplication.translate("AddCarrier", "Agregar", None, QtGui.QApplication.UnicodeUTF8))
         self.cancelButton.setText(QtGui.QApplication.translate("AddCarrier", "Cancelar", None, QtGui.QApplication.UnicodeUTF8))

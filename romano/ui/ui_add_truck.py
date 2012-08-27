@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'add_truck.ui'
 #
-# Created: Mon Aug 27 11:33:12 2012
+# Created: Mon Aug 27 16:38:16 2012
 #      by: pyside-uic 0.2.13 running on PySide 1.1.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -114,7 +114,7 @@ class Ui_AddTruck(object):
         self.frequentButton.setText(QtGui.QApplication.translate("AddTruck", "Frecuente", None, QtGui.QApplication.UnicodeUTF8))
         self.label.setText(QtGui.QApplication.translate("AddTruck", "Placa", None, QtGui.QApplication.UnicodeUTF8))
         self.label_3.setText(QtGui.QApplication.translate("AddTruck", "Transportista", None, QtGui.QApplication.UnicodeUTF8))
-        self.saveAsFrequentBox.setText(QtGui.QApplication.translate("AddTruck", "Guardar como frequente", None, QtGui.QApplication.UnicodeUTF8))
+        self.saveAsFrequentBox.setText(QtGui.QApplication.translate("AddTruck", "Guardar como frecuente", None, QtGui.QApplication.UnicodeUTF8))
         self.addCarrierButton.setText(QtGui.QApplication.translate("AddTruck", "...", None, QtGui.QApplication.UnicodeUTF8))
         self.label_2.setText(QtGui.QApplication.translate("AddTruck", "Filtrar", None, QtGui.QApplication.UnicodeUTF8))
         self.addButton.setText(QtGui.QApplication.translate("AddTruck", "Agregar", None, QtGui.QApplication.UnicodeUTF8))

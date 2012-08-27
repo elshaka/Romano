@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'add_driver.ui'
 #
-# Created: Thu Aug 16 23:35:03 2012
+# Created: Mon Aug 27 16:36:43 2012
 #      by: pyside-uic 0.2.13 running on PySide 1.1.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -104,7 +104,7 @@ class Ui_AddDriver(object):
         self.frequentButton.setText(QtGui.QApplication.translate("AddDriver", "Frecuente", None, QtGui.QApplication.UnicodeUTF8))
         self.label.setText(QtGui.QApplication.translate("AddDriver", "Nombre", None, QtGui.QApplication.UnicodeUTF8))
         self.label_3.setText(QtGui.QApplication.translate("AddDriver", "Cédula", None, QtGui.QApplication.UnicodeUTF8))
-        self.saveAsFrequentBox.setText(QtGui.QApplication.translate("AddDriver", "Guardar como frequente", None, QtGui.QApplication.UnicodeUTF8))
+        self.saveAsFrequentBox.setText(QtGui.QApplication.translate("AddDriver", "Guardar como frecuente", None, QtGui.QApplication.UnicodeUTF8))
         self.label_2.setText(QtGui.QApplication.translate("AddDriver", "Filtrar", None, QtGui.QApplication.UnicodeUTF8))
         self.addButton.setText(QtGui.QApplication.translate("AddDriver", "Agregar", None, QtGui.QApplication.UnicodeUTF8))
         self.cancelButton.setText(QtGui.QApplication.translate("AddDriver", "Cancelar", None, QtGui.QApplication.UnicodeUTF8))
