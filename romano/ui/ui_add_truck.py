@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'add_truck.ui'
 #
-# Created: Fri Aug 17 12:32:18 2012
+# Created: Mon Aug 27 11:33:12 2012
 #      by: pyside-uic 0.2.13 running on PySide 1.1.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -52,11 +52,15 @@ class Ui_AddTruck(object):
         self.horizontalLayout_3 = QtGui.QHBoxLayout()
         self.horizontalLayout_3.setObjectName("horizontalLayout_3")
         self.carrierLineEdit = QtGui.QLineEdit(self.newWidget)
+        self.carrierLineEdit.setReadOnly(True)
         self.carrierLineEdit.setObjectName("carrierLineEdit")
         self.horizontalLayout_3.addWidget(self.carrierLineEdit)
-        self.addCarrier = QtGui.QToolButton(self.newWidget)
-        self.addCarrier.setObjectName("addCarrier")
-        self.horizontalLayout_3.addWidget(self.addCarrier)
+        self.addCarrierButton = QtGui.QToolButton(self.newWidget)
+        icon = QtGui.QIcon()
+        icon.addPixmap(QtGui.QPixmap(":/icons/add-transaction.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.addCarrierButton.setIcon(icon)
+        self.addCarrierButton.setObjectName("addCarrierButton")
+        self.horizontalLayout_3.addWidget(self.addCarrierButton)
         self.formLayout.setLayout(1, QtGui.QFormLayout.FieldRole, self.horizontalLayout_3)
         self.driverLayout.addWidget(self.newWidget)
         self.line = QtGui.QFrame(AddTruck)
@@ -111,8 +115,9 @@ class Ui_AddTruck(object):
         self.label.setText(QtGui.QApplication.translate("AddTruck", "Placa", None, QtGui.QApplication.UnicodeUTF8))
         self.label_3.setText(QtGui.QApplication.translate("AddTruck", "Transportista", None, QtGui.QApplication.UnicodeUTF8))
         self.saveAsFrequentBox.setText(QtGui.QApplication.translate("AddTruck", "Guardar como frequente", None, QtGui.QApplication.UnicodeUTF8))
-        self.addCarrier.setText(QtGui.QApplication.translate("AddTruck", "...", None, QtGui.QApplication.UnicodeUTF8))
+        self.addCarrierButton.setText(QtGui.QApplication.translate("AddTruck", "...", None, QtGui.QApplication.UnicodeUTF8))
         self.label_2.setText(QtGui.QApplication.translate("AddTruck", "Filtrar", None, QtGui.QApplication.UnicodeUTF8))
         self.addButton.setText(QtGui.QApplication.translate("AddTruck", "Agregar", None, QtGui.QApplication.UnicodeUTF8))
         self.cancelButton.setText(QtGui.QApplication.translate("AddTruck", "Cancelar", None, QtGui.QApplication.UnicodeUTF8))
 
+import pixmaps_rc

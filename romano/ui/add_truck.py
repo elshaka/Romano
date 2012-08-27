@@ -28,7 +28,7 @@ class AddTruck(QtGui.QDialog):
     self.api.createCarrierFinished.connect(self.setCarrier)
     self.ui.newButton.clicked.connect(self.enableTruckType)
     self.ui.frequentButton.clicked.connect(self.enableTruckType)
-    self.ui.addCarrier.clicked.connect(self.addCarrier)
+    self.ui.addCarrierButton.clicked.connect(self.addCarrier)
     self.ui.addButton.clicked.connect(self.addTruck)
     self.ui.trucksTableView.doubleClicked.connect(self.addTruck)
     self.ui.cancelButton.clicked.connect(self.reject)
