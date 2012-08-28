@@ -9,3 +9,4 @@ class Transaction(JSONableModel):
     self.sack_weight = sack_weight
     self.sacks = sacks
     self.amount = amount
+    self.processed_in_stock = True
