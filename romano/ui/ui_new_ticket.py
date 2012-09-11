@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'new_ticket.ui'
 #
-# Created: Fri Aug 17 14:15:10 2012
+# Created: Tue Sep 11 11:59:12 2012
 #      by: pyside-uic 0.2.13 running on PySide 1.1.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -74,6 +74,10 @@ class Ui_NewTicket(object):
         self.weightLayout.addWidget(self.incomingWeightSpinBox)
         self.captureWeightButton = QtGui.QPushButton(NewTicket)
         self.captureWeightButton.setMinimumSize(QtCore.QSize(120, 0))
+        self.captureWeightButton.setStyleSheet("QPushButton:checked {\n"
+"    background-color: rgb(0, 255, 0);\n"
+"    border: 0px;\n"
+"}")
         self.captureWeightButton.setCheckable(True)
         self.captureWeightButton.setChecked(False)
         self.captureWeightButton.setObjectName("captureWeightButton")

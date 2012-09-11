@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'close_ticket.ui'
 #
-# Created: Sat Aug 11 01:43:47 2012
+# Created: Tue Sep 11 12:00:07 2012
 #      by: pyside-uic 0.2.13 running on PySide 1.1.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -84,6 +84,10 @@ class Ui_CloseTicket(object):
         self.captureWeightButton = QtGui.QPushButton(self.ticketWidget)
         self.captureWeightButton.setMinimumSize(QtCore.QSize(0, 0))
         self.captureWeightButton.setMaximumSize(QtCore.QSize(120, 16777215))
+        self.captureWeightButton.setStyleSheet("QPushButton:checked {\n"
+"    background-color: rgb(0, 255, 0);\n"
+"    border: 0px;\n"
+"}")
         self.captureWeightButton.setCheckable(True)
         self.captureWeightButton.setChecked(False)
         self.captureWeightButton.setAutoDefault(False)
