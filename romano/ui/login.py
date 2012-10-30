@@ -37,7 +37,6 @@ class Login(QtGui.QDialog):
   def loginServerError(self, error):
     msgBox = QtGui.QMessageBox()
     msgBox.setWindowTitle("Error")
-    msgBox.setText(u"Imposible conectarse al servidor en %s:%s. \nError %s" 
-                   % (self.api.host, self.api.port, error))
+    msgBox.setText(u"Imposible conectarse al servidor. \nError %s" % error)
     msgBox.exec_()
     self.enabled = True
