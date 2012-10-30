@@ -11,6 +11,7 @@ from mango.models.carrier import Carrier
 
 class API(QtCore.QObject):
   loginFinished = QtCore.Signal(object)
+  loginServerError= QtCore.Signal(int)
   loginFailed = QtCore.Signal()
   createTicketFinished = QtCore.Signal()
   getTicketsFinished = QtCore.Signal(list)
@@ -33,7 +34,7 @@ class API(QtCore.QObject):
     self.port = port
     
   def _new_request(self, path):
-    url = QtCore.QUrl("http://"+self.host+":"+str(self.port)+"/"+path)
+    url = QtCore.QUrl("http://" + self.host+":" + str(self.port) + "/" + path)
     request = QtNetwork.QNetworkRequest(url)
     request.setHeader(request.ContentTypeHeader, "application/json")
     request.setRawHeader("Accept", "application/json")
@@ -47,12 +48,15 @@ class API(QtCore.QObject):
     
   def login_finished(self):
     error = self.loginReply.error()
+    print error
     if error == QtNetwork.QNetworkReply.NoError:
       user = User.fromJSON(self.loginReply.readAll().data())
       self.loginFinished.emit(user)
     elif error == QtNetwork.QNetworkReply.AuthenticationRequiredError:
       self.loginFailed.emit()
-    
+    else:
+      self.loginServerError.emit(error)
+
   def get_tickets(self):
     request = self._new_request("tickets")
     self.getTicketsReply = self.manager.get(request)

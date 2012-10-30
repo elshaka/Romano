@@ -10,12 +10,13 @@ class Login(QtGui.QDialog):
     self.ui.setupUi(self)
     self.setModal(True)
     self.api = api
-    
+
     self.ui.loginButton.clicked.connect(self.login)
     self.ui.exitButton.clicked.connect(self.reject)
     self.api.loginFinished.connect(self.loginFinished)
+    self.api.loginServerError.connect(self.loginServerError)
     self.api.loginFailed.connect(self.loginFailed)
-    
+
   def login(self):
     self.enabled = False
     username = self.ui.usernameLineEdit.text()
@@ -25,10 +26,18 @@ class Login(QtGui.QDialog):
   def loginFinished(self, user):
     self.user = user
     self.accept()
-    
+
   def loginFailed(self):
     msgBox = QtGui.QMessageBox()
     msgBox.setWindowTitle("Error")
     msgBox.setText(u"Credenciales inválidas")
+    msgBox.exec_()
+    self.enabled = True
+
+  def loginServerError(self, error):
+    msgBox = QtGui.QMessageBox()
+    msgBox.setWindowTitle("Error")
+    msgBox.setText(u"Imposible conectarse al servidor en %s:%s. \nError %s" 
+                   % (self.api.host, self.api.port, error))
     msgBox.exec_()
     self.enabled = True
