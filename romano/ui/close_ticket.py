@@ -117,8 +117,8 @@ class CloseTicket(QtGui.QDialog):
     errors = []
     if transactions_total == 0:
       errors.append(u'El total de transacciones no puede ser igual a 0')
-    if net_weight == 0:
-      errors.append(u'El peso neto no puede ser 0')
+    if abs(net_weight - transactions_total) > self.tolerance:
+      errors.append(u'La diferencia entre el peso neto y el total de transacciones es muy grande')
     if clientIndex == -1:
       errors.append(u'El cliente/fábrica no ha sido seleccionado')
     if not weight_captured and not manualEnabled:
