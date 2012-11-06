@@ -124,6 +124,8 @@ class CloseTicket(QtGui.QDialog):
     if not weight_captured and not manualEnabled:
       errors.append('El peso de salida no ha sido capturado')
     if self.ticket.ticket_type_id == 1:
+      if abs(provider_weight - net_weight) > self.tolerance
+        errors.append('La diferencia entre el peso neto y el peso del proveedor es muy grande') 
       if provider_weight == 0:
         errors.append('El peso del proveedor no ha sido indicado')
       if provider_document_number == '':
