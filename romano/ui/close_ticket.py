@@ -115,8 +115,6 @@ class CloseTicket(QtGui.QDialog):
       self.ticket.ticket_type_id = 2
 
     errors = []
-    if transactions_total == 0:
-      errors.append(u'El total de transacciones no puede ser igual a 0')
     if abs(net_weight - transactions_total) > self.tolerance:
       errors.append(u'La diferencia entre el peso neto y el total de transacciones es muy grande')
     if clientIndex == -1:
