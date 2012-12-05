@@ -113,7 +113,7 @@ class WarehousesTableModel(QtCore.QAbstractTableModel):
   def __init__(self, warehouses, parent):
     super(WarehousesTableModel, self).__init__(parent)
     self._warehouses = warehouses
-    self._headers = ['Lote', u'Código', 'Nombre', 'Existencia']
+    self._headers = ['Lote', u'Código', 'Nombre']#S, 'Existencia']
 
   def getWarehouse(self, row):
     return self._warehouses[row]
@@ -144,8 +144,8 @@ class WarehousesTableModel(QtCore.QAbstractTableModel):
         return self._warehouses[row].content_code
       elif column == 2:
         return self._warehouses[row].content_name
-      elif column == 3:
-        return "%s Kg" % self._warehouses[row].stock
+      #elif column == 3:
+      #  return "%s Kg" % self._warehouses[row].stock
     elif role == QtCore.Qt.TextAlignmentRole:
       if column == 3:
         return QtCore.Qt.AlignRight
