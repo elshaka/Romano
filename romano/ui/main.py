@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 import os
-import settings
+import ConfigParser
 from PySide import QtGui, QtCore
 from ui_main import Ui_Main
 from login import Login
@@ -18,8 +18,10 @@ class Main(QtGui.QMainWindow):
     self.ui.ticketsTableView.setModel(self.ticketsTableModel)
     horizontalHeader = self.ui.ticketsTableView.horizontalHeader()
     horizontalHeader.setResizeMode(QtGui.QHeaderView.ResizeToContents)
-    self.api = API(settings.SERVERNAME, settings.SERVERPORT)
+    config = ConfigParser.ConfigParser()
+    config.read('settings.ini')
 
+    self.api = API(config.get('Server','Host'), int(config.get('Server','Port')))
     self.ui.actionNewReception.triggered.connect(self.openTicket)
     self.ui.actionNewDispatch.triggered.connect(self.openTicket)
     self.ui.actionLogout.triggered.connect(self.logout)
@@ -29,7 +31,7 @@ class Main(QtGui.QMainWindow):
     self.api.closeTicketFinished.connect(self.printTicket)
     self.api.printTicketFinished.connect(self.printTicketFinished)
     self.ui.ticketsTableView.doubleClicked.connect(self.closeTicket)
-    
+
     self.login()
 
   def openTicket(self):

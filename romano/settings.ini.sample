@@ -1,0 +1,10 @@
+[Server]
+Host: localhost
+Port: 3000
+
+[Serial]
+PortName: '/dev/ttyUSB0'
+Simulate: True
+
+[Other]
+Tolerance: 100

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-import settings
+import ConfigParser
 from PySide import QtGui, QtCore
 from ui_close_ticket import Ui_CloseTicket
 from mango.models.ticket import Ticket
@@ -11,7 +11,10 @@ from error_message_box import ErrorMessageBox
 class CloseTicket(QtGui.QDialog):
   def __init__(self, ticket, allow_manual, parent):
     super(CloseTicket, self).__init__(parent)
-    self.tolerance = settings.TOLERANCE
+    config = ConfigParser.ConfigParser()
+    config.read('settings.ini')
+    
+    self.tolerance = int(config.get('Other','Tolerance'))
     self.api = parent.api
     self.ticket = ticket
     self.ui = Ui_CloseTicket()
@@ -55,7 +58,7 @@ class CloseTicket(QtGui.QDialog):
     self.ui.removeTransactionButton.clicked.connect(self.removeTransaction)
     self.transactionsTableModel.totalChanged.connect(self.ui.transactionsTotalSpinBox.setValue)
       
-    self.st = SerialThread(settings.PORTNAME, settings.SIMULATE_WEIGHT)
+    self.st = SerialThread(config.get('Serial','PortName'), config.getboolean('Serial','Simulate'))
     self.st.dataReady.connect(self.getWeight, QtCore.Qt.QueuedConnection)
     self.st.start()
     

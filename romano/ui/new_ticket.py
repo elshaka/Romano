@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-import settings
+import ConfigParser
 from PySide import QtGui, QtCore
 from ui_new_ticket import Ui_NewTicket
 from mango.models.ticket import Ticket
@@ -12,6 +12,9 @@ from add_truck import AddTruck
 class NewTicket(QtGui.QDialog):
   def __init__(self, ticket_type_id, allow_manual, parent):
     super(NewTicket, self).__init__(parent)
+    config = ConfigParser.ConfigParser()
+    config.read('settings.ini')
+
     self.api = parent.api
     self.ticket_type_id = ticket_type_id    
     self.ui = Ui_NewTicket()
@@ -39,7 +42,7 @@ class NewTicket(QtGui.QDialog):
     self.ui.createTicketButton.clicked.connect(self.createTicket)
     self.ui.cancelButton.clicked.connect(self.reject)
 
-    self.st = SerialThread(settings.PORTNAME, settings.SIMULATE_WEIGHT)
+    self.st = SerialThread(config.get('Serial','PortName'), config.getboolean('Serial','Simulate'))
     self.st.dataReady.connect(self.getWeight, QtCore.Qt.QueuedConnection)
     self.st.start()
 
