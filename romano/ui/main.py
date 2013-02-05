@@ -63,15 +63,14 @@ class Main(QtGui.QMainWindow):
     
   def printTicketFinished(self, data):
     filename = QtCore.QDir.tempPath() + "/ticket_%s.pdf" % self.currentTicket.number
-    if filename != '':
-      _file = QtCore.QFile(filename)
-      _file.open(QtCore.QIODevice.WriteOnly)
-      _file.write(data)
-      _file.close
-      if os.name == "posix":
-        os.system("xdg-open %s" % filename)
-      elif os.name == "nt":
-        os.startfile(filename)
+    _file = QtCore.QFile(filename)
+    _file.open(QtCore.QIODevice.WriteOnly)
+    _file.write(data)
+    _file.close
+    if os.name == "posix":
+      os.system("xdg-open %s" % filename)
+    elif os.name == "nt":
+      os.startfile(filename)
 
   def login(self):
     loginDialog = Login(self.api, self)
