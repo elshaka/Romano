@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'add_transaction.ui'
 #
-# Created: Sat Aug 25 15:33:01 2012
+# Created: Wed Feb  6 22:24:38 2013
 #      by: pyside-uic 0.2.13 running on PySide 1.1.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -45,15 +45,15 @@ class Ui_AddTransaction(object):
         self.filterLineEdit.setObjectName("filterLineEdit")
         self.horizontalLayout_6.addWidget(self.filterLineEdit)
         self.verticalLayout.addLayout(self.horizontalLayout_6)
-        self.warehousesTableView = QtGui.QTableView(AddTransaction)
-        self.warehousesTableView.setSelectionMode(QtGui.QAbstractItemView.SingleSelection)
-        self.warehousesTableView.setSelectionBehavior(QtGui.QAbstractItemView.SelectRows)
-        self.warehousesTableView.setObjectName("warehousesTableView")
-        self.warehousesTableView.horizontalHeader().setCascadingSectionResizes(False)
-        self.warehousesTableView.horizontalHeader().setHighlightSections(False)
-        self.warehousesTableView.horizontalHeader().setStretchLastSection(False)
-        self.warehousesTableView.verticalHeader().setVisible(False)
-        self.verticalLayout.addWidget(self.warehousesTableView)
+        self.lotsTableView = QtGui.QTableView(AddTransaction)
+        self.lotsTableView.setSelectionMode(QtGui.QAbstractItemView.SingleSelection)
+        self.lotsTableView.setSelectionBehavior(QtGui.QAbstractItemView.SelectRows)
+        self.lotsTableView.setObjectName("lotsTableView")
+        self.lotsTableView.horizontalHeader().setCascadingSectionResizes(False)
+        self.lotsTableView.horizontalHeader().setHighlightSections(False)
+        self.lotsTableView.horizontalHeader().setStretchLastSection(False)
+        self.lotsTableView.verticalHeader().setVisible(False)
+        self.verticalLayout.addWidget(self.lotsTableView)
         self.groupBox_2 = QtGui.QGroupBox(AddTransaction)
         self.groupBox_2.setTitle("")
         self.groupBox_2.setFlat(False)

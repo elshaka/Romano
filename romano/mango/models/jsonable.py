@@ -5,13 +5,13 @@ class JSONableModel:
     return self.__dict__
   
   def toJSON(self):
-    classname = self.__class__.__name__.lower() 
+    classname = toClassname(self.__class__.__name__) 
     return '{"%s":%s}' % (classname, json.dumps(self, cls = CustomEncoder))
   
   @classmethod
   def fromJSON(cls, json_string):    
     decoded = json.loads(json_string)
-    classname = cls.__name__.lower()
+    classname = toClassname(cls.__name__)
     if isinstance(decoded, list):
       instances = []
       for item in decoded:
@@ -23,10 +23,21 @@ class JSONableModel:
   @classmethod
   def fromDict(cls, dict_):
     raise NotImplementedError
-    
+
 class CustomEncoder(json.JSONEncoder):
   def default(self, obj):
     if hasattr(obj, 'jsonable'):
       return obj.jsonable()
     else:
       raise TypeError, 'Object %s is not JSON serializable' % obj
+
+def toClassname(string):
+  classname = ""
+  for char in string:
+    if char.isupper():
+      if classname != "":
+        classname += "_"
+      classname += char.lower()
+    else:
+      classname += char
+  return classname

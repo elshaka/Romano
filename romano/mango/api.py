@@ -6,6 +6,8 @@ from mango.models.ticket import Ticket
 from mango.models.driver import Driver
 from mango.models.truck import Truck
 from mango.models.client import Client
+from mango.models.lot import Lot
+from mango.models.product_lot import ProductLot
 from mango.models.warehouse import Warehouse
 from mango.models.carrier import Carrier
 
@@ -20,6 +22,8 @@ class API(QtCore.QObject):
   getCarriersFinished = QtCore.Signal(list)
   getClientsFinished = QtCore.Signal(list)
   getFactoriesFinished = QtCore.Signal(list)
+  getLotsFinished = QtCore.Signal(list)
+  getProductLotsFinished = QtCore.Signal(list)
   getWarehousesFinished = QtCore.Signal(list)
   closeTicketFinished = QtCore.Signal()
   printTicketFinished = QtCore.Signal(QtCore.QByteArray)
@@ -136,6 +140,24 @@ class API(QtCore.QObject):
   def print_ticket_finished(self):
     data = self.printTicketReply.readAll()
     self.printTicketFinished.emit(data)
+
+  def get_lots(self):
+    request = self._new_request("lots")
+    self.getLotsReply = self.manager.get(request)
+    self.getLotsReply.finished.connect(self.get_lots_finished)
+  
+  def get_lots_finished(self):
+    lots = Lot.fromJSON(self.getLotsReply.readAll().data())
+    self.getLotsFinished.emit(lots)
+
+  def get_product_lots(self):
+    request = self._new_request("product_lots")
+    self.getProductLotsReply = self.manager.get(request)
+    self.getProductLotsReply.finished.connect(self.get_product_lots_finished)
+  
+  def get_product_lots_finished(self):
+    product_lots = ProductLot.fromJSON(self.getProductLotsReply.readAll().data())
+    self.getProductLotsFinished.emit(product_lots)
 
   def get_warehouses(self):
     request = self._new_request("warehouses")

@@ -17,8 +17,8 @@ class AddTransaction(QtGui.QDialog):
 
     self.ui.addTransactionButton.clicked.connect(self.createTransaction)
     self.ui.cancelButton.clicked.connect(self.reject)
-    self.ui.ingredientButton.clicked.connect(self.showIngredientWarehouses)
-    self.ui.productButton.clicked.connect(self.showProductWarehouses)
+    self.ui.ingredientButton.clicked.connect(self.showLots)
+    self.ui.productButton.clicked.connect(self.showProductLots)
     self.ui.grainButton.clicked.connect(self.showGrain)
     self.ui.sackButton.clicked.connect(self.showSack)
 
@@ -30,22 +30,25 @@ class AddTransaction(QtGui.QDialog):
     self.ui.sackLineEdit.textChanged.connect(self.updateSackTotal)
     self.ui.kgSackLineEdit.textChanged.connect(self.updateSackTotal)
 
-    self.ingredientWarehousesModel = WarehousesTableModel([], self)
-    self.productWarehousesModel = WarehousesTableModel([], self)
-    self.filterWarehousesProxyModel = QtGui.QSortFilterProxyModel()
-    self.filterWarehousesProxyModel.setSourceModel(self.ingredientWarehousesModel)
-    self.filterWarehousesProxyModel.setFilterKeyColumn(-1)
-    self.filterWarehousesProxyModel.setFilterCaseSensitivity(QtCore.Qt.CaseInsensitive)
-    self.ui.warehousesTableView.setModel(self.filterWarehousesProxyModel)
-    self.ui.filterLineEdit.textChanged.connect(self.filterWarehousesProxyModel.setFilterRegExp)
+    self.lotsModel = LotsTableModel([], self)
+    self.productLotsModel = LotsTableModel([], self)
+    self.filterLotsProxyModel = QtGui.QSortFilterProxyModel()
+    self.filterLotsProxyModel.setSourceModel(self.lotsModel)
+    self.filterLotsProxyModel.setFilterKeyColumn(-1)
+    self.filterLotsProxyModel.setFilterCaseSensitivity(QtCore.Qt.CaseInsensitive)
+    self.ui.lotsTableView.setModel(self.filterLotsProxyModel)
+    self.ui.filterLineEdit.textChanged.connect(self.filterLotsProxyModel.setFilterRegExp)
 
-    horizontalHeader = self.ui.warehousesTableView.horizontalHeader()
+    horizontalHeader = self.ui.lotsTableView.horizontalHeader()
     horizontalHeader.setResizeMode(QtGui.QHeaderView.Stretch)
 
   def createTransaction(self):
     errors = []
-    warehousesModel = self.filterWarehousesProxyModel.sourceModel()
-    warehouseFilteredIndex = self.ui.warehousesTableView.currentIndex()
+    lotsModel = self.filterLotsProxyModel.sourceModel()
+    lotFilteredIndex = self.ui.lotsTableView.currentIndex()
+    content_type = 1
+    if self.ui.productButton.isChecked():
+      content_type = 2
     try:
       if self.ui.sackButton.isChecked():
         total = float(self.ui.totalSackLineEdit.text())
@@ -53,33 +56,33 @@ class AddTransaction(QtGui.QDialog):
         total = float(self.ui.totalGrainLineEdit.text())
     except:
       total = 0
-    if warehouseFilteredIndex.row() == -1:
-      errors.append(u'No se ha seleccionado un almacén')
+    if lotFilteredIndex.row() == -1:
+      errors.append(u'No se ha seleccionado un lote')
     if total == 0:
       errors.append('El peso total no puede ser 0')
 
     if not errors:
-      warehouseIndex = self.filterWarehousesProxyModel.mapToSource(warehouseFilteredIndex)
-      self.warehouse = warehousesModel.getWarehouse(warehouseIndex.row())
+      lotIndex = self.filterLotsProxyModel.mapToSource(lotFilteredIndex)
+      self.lot = lotsModel.getLot(lotIndex.row())
       if self.ui.sackButton.isChecked():
         sacks = float(self.ui.sackLineEdit.text())
         sack_weight = float(self.ui.kgSackLineEdit.text().replace(",","."))
-        self.transaction = Transaction(self.transaction_type_id,
-                                       self.warehouse.id, True, sack_weight, 
+        self.transaction = Transaction(self.transaction_type_id, content_type,
+                                       self.lot.id, True, sack_weight, 
                                        sacks, total)
       else:
-        self.transaction = Transaction(self.transaction_type_id,
-                                       self.warehouse.id, False, None, 
+        self.transaction = Transaction(self.transaction_type_id, content_type,
+                                       self.lot.id, False, None, 
                                        None, total)
       self.accept()
     else:
       ErrorMessageBox(errors).exec_()
 
-  def showIngredientWarehouses(self):
-    self.filterWarehousesProxyModel.setSourceModel(self.ingredientWarehousesModel)
+  def showLots(self):
+    self.filterLotsProxyModel.setSourceModel(self.lotsModel)
 
-  def showProductWarehouses(self):
-    self.filterWarehousesProxyModel.setSourceModel(self.productWarehousesModel)
+  def showProductLots(self):
+    self.filterLotsProxyModel.setSourceModel(self.productLotsModel)
 
   def showGrain(self):
     self.ui.grainWidget.show()
@@ -98,29 +101,24 @@ class AddTransaction(QtGui.QDialog):
       total = 0
     self.ui.totalSackLineEdit.setText(str(total))
 
-  def getWarehousesFinished(self, warehouses):
-    ingredientWarehouses = []
-    productWarehouses = []
-    for warehouse in warehouses:
-      if warehouse.warehouse_type_id == 1:
-        ingredientWarehouses.append(warehouse)
-      else:
-        productWarehouses.append(warehouse)
-    self.ingredientWarehousesModel.refreshWarehouses(ingredientWarehouses)
-    self.productWarehousesModel.refreshWarehouses(productWarehouses)
+  def getLotsFinished(self, lots):
+    self.lotsModel.refreshLots(lots)
+  
+  def getProductLotsFinished(self, product_lots):
+    self.productLotsModel.refreshLots(product_lots)
 
-class WarehousesTableModel(QtCore.QAbstractTableModel):
-  def __init__(self, warehouses, parent):
-    super(WarehousesTableModel, self).__init__(parent)
-    self._warehouses = warehouses
-    self._headers = ['Lote', u'Código', 'Nombre']#S, 'Existencia']
+class LotsTableModel(QtCore.QAbstractTableModel):
+  def __init__(self, lots, parent):
+    super(LotsTableModel, self).__init__(parent)
+    self._lots = lots
+    self._headers = ['Lote', u'Código', 'Nombre']
 
-  def getWarehouse(self, row):
-    return self._warehouses[row]
+  def getLot(self, row):
+    return self._lots[row]
 
-  def refreshWarehouses(self, warehouses):
+  def refreshLots(self, lots):
     self.beginResetModel()
-    self._warehouses = warehouses
+    self._lots = lots
     self.endResetModel()
 
   def headerData(self, section, orientation, role):
@@ -129,7 +127,7 @@ class WarehousesTableModel(QtCore.QAbstractTableModel):
         return self._headers[section]
 
   def rowCount(self, parent):
-    return len(self._warehouses)
+    return len(self._lots)
 
   def columnCount(self, parent):
     return len(self._headers)
@@ -139,13 +137,11 @@ class WarehousesTableModel(QtCore.QAbstractTableModel):
     column = index.column()
     if role == QtCore.Qt.DisplayRole:
       if column == 0:
-        return self._warehouses[row].lot_code
+        return self._lots[row].code
       elif column == 1:
-        return self._warehouses[row].content_code
+        return self._lots[row].content_code
       elif column == 2:
-        return self._warehouses[row].content_name
-      #elif column == 3:
-      #  return "%s Kg" % self._warehouses[row].stock
+        return self._lots[row].content_name
     elif role == QtCore.Qt.TextAlignmentRole:
       if column == 3:
         return QtCore.Qt.AlignRight

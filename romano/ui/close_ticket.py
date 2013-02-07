@@ -82,13 +82,15 @@ class CloseTicket(QtGui.QDialog):
       transaction_type_id = 4
     else:
       transaction_type_id = 5
-    self.api.get_warehouses()
+    self.api.get_lots()
+    self.api.get_product_lots()
     addTransactionDialog = AddTransaction(transaction_type_id, self)
-    self.api.getWarehousesFinished.connect(addTransactionDialog.getWarehousesFinished)
+    self.api.getLotsFinished.connect(addTransactionDialog.getLotsFinished)
+    self.api.getProductLotsFinished.connect(addTransactionDialog.getProductLotsFinished)
     if addTransactionDialog.exec_() == QtGui.QDialog.Accepted:
       transaction = addTransactionDialog.transaction
-      warehouse = addTransactionDialog.warehouse
-      self.transactionsTableModel.addTransaction(transaction, warehouse)
+      lot = addTransactionDialog.lot
+      self.transactionsTableModel.addTransaction(transaction, lot)
     
   def removeTransaction(self):
     row = self.ui.transactionsTableView.currentIndex().row()
@@ -220,31 +222,29 @@ class ClientsListModel(QtCore.QAbstractListModel):
 
 class TransactionsTableModel(QtCore.QAbstractTableModel):
   totalChanged = QtCore.Signal(float)
-  def __init__(self, transactions, warehouses, parent):
+  def __init__(self, transactions, lots, parent):
     super(TransactionsTableModel, self).__init__(parent)
     self._transactions = transactions
-    self._warehouses = warehouses
+    self._lots = lots
     self._headers = [u'Lote', u'Código', 'Nombre', 'Sacos', 'Kg/Saco', 'Cantidad']
     
   def getTransactions(self):
     return self._transactions
   
-  def addTransaction(self, transaction, warehouse):
-    row = len(self._warehouses)
+  def addTransaction(self, transaction, lot):
+    row = len(self._lots)
     self.beginInsertRows(QtCore.QModelIndex(), row, row)
     self._transactions.append(transaction)
-    self._warehouses.append(warehouse)
+    self._lots.append(lot)
     self.endInsertRows()
     self._recalculateTotal()
   
   def removeTransaction(self, row):
-    #self.beginRemoveRows(QtCore.QModelIndex(), row, 1)
     self.beginResetModel()
     transaction = self._transactions[row]
-    warehouse = self._warehouses[row]
+    lot = self._lots[row]
     self._transactions.remove(transaction)
-    self._warehouses.remove(warehouse)
-    #self.endRemoveRows()
+    self._lots.remove(lot)
     self.endResetModel()
     self._recalculateTotal()
     
@@ -260,7 +260,7 @@ class TransactionsTableModel(QtCore.QAbstractTableModel):
         return self._headers[section]
         
   def rowCount(self, parent):
-    return len(self._warehouses)
+    return len(self._lots)
     
   def columnCount(self, parent):
     return len(self._headers)
@@ -270,11 +270,11 @@ class TransactionsTableModel(QtCore.QAbstractTableModel):
     column = index.column()
     if role == QtCore.Qt.DisplayRole:
       if column == 0:
-        return self._warehouses[row].lot_code
+        return self._lots[row].code
       elif column == 1:
-        return self._warehouses[row].content_code
+        return self._lots[row].content_code
       elif column == 2:
-        return self._warehouses[row].content_name
+        return self._lots[row].content_name
       elif column == 3:
         if self._transactions[row].sack:
           return self._transactions[row].sacks
