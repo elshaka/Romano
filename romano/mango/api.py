@@ -8,7 +8,6 @@ from mango.models.truck import Truck
 from mango.models.client import Client
 from mango.models.lot import Lot
 from mango.models.product_lot import ProductLot
-from mango.models.warehouse import Warehouse
 from mango.models.carrier import Carrier
 
 class API(QtCore.QObject):
