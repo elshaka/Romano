@@ -3,7 +3,8 @@ Host: localhost
 Port: 3000
 
 [Serial]
-PortName: '/dev/ttyUSB0'
+PortName: /dev/ttyUSB0
+Regex: (\d+)
 Simulate: True
 
 [Other]

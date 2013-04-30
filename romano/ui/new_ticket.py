@@ -42,7 +42,7 @@ class NewTicket(QtGui.QDialog):
     self.ui.createTicketButton.clicked.connect(self.createTicket)
     self.ui.cancelButton.clicked.connect(self.reject)
 
-    self.st = SerialThread(config.get('Serial','PortName'), config.getboolean('Serial','Simulate'))
+    self.st = SerialThread(config.get('Serial','PortName'), config.get('Serial','Regex'), config.getboolean('Serial','Simulate'))
     self.st.dataReady.connect(self.getWeight, QtCore.Qt.QueuedConnection)
     self.st.start()
 

@@ -58,7 +58,7 @@ class CloseTicket(QtGui.QDialog):
     self.ui.removeTransactionButton.clicked.connect(self.removeTransaction)
     self.transactionsTableModel.totalChanged.connect(self.ui.transactionsTotalSpinBox.setValue)
       
-    self.st = SerialThread(config.get('Serial','PortName'), config.getboolean('Serial','Simulate'))
+    self.st = SerialThread(config.get('Serial','PortName'), config.get('Serial','Regex'), config.getboolean('Serial','Simulate'))
     self.st.dataReady.connect(self.getWeight, QtCore.Qt.QueuedConnection)
     self.st.start()
     
