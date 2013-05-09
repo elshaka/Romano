@@ -48,10 +48,6 @@ class Main(QtGui.QMainWindow):
   def closeTicket(self, tableIndex):
     ticket = self.ticketsTableModel.getTicket(tableIndex.row())
     closeTicketDialog = CloseTicket(ticket, self.user.allow_manual, self)
-    self.api.get_clients()
-    self.api.getClientsFinished.connect(closeTicketDialog.getClientsFinished)
-    self.api.get_factories()
-    self.api.getFactoriesFinished.connect(closeTicketDialog.getFactoriesFinished)
     if closeTicketDialog.exec_() == QtGui.QDialog.Accepted:
       self.api.close_ticket(closeTicketDialog.ticket)
       self.currentTicket = closeTicketDialog.ticket

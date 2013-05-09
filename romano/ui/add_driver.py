@@ -46,8 +46,7 @@ class AddDriver(QtGui.QDialog):
       if not errors:
         self.new = True
         self.driver = Driver(ci, name, None, None, None)
-        if self.ui.saveAsFrequentBox.isChecked():
-          self.driver.frequent = True
+        self.driver.frequent = self.ui.saveAsFrequentBox.isChecked()
         self.accept()
       else:
         ErrorMessageBox(errors).exec_()

@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 
+import simplejson as json
+
 from PySide import QtCore, QtNetwork
 from mango.models.user import User
 from mango.models.ticket import Ticket
@@ -29,6 +31,8 @@ class API(QtCore.QObject):
   createDriverFinished = QtCore.Signal(object)
   createTruckFinished = QtCore.Signal(object)
   createCarrierFinished = QtCore.Signal(object)
+  createClientFinished = QtCore.Signal(object)
+  createClientFailed = QtCore.Signal(object)
   
   def __init__(self, host = "localhost", port = 3000):
     super(API, self).__init__()
@@ -42,6 +46,9 @@ class API(QtCore.QObject):
     request.setHeader(request.ContentTypeHeader, "application/json")
     request.setRawHeader("Accept", "application/json")
     return request
+
+  def _parse_errors(self, errors_json):
+    return json.loads(errors_json)
  
   def login(self, username, password):
     request = self._new_request("sessions")
@@ -51,7 +58,6 @@ class API(QtCore.QObject):
 
   def login_finished(self):
     error = self.loginReply.error()
-    print error
     if error == QtNetwork.QNetworkReply.NoError:
       user = User.fromJSON(self.loginReply.readAll().data())
       self.loginFinished.emit(user)
@@ -193,9 +199,6 @@ class API(QtCore.QObject):
     if error == QtNetwork.QNetworkReply.NoError:
       truck = Truck.fromJSON(self.createTruckReply.readAll().data())
       self.createTruckFinished.emit(truck)
-    else:
-      print error
-      print self.createTruckReply.readAll().data()
 
   def get_carriers(self):
     request = self._new_request("carriers")
@@ -217,6 +220,18 @@ class API(QtCore.QObject):
     if error == QtNetwork.QNetworkReply.NoError:
       carrier = Carrier.fromJSON(self.createCarrierReply.readAll().data())
       self.createCarrierFinished.emit(carrier)
+
+  def create_client(self, client):
+    request = self._new_request("clients")
+    data = QtCore.QByteArray(client.toJSON())
+    self.createClientReply = self.manager.post(request, data)
+    self.createClientReply.finished.connect(self.create_client_finished)
+
+  def create_client_finished(self):
+    error = self.createClientReply.error()
+    if error == QtNetwork.QNetworkReply.NoError:
+      client = Client.fromJSON(self.createClientReply.readAll().data())
+      self.createClientFinished.emit(client)
     else:
-      print error
-      print self.createCarrierReply.readAll().data()
+      errors = self._parse_errors(self.createClientReply.readAll().data())
+      self.createClientFailed.emit(errors)

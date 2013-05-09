@@ -53,8 +53,7 @@ class AddTruck(QtGui.QDialog):
       if not errors:
         self.new = True
         self.truck = Truck(self.carrier.id, license_plate)
-        if self.ui.saveAsFrequentBox.isChecked():
-          self.truck.frequent = True
+        self.truck.frequent = self.ui.saveAsFrequentBox.isChecked()
         self.accept()
       else:
         ErrorMessageBox(errors).exec_()

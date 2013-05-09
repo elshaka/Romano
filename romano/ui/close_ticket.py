@@ -5,6 +5,7 @@ from PySide import QtGui, QtCore
 from ui_close_ticket import Ui_CloseTicket
 from mango.models.ticket import Ticket
 from serial_thread.serial_thread import SerialThread
+from add_client import AddClient
 from add_transaction import AddTransaction
 from error_message_box import ErrorMessageBox
 
@@ -20,8 +21,8 @@ class CloseTicket(QtGui.QDialog):
     self.ui = Ui_CloseTicket()
     self.ui.setupUi(self)
     self.setModal(True)
-    clientsCompleter = self.ui.clientsComboBox.completer()
-    clientsCompleter.setCompletionMode(QtGui.QCompleter.UnfilteredPopupCompletion)
+
+    self.client = None
 
     if not allow_manual:
       self.ui.manualCheckBox.hide()
@@ -45,12 +46,11 @@ class CloseTicket(QtGui.QDialog):
       self.ui.providerWidget.hide()
       self.ui.dispatchButton.setChecked(True)
 
+    self.ui.addClientButton.clicked.connect(self.addClient)
     self.ui.manualCheckBox.stateChanged.connect(self.setManualCapture)
     self.ui.outgoingWeightSpinBox.valueChanged.connect(self.weightChanged)
     self.ui.receptionButton.clicked.connect(self.updateTicketType)
     self.ui.dispatchButton.clicked.connect(self.updateTicketType)
-    self.ui.clientButton.clicked.connect(self.showClients)
-    self.ui.factoryButton.clicked.connect(self.showFactories)
     self.ui.addTransactionButton.clicked.connect(self.addTransaction)
     self.ui.cancelButton.clicked.connect(self.reject)
     self.ui.closeTicketButton.clicked.connect(self.closeTicket)
@@ -104,8 +104,6 @@ class CloseTicket(QtGui.QDialog):
       self.ui.removeTransactionButton.setEnabled(True)
   
   def closeTicket(self):
-    clientIndex = self.ui.clientsComboBox.currentIndex()
-    clientListModel = self.ui.clientsComboBox.model()
     outgoing_weight = self.ui.outgoingWeightSpinBox.value()
     weight_captured = self.ui.captureWeightButton.isChecked()
     manualEnabled = self.ui.manualCheckBox.isChecked()
@@ -120,15 +118,17 @@ class CloseTicket(QtGui.QDialog):
       self.ticket.ticket_type_id = 2
 
     errors = []
+    if self.client == None:
+      errors.append(u"Debe seleccionar un cliente/fábrica")
     if abs(net_weight - transactions_total) > self.tolerance:
       errors.append(u'La diferencia entre el peso neto y el total de transacciones es muy grande')
-    if clientIndex == -1:
+    if self.client == None:
       errors.append(u'El cliente/fábrica no ha sido seleccionado')
     if not weight_captured and not manualEnabled:
       errors.append('El peso de salida no ha sido capturado')
     if self.ticket.ticket_type_id == 1:
       if abs(provider_weight - net_weight) > self.tolerance:
-        errors.append('La diferencia entre el peso neto y el peso del proveedor es muy grande') 
+        errors.append('La diferencia entre el peso neto y el peso del proveedor es muy grande')
       if provider_document_number == '':
         errors.append(u'El número de guía no ha sido indicado')
         
@@ -145,11 +145,10 @@ class CloseTicket(QtGui.QDialog):
           transaction.transaction_type_id = 4
         else:
           transaction.transaction_type_id = 5
-      
-      client_id = clientListModel.getClient(clientIndex).id
-      self.ticket.client_id = client_id
+
+      self.ticket.client_id = self.client.id
       self.ticket.manual_outgoing = manualEnabled
-      
+
       self.accept()
     else:
       ErrorMessageBox(errors).exec_()
@@ -179,46 +178,14 @@ class CloseTicket(QtGui.QDialog):
     self.ui.tareWeightSpinBox.setValue(tare_weight)
     self.ui.netWeightSpinBox.setValue(net_weight)
 
-  def getClientsFinished(self, clients):
-    self.clientsListModel = ClientsListModel(clients, self)
-    self.ui.clientButton.setEnabled(True)
+  def addClient(self):
+    addClientDialog = AddClient(self)
+    if addClientDialog.exec_() == QtGui.QDialog.Accepted:
+      self.setClient(addClientDialog.client)
 
-  def getFactoriesFinished(self, factories):
-    self.factoriesListModel = ClientsListModel(factories, self)
-    self.ui.factoryButton.setEnabled(True)
-    
-  def showClients(self):
-    self.ui.clientsComboBox.setModel(self.clientsListModel)
-    clientsLineEdit = self.ui.clientsComboBox.lineEdit()
-    clientsLineEdit.setPlaceholderText('Seleccione un cliente')
-    self.ui.clientsComboBox.setCurrentIndex(-1)
-    
-  def showFactories(self):
-    self.ui.clientsComboBox.setModel(self.factoriesListModel)
-    clientsLineEdit = self.ui.clientsComboBox.lineEdit()
-    clientsLineEdit.setPlaceholderText(u'Seleccione una fábrica')
-    self.ui.clientsComboBox.setCurrentIndex(-1)
-    
-class ClientsListModel(QtCore.QAbstractListModel):
-  def __init__(self, clients, parent):
-    super(ClientsListModel, self).__init__(parent)
-    self._clients = clients
-    
-  def refreshClients(self, clients):
-    self.beginResetModel()
-    self._clients = clients
-    self.endResetModel()
-  
-  def getClient(self, row):
-    return self._clients[row]
-  
-  def rowCount(self, parent):
-    return len(self._clients)
-    
-  def data(self, index, role):
-    row = index.row()
-    if role == QtCore.Qt.DisplayRole or role == QtCore.Qt.EditRole:
-      return self._clients[row].name
+  def setClient(self, client):
+    self.client = client
+    self.ui.clientLineEdit.setText(self.client.name)
 
 class TransactionsTableModel(QtCore.QAbstractTableModel):
   totalChanged = QtCore.Signal(float)

@@ -31,9 +31,6 @@ class NewTicket(QtGui.QDialog):
     if not allow_manual:
       self.ui.manualCheckBox.hide()
 
-    self.api.get_drivers()
-    self.api.get_trucks()
-
     self.api.createDriverFinished.connect(self.setDriver)
     self.api.createTruckFinished.connect(self.setTruck)
     self.ui.addDriverButton.clicked.connect(self.addDriver)

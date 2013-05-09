@@ -7,7 +7,7 @@ class Client(JSONableModel):
     self.name = name
     self.tel1 = tel1
     self.address = address
-  
+
   @classmethod
   def fromDict(cls, dict_):
     client = cls(dict_['code'], dict_['ci_rif'],  dict_['name'], 
