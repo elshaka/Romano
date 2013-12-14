@@ -1,4 +1,4 @@
-from jsonable import JSONableModel
+from .jsonable import JSONableModel
 
 class TicketType(JSONableModel):
   def __init__(self, id, code, description):

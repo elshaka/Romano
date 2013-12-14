@@ -1,4 +1,4 @@
-from jsonable import JSONableModel
+from .jsonable import JSONableModel
 
 class User(JSONableModel):
   def __init__(self, login, name):

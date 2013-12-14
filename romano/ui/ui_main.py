@@ -2,8 +2,8 @@
 
 # Form implementation generated from reading ui file 'main.ui'
 #
-# Created: Sun Aug  5 11:14:20 2012
-#      by: pyside-uic 0.2.13 running on PySide 1.1.1
+# Created: Sat Dec 14 02:04:15 2013
+#      by: pyside-uic 0.2.15 running on PySide 1.2.1
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -112,4 +112,4 @@ class Ui_Main(object):
         self.actionLogout.setToolTip(QtGui.QApplication.translate("Main", "Cerrar sesión", None, QtGui.QApplication.UnicodeUTF8))
         self.actionUserName.setText(QtGui.QApplication.translate("Main", "username", None, QtGui.QApplication.UnicodeUTF8))
 
-import pixmaps_rc
+from . import pixmaps_rc

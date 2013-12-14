@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 
 from PySide import QtGui, QtCore
-from ui_add_truck import Ui_AddTruck
+from .ui_add_truck import Ui_AddTruck
 from mango.models.truck import Truck
-from add_carrier import AddCarrier
-from error_message_box import ErrorMessageBox
+from .add_carrier import AddCarrier
+from .error_message_box import ErrorMessageBox
 
 class AddTruck(QtGui.QDialog):
   def __init__(self, parent):
@@ -47,7 +47,7 @@ class AddTruck(QtGui.QDialog):
       license_plate = self.ui.licensePlateLineEdit.text()
       
       if license_plate == "":
-        errors.append(u"Debe indicar un número de placa")
+        errors.append("Debe indicar un número de placa")
       if self.carrier == None:
         errors.append("Debe indicar una transportista")
       if not errors:

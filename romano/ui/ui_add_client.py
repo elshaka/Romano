@@ -2,8 +2,8 @@
 
 # Form implementation generated from reading ui file 'add_client.ui'
 #
-# Created: Wed May  8 17:05:59 2013
-#      by: pyside-uic 0.2.13 running on PySide 1.1.1
+# Created: Sat Dec 14 02:03:23 2013
+#      by: pyside-uic 0.2.15 running on PySide 1.2.1
 #
 # WARNING! All changes made in this file will be lost!
 

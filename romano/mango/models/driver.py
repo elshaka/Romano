@@ -1,4 +1,4 @@
-from jsonable import JSONableModel
+from .jsonable import JSONableModel
 
 class Driver(JSONableModel):
   def __init__(self, ci, name, address, tel1, tel2):

@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 
 from PySide import QtGui, QtCore
-from ui_add_client import Ui_AddClient
+from .ui_add_client import Ui_AddClient
 from mango.models.client import Client
-from error_message_box import ErrorMessageBox
-from error_message_box import NewErrorMessageBox
+from .error_message_box import ErrorMessageBox
+from .error_message_box import NewErrorMessageBox
 
 class AddClient(QtGui.QDialog):
   def __init__(self, parent):
@@ -15,6 +15,9 @@ class AddClient(QtGui.QDialog):
     self.api.get_clients()
     self.api.get_factories()
     self.ui.newWidget.setEnabled(False)
+    self.ui.newWidget.hide()
+    self.ui.widget.hide()
+    self.ui.line.hide()
     
     self.clientsTableModel = ClientsTableModel([], self)
     self.factoriesTableModel = ClientsTableModel([], self)
@@ -96,7 +99,7 @@ class ClientsTableModel(QtCore.QAbstractTableModel):
   def __init__(self, clients, parent):
     super(ClientsTableModel, self).__init__(parent)
     self._clients = clients
-    self._headers = [u'Código', 'Nombre']
+    self._headers = ['Código', 'Nombre']
     
   def getClient(self, row):
     return self._clients[row]

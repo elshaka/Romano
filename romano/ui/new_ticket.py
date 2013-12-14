@@ -1,18 +1,18 @@
 # -*- coding: utf-8 -*-
 
-import ConfigParser
+import configparser
 from PySide import QtGui, QtCore
-from ui_new_ticket import Ui_NewTicket
+from .ui_new_ticket import Ui_NewTicket
 from mango.models.ticket import Ticket
 from serial_thread.serial_thread import SerialThread
-from error_message_box import ErrorMessageBox
-from add_driver import AddDriver
-from add_truck import AddTruck
+from .error_message_box import ErrorMessageBox
+from .add_driver import AddDriver
+from .add_truck import AddTruck
 
 class NewTicket(QtGui.QDialog):
   def __init__(self, ticket_type_id, allow_manual, parent):
     super(NewTicket, self).__init__(parent)
-    config = ConfigParser.ConfigParser()
+    config = configparser.ConfigParser()
     config.read('settings.ini')
 
     self.api = parent.api
@@ -20,9 +20,9 @@ class NewTicket(QtGui.QDialog):
     self.ui = Ui_NewTicket()
     self.ui.setupUi(self)
     if ticket_type_id == 1:
-      self.setWindowTitle(u"Nueva Recepción")
+      self.setWindowTitle("Nueva Recepción")
     else:
-      self.setWindowTitle(u"Nuevo Despacho")
+      self.setWindowTitle("Nuevo Despacho")
     self.setModal(True)
 
     self.driver = None
@@ -51,7 +51,7 @@ class NewTicket(QtGui.QDialog):
     if self.driver == None:
       errors.append("El chofer no ha sido seleccionado")
     if self.truck == None:
-      errors.append(u"El camión no ha sido seleccionado")
+      errors.append("El camión no ha sido seleccionado")
     if not manualEnabled and not weightCaptured:
       errors.append("El peso de entrada no ha sido capturado")
     

@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 
 from PySide import QtGui, QtCore
-from ui_add_driver import Ui_AddDriver
+from .ui_add_driver import Ui_AddDriver
 from mango.models.driver import Driver
-from error_message_box import ErrorMessageBox
+from .error_message_box import ErrorMessageBox
 
 class AddDriver(QtGui.QDialog):
   def __init__(self, parent):
@@ -39,9 +39,9 @@ class AddDriver(QtGui.QDialog):
       elif len(name) < 3:
         errors.append("El nombre es muy corto")
       if ci == "":
-        errors.append(u"Debe indicar un número de cédula")
+        errors.append("Debe indicar un número de cédula")
       elif len(ci) < 3:
-        errors.append(u"El número de cédula es muy corto")
+        errors.append("El número de cédula es muy corto")
       
       if not errors:
         self.new = True
@@ -75,7 +75,7 @@ class DriversTableModel(QtCore.QAbstractTableModel):
   def __init__(self, drivers, parent):
     super(DriversTableModel, self).__init__(parent)
     self._drivers = drivers
-    self._headers = [u'Cédula', 'Nombre']
+    self._headers = ['Cédula', 'Nombre']
     
   def getDriver(self, row):
     return self._drivers[row]

@@ -16,21 +16,21 @@ class NewErrorMessageBox(QMessageBox):
     super(NewErrorMessageBox, self).__init__()
     errors_list_string = ""
     t = {
-        'description': u"La descripción",
-        'number': u"El número",
+        'description': "La descripción",
+        'number': "El número",
         'start_date': "La fecha de inicio",
-        'end_date': u"La fecha de finalización",
+        'end_date': "La fecha de finalización",
         'name': "El nombre",
         'prog_batches': "Los baches programados",
-        'code': u"El código",
-        'wet_time': u"El tiempo húmedo",
+        'code': "El código",
+        'wet_time': "El tiempo húmedo",
         'dry_time': "El tiempo seco",
-        'address': u"La dirección",
-        'tel1': u"El teléfono",
+        'address': "La dirección",
+        'tel1': "El teléfono",
         'license_plate': "La placa",
-        'ci_rif': u"La Cédula/RIF"
+        'ci_rif': "La Cédula/RIF"
     }
-    for field, field_errors in errors.items():
+    for field, field_errors in list(errors.items()):
       for field_error in field_errors:
         errors_list_string += "- %s %s\n" % (t[field], field_error)
     self.setWindowTitle("Error")

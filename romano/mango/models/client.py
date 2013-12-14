@@ -1,4 +1,4 @@
-from jsonable import JSONableModel
+from .jsonable import JSONableModel
 
 class Client(JSONableModel):
   def __init__(self, code, ci_rif, name, tel1, address):    

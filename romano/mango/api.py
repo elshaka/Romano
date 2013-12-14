@@ -185,8 +185,8 @@ class API(QtCore.QObject):
       driver = Driver.fromJSON((self.createDriverReply.readAll().data()))
       self.createDriverFinished.emit(driver)
     else:
-      print error
-      print self.createDriverReply.readAll().data()
+      print(error)
+      print(self.createDriverReply.readAll().data())
 
   def create_truck(self, truck):
     request = self._new_request("trucks")

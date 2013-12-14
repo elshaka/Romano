@@ -2,8 +2,8 @@
 
 # Form implementation generated from reading ui file 'new_ticket.ui'
 #
-# Created: Tue Sep 11 11:59:12 2012
-#      by: pyside-uic 0.2.13 running on PySide 1.1.1
+# Created: Sat Dec 14 02:04:30 2013
+#      by: pyside-uic 0.2.15 running on PySide 1.2.1
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -126,4 +126,4 @@ class Ui_NewTicket(object):
         self.cancelButton.setText(QtGui.QApplication.translate("NewTicket", "Cancelar", None, QtGui.QApplication.UnicodeUTF8))
         self.createTicketButton.setText(QtGui.QApplication.translate("NewTicket", "Crear ticket", None, QtGui.QApplication.UnicodeUTF8))
 
-import pixmaps_rc
+from . import pixmaps_rc

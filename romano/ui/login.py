@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from PySide import QtGui, QtCore
-from ui_login import Ui_Login
+from .ui_login import Ui_Login
 
 class Login(QtGui.QDialog):
   def __init__(self, api, parent):
@@ -30,13 +30,13 @@ class Login(QtGui.QDialog):
   def loginFailed(self):
     msgBox = QtGui.QMessageBox()
     msgBox.setWindowTitle("Error")
-    msgBox.setText(u"Credenciales inválidas")
+    msgBox.setText("Credenciales inválidas")
     msgBox.exec_()
     self.enabled = True
 
   def loginServerError(self, error):
     msgBox = QtGui.QMessageBox()
     msgBox.setWindowTitle("Error")
-    msgBox.setText(u"Imposible conectarse al servidor. \nError %s" % error)
+    msgBox.setText("Imposible conectarse al servidor. \nError %s" % error)
     msgBox.exec_()
     self.enabled = True

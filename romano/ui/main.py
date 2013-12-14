@@ -1,12 +1,12 @@
 # -*- coding: utf-8 -*-
 
 import os
-import ConfigParser
+import configparser
 from PySide import QtGui, QtCore
-from ui_main import Ui_Main
-from login import Login
-from new_ticket import NewTicket
-from close_ticket import CloseTicket
+from .ui_main import Ui_Main
+from .login import Login
+from .new_ticket import NewTicket
+from .close_ticket import CloseTicket
 from mango.api import API
 
 class Main(QtGui.QMainWindow):
@@ -18,7 +18,7 @@ class Main(QtGui.QMainWindow):
     self.ui.ticketsTableView.setModel(self.ticketsTableModel)
     horizontalHeader = self.ui.ticketsTableView.horizontalHeader()
     horizontalHeader.setResizeMode(QtGui.QHeaderView.ResizeToContents)
-    config = ConfigParser.ConfigParser()
+    config = configparser.ConfigParser()
     config.read('settings.ini')
 
     self.api = API(config.get('Server','Host'), int(config.get('Server','Port')))
@@ -103,7 +103,7 @@ class TicketsTableModel(QtCore.QAbstractTableModel):
   def __init__(self, tickets, parent = None):
     super(TicketsTableModel, self).__init__(parent)
     self._tickets = tickets
-    self._headers = [u'Número', 'Tipo', 'Chofer', 'Placa', 'Peso de entrada', 'Fecha de entrada', 'Comentario']
+    self._headers = ['Número', 'Tipo', 'Chofer', 'Placa', 'Peso de entrada', 'Fecha de entrada', 'Comentario']
     
   def getTicket(self, row):
     return self._tickets[row]

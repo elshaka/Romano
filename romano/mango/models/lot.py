@@ -1,4 +1,4 @@
-from jsonable import JSONableModel
+from .jsonable import JSONableModel
 
 class Lot(JSONableModel):
   def __init__(self, code, stock, location):

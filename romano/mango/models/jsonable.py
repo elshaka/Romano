@@ -29,7 +29,7 @@ class CustomEncoder(json.JSONEncoder):
     if hasattr(obj, 'jsonable'):
       return obj.jsonable()
     else:
-      raise TypeError, 'Object %s is not JSON serializable' % obj
+      raise TypeError('Object %s is not JSON serializable' % obj)
 
 def toClassname(string):
   classname = ""

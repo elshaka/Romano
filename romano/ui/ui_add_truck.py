@@ -2,8 +2,8 @@
 
 # Form implementation generated from reading ui file 'add_truck.ui'
 #
-# Created: Mon Aug 27 16:38:16 2012
-#      by: pyside-uic 0.2.13 running on PySide 1.1.1
+# Created: Sat Dec 14 02:03:48 2013
+#      by: pyside-uic 0.2.15 running on PySide 1.2.1
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -120,4 +120,4 @@ class Ui_AddTruck(object):
         self.addButton.setText(QtGui.QApplication.translate("AddTruck", "Agregar", None, QtGui.QApplication.UnicodeUTF8))
         self.cancelButton.setText(QtGui.QApplication.translate("AddTruck", "Cancelar", None, QtGui.QApplication.UnicodeUTF8))
 
-import pixmaps_rc
+from . import pixmaps_rc

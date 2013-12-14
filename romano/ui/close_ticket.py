@@ -1,18 +1,18 @@
 # -*- coding: utf-8 -*-
 
-import ConfigParser
+import configparser
 from PySide import QtGui, QtCore
-from ui_close_ticket import Ui_CloseTicket
+from .ui_close_ticket import Ui_CloseTicket
 from mango.models.ticket import Ticket
 from serial_thread.serial_thread import SerialThread
-from add_client import AddClient
-from add_transaction import AddTransaction
-from error_message_box import ErrorMessageBox
+from .add_client import AddClient
+from .add_transaction import AddTransaction
+from .error_message_box import ErrorMessageBox
 
 class CloseTicket(QtGui.QDialog):
   def __init__(self, ticket, allow_manual, parent):
     super(CloseTicket, self).__init__(parent)
-    config = ConfigParser.ConfigParser()
+    config = configparser.ConfigParser()
     config.read('settings.ini')
     
     self.tolerance = int(config.get('Other','Tolerance'))
@@ -37,8 +37,13 @@ class CloseTicket(QtGui.QDialog):
     self.ui.transactionsTableView.setModel(self.transactionsTableModel)
     
     horizontalHeader = self.ui.transactionsTableView.horizontalHeader()
-    horizontalHeader.setResizeMode(QtGui.QHeaderView.Stretch)
-    
+    horizontalHeader.resizeSection(0, 80)
+    horizontalHeader.resizeSection(1, 80)
+    horizontalHeader.setResizeMode(2, QtGui.QHeaderView.Stretch)
+    horizontalHeader.resizeSection(3, 50)
+    horizontalHeader.resizeSection(4, 50)
+    horizontalHeader.resizeSection(5, 80)
+
     if self.ticket.ticket_type_id == 1:
       self.ui.providerWidget.show()
       self.ui.receptionButton.setChecked(True)
@@ -119,18 +124,18 @@ class CloseTicket(QtGui.QDialog):
 
     errors = []
     if self.client == None:
-      errors.append(u"Debe seleccionar un cliente/fábrica")
+      errors.append("Debe seleccionar un cliente/fábrica")
     if abs(net_weight - transactions_total) > self.tolerance:
-      errors.append(u'La diferencia entre el peso neto y el total de transacciones es muy grande')
+      errors.append('La diferencia entre el peso neto y el total de transacciones es muy grande')
     if self.client == None:
-      errors.append(u'El cliente/fábrica no ha sido seleccionado')
+      errors.append('El cliente/fábrica no ha sido seleccionado')
     if not weight_captured and not manualEnabled:
       errors.append('El peso de salida no ha sido capturado')
     if self.ticket.ticket_type_id == 1:
       if abs(provider_weight - net_weight) > self.tolerance:
         errors.append('La diferencia entre el peso neto y el peso del proveedor es muy grande')
       if provider_document_number == '':
-        errors.append(u'El número de guía no ha sido indicado')
+        errors.append('El número de guía no ha sido indicado')
         
     if not errors:
       self.ticket.comment = self.ui.commentPlainTextEdit.toPlainText()
@@ -193,8 +198,8 @@ class TransactionsTableModel(QtCore.QAbstractTableModel):
     super(TransactionsTableModel, self).__init__(parent)
     self._transactions = transactions
     self._lots = lots
-    self._headers = [u'Lote', u'Código', 'Nombre', 'Sacos', 'Kg/Saco', 'Cantidad']
-    
+    self._headers = ['Lote', 'Código', 'Nombre', 'Sacos', 'Kg/Saco', 'Cantidad']
+
   def getTransactions(self):
     return self._transactions
   

@@ -1,4 +1,4 @@
-from jsonable import JSONableModel
+from .jsonable import JSONableModel
 
 class Carrier(JSONableModel):
   def __init__(self, name, rif):

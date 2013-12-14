@@ -1,5 +1,5 @@
-from jsonable import JSONableModel
-from carrier import Carrier
+from .jsonable import JSONableModel
+from .carrier import Carrier
 
 class Truck(JSONableModel):
   def __init__(self, carrier_id, license_plate):

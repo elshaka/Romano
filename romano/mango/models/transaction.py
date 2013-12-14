@@ -1,4 +1,4 @@
-from jsonable import JSONableModel
+from .jsonable import JSONableModel
 
 class Transaction(JSONableModel):
   def __init__(self, transaction_type_id, content_type, content_id, sack, sack_weight,

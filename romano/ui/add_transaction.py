@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 
 from PySide import QtGui, QtCore
-from ui_add_transaction import Ui_AddTransaction
+from .ui_add_transaction import Ui_AddTransaction
 from mango.models.transaction import Transaction
-from error_message_box import ErrorMessageBox
+from .error_message_box import ErrorMessageBox
 
 class AddTransaction(QtGui.QDialog):
   def __init__(self, transaction_type_id, parent = None):
@@ -57,7 +57,7 @@ class AddTransaction(QtGui.QDialog):
     except:
       total = 0
     if lotFilteredIndex.row() == -1:
-      errors.append(u'No se ha seleccionado un lote')
+      errors.append('No se ha seleccionado un lote')
     if total == 0:
       errors.append('El peso total no puede ser 0')
 
@@ -111,7 +111,7 @@ class LotsTableModel(QtCore.QAbstractTableModel):
   def __init__(self, lots, parent):
     super(LotsTableModel, self).__init__(parent)
     self._lots = lots
-    self._headers = ['Lote', u'Código', 'Nombre']
+    self._headers = ['Lote', 'Código', 'Nombre']
 
   def getLot(self, row):
     return self._lots[row]

@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 
 from PySide import QtGui, QtCore
-from ui_add_carrier import Ui_AddCarrier
+from .ui_add_carrier import Ui_AddCarrier
 from mango.models.carrier import Carrier
 
-from error_message_box import ErrorMessageBox
+from .error_message_box import ErrorMessageBox
 
 class AddCarrier(QtGui.QDialog):
   def __init__(self, parent):
@@ -35,7 +35,7 @@ class AddCarrier(QtGui.QDialog):
       errors = []
       name = self.ui.nameLineEdit.text()
       if name == "":
-        errors.append(u"Debe indicar un nombre")
+        errors.append("Debe indicar un nombre")
       if not errors:
         self.new = True
         self.carrier = Carrier(name, None)

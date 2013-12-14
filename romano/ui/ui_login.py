@@ -2,8 +2,8 @@
 
 # Form implementation generated from reading ui file 'login.ui'
 #
-# Created: Sun Aug  5 23:17:59 2012
-#      by: pyside-uic 0.2.13 running on PySide 1.1.1
+# Created: Sat Dec 14 02:04:08 2013
+#      by: pyside-uic 0.2.15 running on PySide 1.2.1
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -75,4 +75,4 @@ class Ui_Login(object):
         self.loginButton.setText(QtGui.QApplication.translate("Login", "Iniciar sesión", None, QtGui.QApplication.UnicodeUTF8))
         self.exitButton.setText(QtGui.QApplication.translate("Login", "Salir", None, QtGui.QApplication.UnicodeUTF8))
 
-import pixmaps_rc
+from . import pixmaps_rc

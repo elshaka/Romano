@@ -1,7 +1,7 @@
-from jsonable import JSONableModel
-from driver import Driver
-from truck import Truck
-from ticket_type import TicketType
+from .jsonable import JSONableModel
+from .driver import Driver
+from .truck import Truck
+from .ticket_type import TicketType
 
 class Ticket(JSONableModel):
   def __init__(self, ticket_type_id, driver_id, truck_id,

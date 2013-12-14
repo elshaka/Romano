@@ -2,8 +2,8 @@
 
 # Form implementation generated from reading ui file 'close_ticket.ui'
 #
-# Created: Wed May  8 16:18:32 2013
-#      by: pyside-uic 0.2.13 running on PySide 1.1.1
+# Created: Sat Dec 14 02:03:58 2013
+#      by: pyside-uic 0.2.15 running on PySide 1.2.1
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -12,7 +12,7 @@ from PySide import QtCore, QtGui
 class Ui_CloseTicket(object):
     def setupUi(self, CloseTicket):
         CloseTicket.setObjectName("CloseTicket")
-        CloseTicket.resize(1065, 724)
+        CloseTicket.resize(1000, 530)
         CloseTicket.setMinimumSize(QtCore.QSize(1000, 530))
         self.verticalLayout = QtGui.QVBoxLayout(CloseTicket)
         self.verticalLayout.setObjectName("verticalLayout")
@@ -166,9 +166,11 @@ class Ui_CloseTicket(object):
         self.commentPlainTextEdit.setTabChangesFocus(True)
         self.commentPlainTextEdit.setObjectName("commentPlainTextEdit")
         self.ticketLayout.addWidget(self.commentPlainTextEdit)
+        spacerItem = QtGui.QSpacerItem(20, 40, QtGui.QSizePolicy.Minimum, QtGui.QSizePolicy.Expanding)
+        self.ticketLayout.addItem(spacerItem)
         self.dialogLayout.addWidget(self.ticketWidget)
-        spacerItem = QtGui.QSpacerItem(10, 20, QtGui.QSizePolicy.Fixed, QtGui.QSizePolicy.Minimum)
-        self.dialogLayout.addItem(spacerItem)
+        spacerItem1 = QtGui.QSpacerItem(10, 20, QtGui.QSizePolicy.Fixed, QtGui.QSizePolicy.Minimum)
+        self.dialogLayout.addItem(spacerItem1)
         self.transactionsLayout = QtGui.QVBoxLayout()
         self.transactionsLayout.setObjectName("transactionsLayout")
         self.transactionsTitleLayout = QtGui.QHBoxLayout()
@@ -198,8 +200,8 @@ class Ui_CloseTicket(object):
         self.transactionsLayout.addWidget(self.transactionsTableView)
         self.transactionsTotalLayout = QtGui.QHBoxLayout()
         self.transactionsTotalLayout.setObjectName("transactionsTotalLayout")
-        spacerItem1 = QtGui.QSpacerItem(40, 20, QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Minimum)
-        self.transactionsTotalLayout.addItem(spacerItem1)
+        spacerItem2 = QtGui.QSpacerItem(40, 20, QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Minimum)
+        self.transactionsTotalLayout.addItem(spacerItem2)
         self.transactionsTotalLabel = QtGui.QLabel(CloseTicket)
         self.transactionsTotalLabel.setObjectName("transactionsTotalLabel")
         self.transactionsTotalLayout.addWidget(self.transactionsTotalLabel)
@@ -232,8 +234,8 @@ class Ui_CloseTicket(object):
         self.verticalLayout.addWidget(self.line_2)
         self.weightLayout = QtGui.QHBoxLayout()
         self.weightLayout.setObjectName("weightLayout")
-        spacerItem2 = QtGui.QSpacerItem(40, 20, QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Minimum)
-        self.weightLayout.addItem(spacerItem2)
+        spacerItem3 = QtGui.QSpacerItem(40, 20, QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Minimum)
+        self.weightLayout.addItem(spacerItem3)
         self.label_10 = QtGui.QLabel(CloseTicket)
         sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Preferred, QtGui.QSizePolicy.Preferred)
         sizePolicy.setHorizontalStretch(0)
@@ -326,8 +328,8 @@ class Ui_CloseTicket(object):
         self.horizontalLayout.setContentsMargins(0, 0, 0, 0)
         self.horizontalLayout.setContentsMargins(0, 0, 0, 0)
         self.horizontalLayout.setObjectName("horizontalLayout")
-        spacerItem3 = QtGui.QSpacerItem(40, 20, QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Minimum)
-        self.horizontalLayout.addItem(spacerItem3)
+        spacerItem4 = QtGui.QSpacerItem(40, 20, QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Minimum)
+        self.horizontalLayout.addItem(spacerItem4)
         self.label = QtGui.QLabel(self.providerWidget)
         self.label.setMinimumSize(QtCore.QSize(100, 0))
         self.label.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
@@ -357,8 +359,8 @@ class Ui_CloseTicket(object):
         self.verticalLayout.addWidget(self.line)
         self.dialogButtonsLayout = QtGui.QHBoxLayout()
         self.dialogButtonsLayout.setObjectName("dialogButtonsLayout")
-        spacerItem4 = QtGui.QSpacerItem(40, 20, QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Minimum)
-        self.dialogButtonsLayout.addItem(spacerItem4)
+        spacerItem5 = QtGui.QSpacerItem(40, 20, QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Minimum)
+        self.dialogButtonsLayout.addItem(spacerItem5)
         self.cancelButton = QtGui.QPushButton(CloseTicket)
         self.cancelButton.setObjectName("cancelButton")
         self.dialogButtonsLayout.addWidget(self.cancelButton)
@@ -404,4 +406,4 @@ class Ui_CloseTicket(object):
         self.cancelButton.setText(QtGui.QApplication.translate("CloseTicket", "Cancelar", None, QtGui.QApplication.UnicodeUTF8))
         self.closeTicketButton.setText(QtGui.QApplication.translate("CloseTicket", "Cerrar ticket", None, QtGui.QApplication.UnicodeUTF8))
 
-import pixmaps_rc
+from . import pixmaps_rc
