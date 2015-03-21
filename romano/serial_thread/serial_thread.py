@@ -15,7 +15,7 @@ class SerialThread(QtCore.QThread):
     self.alive = True
     try:
       if not self.simulate:
-        self.s = serial.Serial(port, baudrate, parity = parity_, bytesize = bytesize)
+        self.s = serial.Serial(port, baudrate, parity = parity_, bytesize = bytesize_)
       self.serial_ok = True
     except Exception as e:
       self.serialException.emit(e)
