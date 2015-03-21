@@ -7,7 +7,7 @@ class SerialThread(QtCore.QThread):
   dataReady = QtCore.Signal(float)
   serialException = QtCore.Signal(Exception)
   
-  def __init__(self, port, regex, end_char, baudrate, bytesize_, simulate = False):
+  def __init__(self, port, regex, end_char, baudrate, parity_, bytesize_, simulate = False):
     super(SerialThread, self).__init__()
     self.regex = regex
     self.end_char = end_char
@@ -15,7 +15,7 @@ class SerialThread(QtCore.QThread):
     self.alive = True
     try:
       if not self.simulate:
-        self.s = serial.Serial(port, baudrate, bytesize = bytesize)
+        self.s = serial.Serial(port, baudrate, parity = parity_, bytesize = bytesize)
       self.serial_ok = True
     except Exception as e:
       self.serialException.emit(e)

@@ -68,6 +68,7 @@ class CloseTicket(QtGui.QDialog):
       config.get('Serial','Regex'),
       config.get('Serial','EndChar'),
       config.getint('Serial', 'Baudrate'),
+      config.get('Serial', 'Parity'),
       config.getint('Serial', 'Bytesize'),
       config.getboolean('Serial','Simulate')
     )
