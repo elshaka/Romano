@@ -11,7 +11,9 @@ class Ticket(JSONableModel):
     self.truck_id = truck_id
     self.incoming_weight = incoming_weight
     self.comment = comment
-    
+    self.manual_incoming = False
+    self.manual_outgoing = False
+
   @classmethod
   def fromDict(cls, dict_):
     ticket_type = TicketType.fromDict(dict_['ticket_type'])
@@ -25,6 +27,8 @@ class Ticket(JSONableModel):
     ticket.incoming_date = dict_['incoming_date']
     ticket.provider_weight = dict_['provider_weight']
     ticket.provider_document_number = dict_['provider_document_number']
+    ticket.manual_incoming = dict_['manual_incoming']
+    ticket.manual_outgoing = dict_['manual_outgoing']
     ticket.ticket_type = ticket_type
     ticket.driver = driver
     ticket.truck = truck

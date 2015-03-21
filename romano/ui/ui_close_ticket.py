@@ -19,7 +19,7 @@ class Ui_CloseTicket(object):
         self.dialogLayout = QtGui.QHBoxLayout()
         self.dialogLayout.setObjectName("dialogLayout")
         self.ticketWidget = QtGui.QWidget(CloseTicket)
-        self.ticketWidget.setMaximumSize(QtCore.QSize(450, 16777215))
+        self.ticketWidget.setMaximumSize(QtCore.QSize(350, 16777215))
         self.ticketWidget.setObjectName("ticketWidget")
         self.ticketLayout = QtGui.QVBoxLayout(self.ticketWidget)
         self.ticketLayout.setContentsMargins(0, 0, 0, 0)
