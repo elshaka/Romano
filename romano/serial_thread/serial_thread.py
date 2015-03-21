@@ -7,7 +7,7 @@ class SerialThread(QtCore.QThread):
   dataReady = QtCore.Signal(float)
   serialException = QtCore.Signal(Exception)
   
-  def __init__(self, port, regex, end_char, baudrate, parity_, bytesize_, simulate = False):
+  def __init__(self, port, regex, baudrate, parity_, bytesize_, simulate = False):
     super(SerialThread, self).__init__()
     self.regex = regex
     self.end_char = end_char
@@ -26,8 +26,8 @@ class SerialThread(QtCore.QThread):
       if not self.simulate:
         data_string = ''
         while 1:
-          char = self.s.read()
-          if char is not self.end_char:
+          char = self.s.read().decode()
+          if char not in ['\n', '\r']:
             data_string += char
           else:
             break

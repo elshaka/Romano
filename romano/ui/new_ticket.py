@@ -42,7 +42,6 @@ class NewTicket(QtGui.QDialog):
     self.st = SerialThread(
       config.get('Serial','PortName'),
       config.get('Serial','Regex'),
-      config.get('Serial','EndChar'),
       config.getint('Serial', 'Baudrate'),
       config.get('Serial', 'Parity'),
       config.getint('Serial', 'Bytesize'),

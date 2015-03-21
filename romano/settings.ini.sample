@@ -8,7 +8,6 @@ Baudrate: 2400
 Parity: E
 Bytesize: 7
 Regex: (\d+)
-EndChar: \n
 Simulate: False
 
 [Other]
