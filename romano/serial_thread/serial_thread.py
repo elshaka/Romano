@@ -10,7 +10,6 @@ class SerialThread(QtCore.QThread):
   def __init__(self, port, regex, baudrate, parity_, bytesize_, simulate = False):
     super(SerialThread, self).__init__()
     self.regex = regex
-    self.end_char = end_char
     self.simulate = simulate
     self.alive = True
     try:
