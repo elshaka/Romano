@@ -2,6 +2,7 @@
 
 import os
 import configparser
+import dateutil.parser
 from PySide import QtGui, QtCore
 from .ui_main import Ui_Main
 from .login import Login
@@ -21,7 +22,7 @@ class Main(QtGui.QMainWindow):
     config = configparser.ConfigParser()
     config.read('settings.ini')
 
-    self.api = API(config.get('Server','Host'), int(config.get('Server','Port')))
+    self.api = API(config.get('Server','Host'), config.getint('Server','Port'))
     self.ui.actionNewReception.triggered.connect(self.openTicket)
     self.ui.actionNewDispatch.triggered.connect(self.openTicket)
     self.ui.actionLogout.triggered.connect(self.logout)
@@ -40,7 +41,7 @@ class Main(QtGui.QMainWindow):
       newTicketDialog = NewTicket(1, self.user.allow_manual, self)
     elif actionSender == self.ui.actionNewDispatch:
       newTicketDialog = NewTicket(2, self.user.allow_manual, self)
-    
+
     if newTicketDialog.exec_() == QtGui.QDialog.Accepted:
       self.api.create_ticket(newTicketDialog.ticket)
     newTicketDialog.st.alive = False
@@ -52,11 +53,11 @@ class Main(QtGui.QMainWindow):
       self.api.close_ticket(closeTicketDialog.ticket)
       self.currentTicket = closeTicketDialog.ticket
     closeTicketDialog.st.alive = False
-      
+
   def printTicket(self):
     self.getTickets()
     self.api.print_ticket(self.currentTicket)
-    
+
   def printTicketFinished(self, data):
     filename = QtCore.QDir.tempPath() + "/ticket_%s.pdf" % self.currentTicket.number
     _file = QtCore.QFile(filename)
@@ -140,7 +141,7 @@ class TicketsTableModel(QtCore.QAbstractTableModel):
       elif column == 4:
         return "%s Kg" % self._tickets[row].incoming_weight
       elif column == 5:
-        return self._tickets[row].incoming_date
+        return dateutil.parser.parse(self._tickets[row].incoming_date).strftime("%Y/%m/%d %I:%M:%S %p")
       elif column == 6:
         return self._tickets[row].comment
     elif role == QtCore.Qt.TextAlignmentRole:

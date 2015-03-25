@@ -15,16 +15,23 @@ class CloseTicket(QtGui.QDialog):
     config = configparser.ConfigParser()
     config.read('settings.ini')
     
-    self.tolerance = int(config.get('Other','Tolerance'))
+    self.tolerance = config.getint('Other', 'Tolerance')
     self.api = parent.api
     self.ticket = ticket
+    self.allow_manual = allow_manual
     self.ui = Ui_CloseTicket()
     self.ui.setupUi(self)
     self.setModal(True)
 
     self.client = None
 
-    if not allow_manual:
+    self.reception_diff = self.dispatch_diff = self.max_diff = 0.5
+    self.diff_ok = False
+
+    self.api.get_settings()
+    self.api.getSettingsFinished.connect(self.updateSettings)
+
+    if not self.allow_manual:
       self.ui.manualCheckBox.hide()
 
     self.ui.numberLineEdit.setText(str(ticket.number))
@@ -54,6 +61,8 @@ class CloseTicket(QtGui.QDialog):
     self.ui.addClientButton.clicked.connect(self.addClient)
     self.ui.manualCheckBox.stateChanged.connect(self.setManualCapture)
     self.ui.outgoingWeightSpinBox.valueChanged.connect(self.weightChanged)
+    self.ui.netWeightSpinBox.valueChanged.connect(self.updateDiff)
+    self.ui.diffSpinBox.valueChanged.connect(self.updateDiffStyle)
     self.ui.receptionButton.clicked.connect(self.updateTicketType)
     self.ui.dispatchButton.clicked.connect(self.updateTicketType)
     self.ui.addTransactionButton.clicked.connect(self.addTransaction)
@@ -61,7 +70,7 @@ class CloseTicket(QtGui.QDialog):
     self.ui.closeTicketButton.clicked.connect(self.closeTicket)
     self.ui.transactionsTableView.clicked.connect(self.enableDeleteTransaction)
     self.ui.removeTransactionButton.clicked.connect(self.removeTransaction)
-    self.transactionsTableModel.totalChanged.connect(self.ui.transactionsTotalSpinBox.setValue)
+    self.transactionsTableModel.totalChanged.connect(self.updateTotal)
       
     self.st = SerialThread(
       config.get('Serial','PortName'),
@@ -73,7 +82,40 @@ class CloseTicket(QtGui.QDialog):
     )
     self.st.dataReady.connect(self.getWeight, QtCore.Qt.QueuedConnection)
     self.st.start()
-    
+
+  def updateTotal(self, total):
+    self.ui.transactionsTotalSpinBox.setValue(total)
+    self.updateDiff()
+
+  def updateDiff(self):
+    net_weight = self.ui.netWeightSpinBox.value()
+    total = self.ui.transactionsTotalSpinBox.value()
+    if total == 0:
+      diff = 999
+    else:
+      diff = (net_weight - total) / total * 100
+    self.ui.diffSpinBox.setValue(diff)
+
+  def updateDiffStyle(self):
+    diff = self.ui.diffSpinBox.value()
+    if self.ui.receptionButton.isChecked():
+      self.max_diff = self.reception_diff
+    else:
+      self.max_diff = self.dispatch_diff
+
+    if diff >= -1 * self.max_diff and diff <= self.max_diff:
+      bkg_color = "0, 0, 0"
+      self.diff_ok = True
+    else:
+      bkg_color = "255, 0, 0"
+      self.diff_ok = False
+
+    self.ui.diffSpinBox.setStyleSheet("background-color: rgb(%s);\ncolor: rgb(0, 170, 0);" % bkg_color)
+
+  def updateSettings(self, settings):
+    self.reception_diff = settings.ticket_reception_diff
+    self.dispatch_diff = settings.ticket_dispatch_diff
+
   def updateTicketType(self):
     weight = self.ui.outgoingWeightSpinBox.value()
     if self.ui.receptionButton.isChecked():
@@ -90,10 +132,12 @@ class CloseTicket(QtGui.QDialog):
     self.ui.netWeightSpinBox.setValue(net_weight)
     
   def addTransaction(self):
+    # TODO ELIMINAR
     if self.ticket.ticket_type_id == 1:
       transaction_type_id = 4
     else:
       transaction_type_id = 5
+    # FIN TODO
     self.api.get_lots()
     self.api.get_product_lots()
     addTransactionDialog = AddTransaction(transaction_type_id, self)
@@ -103,7 +147,7 @@ class CloseTicket(QtGui.QDialog):
       transaction = addTransactionDialog.transaction
       lot = addTransactionDialog.lot
       self.transactionsTableModel.addTransaction(transaction, lot)
-    
+
   def removeTransaction(self):
     row = self.ui.transactionsTableView.currentIndex().row()
     self.transactionsTableModel.removeTransaction(row)
@@ -123,6 +167,7 @@ class CloseTicket(QtGui.QDialog):
     provider_weight = self.ui.providerWeightSpinBox.value()
     provider_document_number = self.ui.providerDocumentNumberLineEdit.text()
     transactions_total = self.ui.transactionsTotalSpinBox.value()
+    diff = self.ui.diffSpinBox.value()
 
     if self.ui.receptionButton.isChecked():
       self.ticket.ticket_type_id = 1
@@ -130,20 +175,32 @@ class CloseTicket(QtGui.QDialog):
       self.ticket.ticket_type_id = 2
 
     errors = []
-    if self.client == None:
-      errors.append("Debe seleccionar un cliente/fábrica")
-    if abs(net_weight - transactions_total) > self.tolerance:
-      errors.append('La diferencia entre el peso neto y el total de transacciones es muy grande')
+
+    if not self.diff_ok:
+      if not self.allow_manual:
+        errors.append('La diferencia entre el peso neto y el total de transacciones es muy grande')
+      else:
+        flags = QtGui.QMessageBox.StandardButton.Yes
+        flags |= QtGui.QMessageBox.StandardButton.No
+        question = "¿Esta seguro de permitir una diferencia mayor a %s %%?" % self.max_diff
+        response = QtGui.QMessageBox.question(self, "Advertencia", question, flags)
+        if response == QtGui.QMessageBox.Yes:
+          pass
+        else:
+          errors.append('La diferencia entre el peso neto y el total de transacciones es muy grande')
+
+    if transactions_total == 0:
+      errors.append('El total de transacciones no puede ser 0')
     if self.client == None:
       errors.append('El cliente/fábrica no ha sido seleccionado')
     if not weight_captured and not manualEnabled:
       errors.append('El peso de salida no ha sido capturado')
     if self.ticket.ticket_type_id == 1:
-      if abs(provider_weight - net_weight) > self.tolerance:
-        errors.append('La diferencia entre el peso neto y el peso del proveedor es muy grande')
+      #if abs(provider_weight - net_weight) > self.tolerance:
+      #  errors.append('La diferencia entre el peso neto y el peso del proveedor es muy grande')
       if provider_document_number == '':
         errors.append('El número de guía no ha sido indicado')
-        
+
     if not errors:
       self.ticket.comment = self.ui.commentPlainTextEdit.toPlainText()
       self.ticket.outgoing_weight = outgoing_weight
@@ -151,12 +208,13 @@ class CloseTicket(QtGui.QDialog):
         self.ticket.provider_weight = provider_weight
         self.ticket.provider_document_number = provider_document_number
       self.ticket.transactions_attributes = self.transactionsTableModel.getTransactions()
-      
+
       for transaction in self.ticket.transactions_attributes:
         if self.ticket.ticket_type_id == 1:
           transaction.transaction_type_id = 4
         else:
           transaction.transaction_type_id = 5
+        delattr(transaction, 'content_comment')
 
       self.ticket.client_id = self.client.id
       self.ticket.manual_outgoing = manualEnabled
@@ -164,7 +222,7 @@ class CloseTicket(QtGui.QDialog):
       self.accept()
     else:
       ErrorMessageBox(errors).exec_()
-  
+
   def setManualCapture(self):
     if self.ui.manualCheckBox.isChecked():
       self.ui.outgoingWeightSpinBox.setEnabled(True)
@@ -173,7 +231,7 @@ class CloseTicket(QtGui.QDialog):
     else:
       self.ui.outgoingWeightSpinBox.setEnabled(False)
       self.ui.captureWeightButton.setEnabled(True)
-    
+
   def getWeight(self, weight):
     if not self.ui.captureWeightButton.isChecked() and not self.ui.manualCheckBox.isChecked():
       self.ui.outgoingWeightSpinBox.setValue(weight)
@@ -209,7 +267,7 @@ class TransactionsTableModel(QtCore.QAbstractTableModel):
 
   def getTransactions(self):
     return self._transactions
-  
+
   def addTransaction(self, transaction, lot):
     row = len(self._lots)
     self.beginInsertRows(QtCore.QModelIndex(), row, row)
@@ -217,7 +275,7 @@ class TransactionsTableModel(QtCore.QAbstractTableModel):
     self._lots.append(lot)
     self.endInsertRows()
     self._recalculateTotal()
-  
+
   def removeTransaction(self, row):
     self.beginResetModel()
     transaction = self._transactions[row]
@@ -232,7 +290,7 @@ class TransactionsTableModel(QtCore.QAbstractTableModel):
     for t in self._transactions:
       total += t.amount
     self.totalChanged.emit(total)
-  
+
   def headerData(self, section, orientation, role):
     if role == QtCore.Qt.DisplayRole:
       if orientation == QtCore.Qt.Horizontal:
@@ -240,10 +298,10 @@ class TransactionsTableModel(QtCore.QAbstractTableModel):
         
   def rowCount(self, parent):
     return len(self._lots)
-    
+
   def columnCount(self, parent):
     return len(self._headers)
-    
+
   def data(self, index, role):
     row = index.row()
     column = index.column()
@@ -271,3 +329,9 @@ class TransactionsTableModel(QtCore.QAbstractTableModel):
         return QtCore.Qt.AlignRight
       else:
         return QtCore.Qt.AlignLeft
+    elif role == QtCore.Qt.ToolTipRole:
+      comment = self._transactions[row].content_comment
+      if comment:
+        return self._transactions[row].content_comment
+      else:
+        return ""

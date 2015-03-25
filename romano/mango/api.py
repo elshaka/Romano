@@ -11,6 +11,7 @@ from mango.models.client import Client
 from mango.models.lot import Lot
 from mango.models.product_lot import ProductLot
 from mango.models.carrier import Carrier
+from mango.models.settings import Settings
 
 class API(QtCore.QObject):
   loginFinished = QtCore.Signal(object)
@@ -33,6 +34,7 @@ class API(QtCore.QObject):
   createCarrierFinished = QtCore.Signal(object)
   createClientFinished = QtCore.Signal(object)
   createClientFailed = QtCore.Signal(object)
+  getSettingsFinished = QtCore.Signal(object)
   
   def __init__(self, host = "localhost", port = 3000):
     super(API, self).__init__()
@@ -235,3 +237,14 @@ class API(QtCore.QObject):
     else:
       errors = self._parse_errors(self.createClientReply.readAll().data())
       self.createClientFailed.emit(errors)
+
+  def get_settings(self):
+    request = self._new_request("settings.json")
+    self.getSettingsReply = self.manager.get(request)
+    self.getSettingsReply.finished.connect(self.get_settings_finished)
+
+  def get_settings_finished(self):
+    error = self.getSettingsReply.error()
+    if error == QtNetwork.QNetworkReply.NoError:
+      settings = Settings.fromJSON(self.getSettingsReply.readAll().data())
+      self.getSettingsFinished.emit(settings)

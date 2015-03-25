@@ -37,10 +37,13 @@ class AddTransaction(QtGui.QDialog):
     self.filterLotsProxyModel.setFilterKeyColumn(-1)
     self.filterLotsProxyModel.setFilterCaseSensitivity(QtCore.Qt.CaseInsensitive)
     self.ui.lotsTableView.setModel(self.filterLotsProxyModel)
+    self.ui.lotsTableView.setItemDelegate(MultilineItemDelegate(self))
     self.ui.filterLineEdit.textChanged.connect(self.filterLotsProxyModel.setFilterRegExp)
 
     horizontalHeader = self.ui.lotsTableView.horizontalHeader()
-    horizontalHeader.setResizeMode(QtGui.QHeaderView.Stretch)
+    horizontalHeader.resizeSection(0, 200)
+    horizontalHeader.resizeSection(1, 250)
+    horizontalHeader.setResizeMode(2, QtGui.QHeaderView.Stretch)
 
   def createTransaction(self):
     errors = []
@@ -74,6 +77,7 @@ class AddTransaction(QtGui.QDialog):
         self.transaction = Transaction(self.transaction_type_id, content_type,
                                        self.lot.id, False, None, 
                                        None, total)
+      self.transaction.content_comment = self.lot.comment
       self.accept()
     else:
       ErrorMessageBox(errors).exec_()
@@ -111,7 +115,7 @@ class LotsTableModel(QtCore.QAbstractTableModel):
   def __init__(self, lots, parent):
     super(LotsTableModel, self).__init__(parent)
     self._lots = lots
-    self._headers = ['Lote', 'Código', 'Nombre']
+    self._headers = ['Código Lote', 'Nombre', 'Comentario']
 
   def getLot(self, row):
     return self._lots[row]
@@ -139,11 +143,23 @@ class LotsTableModel(QtCore.QAbstractTableModel):
       if column == 0:
         return self._lots[row].code
       elif column == 1:
-        return self._lots[row].content_code
-      elif column == 2:
         return self._lots[row].content_name
+      elif column == 2:
+        return self._lots[row].comment
     elif role == QtCore.Qt.TextAlignmentRole:
       if column == 3:
         return QtCore.Qt.AlignRight
       else:
         return QtCore.Qt.AlignLeft
+
+class MultilineItemDelegate(QtGui.QStyledItemDelegate):
+  def __init__(self, parent):
+    super(MultilineItemDelegate, self).__init__(parent)
+
+  def sizeHint(self, option, index):
+    result = QtGui.QStyledItemDelegate(option, index)
+    result.setHeight(result.height() * 2)
+    return result
+
+  def drawDisplay(self, painter, option, rect, text):
+    painter.drawText(rect, text, option)

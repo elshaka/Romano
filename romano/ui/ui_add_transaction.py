@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'add_transaction.ui'
 #
-# Created: Sat Dec 14 02:03:40 2013
+# Created: Tue Mar 24 10:30:04 2015
 #      by: pyside-uic 0.2.15 running on PySide 1.2.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -12,16 +12,16 @@ from PySide import QtCore, QtGui
 class Ui_AddTransaction(object):
     def setupUi(self, AddTransaction):
         AddTransaction.setObjectName("AddTransaction")
-        AddTransaction.resize(569, 542)
+        AddTransaction.resize(1122, 542)
         self.verticalLayout = QtGui.QVBoxLayout(AddTransaction)
         self.verticalLayout.setObjectName("verticalLayout")
         self.widget = QtGui.QWidget(AddTransaction)
         self.widget.setObjectName("widget")
         self.verticalLayout_2 = QtGui.QVBoxLayout(self.widget)
         self.verticalLayout_2.setContentsMargins(0, 0, 0, 0)
-        self.verticalLayout_2.setContentsMargins(0, 0, 0, 0)
         self.verticalLayout_2.setObjectName("verticalLayout_2")
         self.horizontalLayout_2 = QtGui.QHBoxLayout()
+        self.horizontalLayout_2.setContentsMargins(0, 0, 0, 0)
         self.horizontalLayout_2.setObjectName("horizontalLayout_2")
         spacerItem = QtGui.QSpacerItem(40, 20, QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Minimum)
         self.horizontalLayout_2.addItem(spacerItem)
@@ -51,7 +51,7 @@ class Ui_AddTransaction(object):
         self.lotsTableView.setObjectName("lotsTableView")
         self.lotsTableView.horizontalHeader().setCascadingSectionResizes(False)
         self.lotsTableView.horizontalHeader().setHighlightSections(False)
-        self.lotsTableView.horizontalHeader().setStretchLastSection(False)
+        self.lotsTableView.horizontalHeader().setStretchLastSection(True)
         self.lotsTableView.verticalHeader().setVisible(False)
         self.verticalLayout.addWidget(self.lotsTableView)
         self.groupBox_2 = QtGui.QGroupBox(AddTransaction)
@@ -80,7 +80,6 @@ class Ui_AddTransaction(object):
         self.sackWidget = QtGui.QWidget(AddTransaction)
         self.sackWidget.setObjectName("sackWidget")
         self.horizontalLayout_4 = QtGui.QHBoxLayout(self.sackWidget)
-        self.horizontalLayout_4.setContentsMargins(0, 0, 0, 0)
         self.horizontalLayout_4.setContentsMargins(0, 0, 0, 0)
         self.horizontalLayout_4.setObjectName("horizontalLayout_4")
         spacerItem4 = QtGui.QSpacerItem(40, 20, QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Minimum)
@@ -113,7 +112,6 @@ class Ui_AddTransaction(object):
         self.grainWidget = QtGui.QWidget(AddTransaction)
         self.grainWidget.setObjectName("grainWidget")
         self.horizontalLayout_5 = QtGui.QHBoxLayout(self.grainWidget)
-        self.horizontalLayout_5.setContentsMargins(0, 0, 0, 0)
         self.horizontalLayout_5.setContentsMargins(0, 0, 0, 0)
         self.horizontalLayout_5.setObjectName("horizontalLayout_5")
         spacerItem6 = QtGui.QSpacerItem(40, 20, QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Minimum)
