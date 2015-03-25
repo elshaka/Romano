@@ -14,10 +14,11 @@ class AddClient(QtGui.QDialog):
     self.api = parent.api
     self.api.get_clients()
     self.api.get_factories()
-    self.ui.newWidget.setEnabled(False)
-    self.ui.newWidget.hide()
-    self.ui.widget.hide()
-    self.ui.line.hide()
+    #self.ui.newWidget.setEnabled(False)
+    #self.ui.newWidget.hide()
+    self.ui.saveAsFactoryBox.hide()
+    #self.ui.widget.hide()
+    #self.ui.line.hide()
     
     self.clientsTableModel = ClientsTableModel([], self)
     self.factoriesTableModel = ClientsTableModel([], self)

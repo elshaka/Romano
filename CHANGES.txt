@@ -1,1 +1,2 @@
 v0.1.0, 31/07/2012 -- Initial release.
+v0.2.0, 25/03/2015 -- Python 3 support and a shit load of functionality
