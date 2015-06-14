@@ -14,10 +14,11 @@ class CloseTicket(QtGui.QDialog):
     super(CloseTicket, self).__init__(parent)
     config = configparser.ConfigParser()
     config.read('settings.ini')
-    
+
     self.tolerance = config.getint('Other', 'Tolerance')
     self.api = parent.api
     self.ticket = ticket
+    self.previous_incoming_weight = ticket.incoming_weight
     self.allow_manual = allow_manual
     self.ui = Ui_CloseTicket()
     self.ui.setupUi(self)
@@ -28,12 +29,20 @@ class CloseTicket(QtGui.QDialog):
     self.reception_diff = self.dispatch_diff = self.max_diff = 0.5
     self.diff_ok = False
 
-    self.api.get_settings()
     self.api.getSettingsFinished.connect(self.updateSettings)
+    self.api.get_settings()
+
+    self.api.getFeaturesFinished.connect(self.updateFeatures)
+    self.api.get_features()
+
+    self.api.getDocumentTypesFinished.connect(self.updateDocumentTypes)
+    self.api.get_document_types()
 
     if not self.allow_manual:
       self.ui.manualCheckBox.hide()
 
+    self.ui.addressWidget.hide()
+    self.ui.documentTypeWidget.hide()
     self.ui.numberLineEdit.setText(str(ticket.number))
     self.ui.driverLineEdit.setText("%s - %s" % (ticket.driver.ci, ticket.driver.name))
     self.ui.truckLineEdit.setText("%s - %s" % (ticket.truck.license_plate, ticket.truck.carrier.name))
@@ -61,6 +70,7 @@ class CloseTicket(QtGui.QDialog):
     self.ui.addClientButton.clicked.connect(self.addClient)
     self.ui.manualCheckBox.stateChanged.connect(self.setManualCapture)
     self.ui.outgoingWeightSpinBox.valueChanged.connect(self.weightChanged)
+    self.ui.incomingWeightSpinBox.valueChanged.connect(self.updateTicketType)
     self.ui.netWeightSpinBox.valueChanged.connect(self.updateDiff)
     self.ui.diffSpinBox.valueChanged.connect(self.updateDiffStyle)
     self.ui.receptionButton.clicked.connect(self.updateTicketType)
@@ -116,7 +126,19 @@ class CloseTicket(QtGui.QDialog):
     self.reception_diff = settings.ticket_reception_diff
     self.dispatch_diff = settings.ticket_dispatch_diff
 
+  def updateFeatures(self, features):
+    self.features = features
+    if "multiple_addresses" in features:
+      self.ui.addressWidget.show()
+    if "document_types" in features:
+      self.ui.documentTypeWidget.show()
+
+  def updateDocumentTypes(self, document_types):
+    self.documentTypeListModel = DocumentTypeListModel(document_types, self)
+    self.ui.documentTypeComboBox.setModel(self.documentTypeListModel)
+
   def updateTicketType(self):
+    self.ticket.incoming_weight = self.ui.incomingWeightSpinBox.value()
     weight = self.ui.outgoingWeightSpinBox.value()
     if self.ui.receptionButton.isChecked():
       self.ui.providerWidget.show()
@@ -130,7 +152,7 @@ class CloseTicket(QtGui.QDialog):
     self.ui.grossWeightSpinBox.setValue(gross_weight)
     self.ui.tareWeightSpinBox.setValue(tare_weight)
     self.ui.netWeightSpinBox.setValue(net_weight)
-    
+
   def addTransaction(self):
     # TODO ELIMINAR
     if self.ticket.ticket_type_id == 1:
@@ -193,6 +215,10 @@ class CloseTicket(QtGui.QDialog):
       errors.append('El total de transacciones no puede ser 0')
     if self.client == None:
       errors.append('El cliente/fábrica no ha sido seleccionado')
+    elif "multiple_addresses" in self.features:
+      self.ticket.address = self.ui.addressComboBox.currentText()
+    else:
+      self.ticket.address = self.client.address
     if not weight_captured and not manualEnabled:
       errors.append('El peso de salida no ha sido capturado')
     if self.ticket.ticket_type_id == 1:
@@ -202,6 +228,11 @@ class CloseTicket(QtGui.QDialog):
         errors.append('El número de guía no ha sido indicado')
 
     if not errors:
+      if "document_types" in self.features:
+        index = self.ui.documentTypeComboBox.currentIndex()
+        if index != -1:
+          dt = self.documentTypeListModel.getDocumentType(index)
+          self.ticket.document_type_id = dt.id
       self.ticket.comment = self.ui.commentPlainTextEdit.toPlainText()
       self.ticket.outgoing_weight = outgoing_weight
       if self.ticket.ticket_type_id == 1:
@@ -218,6 +249,7 @@ class CloseTicket(QtGui.QDialog):
 
       self.ticket.client_id = self.client.id
       self.ticket.manual_outgoing = manualEnabled
+      self.ticket.manual_incoming = self.previous_incoming_weight != self.ticket.incoming_weight
 
       self.accept()
     else:
@@ -226,16 +258,18 @@ class CloseTicket(QtGui.QDialog):
   def setManualCapture(self):
     if self.ui.manualCheckBox.isChecked():
       self.ui.outgoingWeightSpinBox.setEnabled(True)
+      self.ui.incomingWeightSpinBox.setEnabled(True)
       self.ui.captureWeightButton.setEnabled(False)
       self.ui.captureWeightButton.setChecked(False)
     else:
       self.ui.outgoingWeightSpinBox.setEnabled(False)
+      self.ui.incomingWeightSpinBox.setEnabled(False)
       self.ui.captureWeightButton.setEnabled(True)
 
   def getWeight(self, weight):
     if not self.ui.captureWeightButton.isChecked() and not self.ui.manualCheckBox.isChecked():
       self.ui.outgoingWeightSpinBox.setValue(weight)
-      
+
   def weightChanged(self, weight):
     if self.ui.dispatchButton.isChecked():
       gross_weight = weight
@@ -256,6 +290,10 @@ class CloseTicket(QtGui.QDialog):
   def setClient(self, client):
     self.client = client
     self.ui.clientLineEdit.setText(self.client.name)
+    if "multiple_addresses" in self.features:
+      self.ui.addressComboBox.clear()
+      self.ui.addressComboBox.addItem(client.address)
+      self.ui.addressComboBox.addItems(client.addresses)
 
 class TransactionsTableModel(QtCore.QAbstractTableModel):
   totalChanged = QtCore.Signal(float)
@@ -335,3 +373,26 @@ class TransactionsTableModel(QtCore.QAbstractTableModel):
         return self._transactions[row].content_comment
       else:
         return ""
+
+class DocumentTypeListModel(QtCore.QAbstractListModel):
+  def __init__(self, document_types, parent):
+    super(DocumentTypeListModel, self).__init__(parent)
+    self._document_types = document_types
+
+  def rowCount(self, parent):
+    return len(self._document_types)
+
+  def data(self, index, role):
+    row = index.row()
+    column = index.column()
+    if role == QtCore.Qt.DisplayRole:
+      if column == 0:
+        return self._document_types[row].name
+
+  def refreshDocumentTypes(self, document_types):
+    self.beginResetModel()
+    self._document_types = document_types
+    self.endResetModel()
+
+  def getDocumentType(self, row):
+    return self._document_types[row]

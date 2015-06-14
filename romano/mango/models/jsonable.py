@@ -3,23 +3,20 @@ import simplejson as json
 class JSONableModel:
   def jsonable(self):
     return self.__dict__
-  
+
   def toJSON(self):
-    classname = toClassname(self.__class__.__name__) 
+    classname = toClassname(self.__class__.__name__)
     return '{"%s":%s}' % (classname, json.dumps(self, cls = CustomEncoder))
-  
+
   @classmethod
-  def fromJSON(cls, json_string):    
-    decoded = json.loads(json_string)
+  def fromJSON(cls, json_string):
+    parsed = json.loads(json_string)
     classname = toClassname(cls.__name__)
-    if isinstance(decoded, list):
-      instances = []
-      for item in decoded:
-        instances.append(cls.fromDict(item[classname]))
-      return instances
+    if isinstance(parsed, list):
+      return list(map((lambda i: cls.fromDict(i[classname])), parsed))
     else:
-      return cls.fromDict(decoded[classname])
-  
+      return cls.fromDict(parsed[classname])
+
   @classmethod
   def fromDict(cls, dict_):
     raise NotImplementedError

@@ -5,12 +5,14 @@ from .ticket_type import TicketType
 
 class Ticket(JSONableModel):
   def __init__(self, ticket_type_id, driver_id, truck_id,
-               incoming_weight, comment):
+               incoming_weight, comment, document_type_id = None, address = ""):
     self.ticket_type_id = ticket_type_id
     self.driver_id = driver_id
     self.truck_id = truck_id
     self.incoming_weight = incoming_weight
     self.comment = comment
+    self.address = address
+    self.document_type_id = document_type_id
     self.manual_incoming = False
     self.manual_outgoing = False
 

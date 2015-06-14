@@ -75,10 +75,11 @@ class Main(QtGui.QMainWindow):
       self.user = loginDialog.user
       self.ui.refreshButton.setEnabled(False)
       self.api.get_tickets()
-      
+
       self.ui.actionUserName.setText(self.user.name)
       self.center()
       self.show()
+      self.api.get_document_types()
     else:
       self.close()
       
@@ -89,46 +90,46 @@ class Main(QtGui.QMainWindow):
   def getTickets(self):
     self.ui.refreshButton.setEnabled(False)
     self.api.get_tickets()
-  
+
   def getTicketsFinished(self, tickets):
     self.ui.ticketsTableView.model().refreshTickets(tickets)
     self.ui.refreshButton.setEnabled(True)
-    
+
   def center(self):
     qr = self.frameGeometry()
     cp = QtGui.QDesktopWidget().availableGeometry().center()
     qr.moveCenter(cp)
     self.move(qr.topLeft())
-    
+
 class TicketsTableModel(QtCore.QAbstractTableModel):
   def __init__(self, tickets, parent = None):
     super(TicketsTableModel, self).__init__(parent)
     self._tickets = tickets
     self._headers = ['Número', 'Tipo', 'Chofer', 'Placa', 'Peso de entrada', 'Fecha de entrada', 'Comentario']
-    
+
   def getTicket(self, row):
     return self._tickets[row]
-    
+
   def refreshTickets(self, tickets):
     self.beginResetModel()
     self._tickets = tickets
     self.endResetModel()
-    
+
   def headerData(self, section, orientation, role):
     if role == QtCore.Qt.DisplayRole:
       if orientation == QtCore.Qt.Horizontal:
         return self._headers[section]
-        
+
   def rowCount(self, parent):
     return len(self._tickets)
-    
+
   def columnCount(self, parent):
     return len(self._headers)
-    
+
   def data(self, index, role):
     row = index.row()
     column = index.column()
-    
+
     if role == QtCore.Qt.DisplayRole:
       if column == 0:
         return self._tickets[row].number

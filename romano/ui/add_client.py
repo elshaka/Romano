@@ -19,7 +19,7 @@ class AddClient(QtGui.QDialog):
     self.ui.saveAsFactoryBox.hide()
     #self.ui.widget.hide()
     #self.ui.line.hide()
-    
+
     self.clientsTableModel = ClientsTableModel([], self)
     self.factoriesTableModel = ClientsTableModel([], self)
     self.filterClientsProxyModel = QtGui.QSortFilterProxyModel()
@@ -28,7 +28,7 @@ class AddClient(QtGui.QDialog):
     self.filterClientsProxyModel.setFilterCaseSensitivity(QtCore.Qt.CaseInsensitive)
     self.ui.clientsTableView.setModel(self.filterClientsProxyModel)
     self.ui.filterLineEdit.textChanged.connect(self.filterClientsProxyModel.setFilterRegExp)
-    
+
     self.api.getClientsFinished.connect(self.getClientsFinished)
     self.api.getFactoriesFinished.connect(self.getFactoriesFinished)
     self.ui.newButton.clicked.connect(self.enableClientType)
@@ -101,30 +101,30 @@ class ClientsTableModel(QtCore.QAbstractTableModel):
     super(ClientsTableModel, self).__init__(parent)
     self._clients = clients
     self._headers = ['Código', 'Nombre']
-    
+
   def getClient(self, row):
     return self._clients[row]
-    
+
   def refreshClients(self, clients):
     self.beginResetModel()
     self._clients = clients
     self.endResetModel()
-    
+
   def headerData(self, section, orientation, role):
     if role == QtCore.Qt.DisplayRole:
       if orientation == QtCore.Qt.Horizontal:
         return self._headers[section]
-        
+
   def rowCount(self, parent):
     return len(self._clients)
-    
+
   def columnCount(self, parent):
     return len(self._headers)
-    
+
   def data(self, index, role):
     row = index.row()
     column = index.column()
-    
+
     if role == QtCore.Qt.DisplayRole:
       if column == 0:
         return self._clients[row].code

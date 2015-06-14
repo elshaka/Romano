@@ -12,6 +12,7 @@ from mango.models.lot import Lot
 from mango.models.product_lot import ProductLot
 from mango.models.carrier import Carrier
 from mango.models.settings import Settings
+from mango.models.document_type import DocumentType
 
 class API(QtCore.QObject):
   loginFinished = QtCore.Signal(object)
@@ -35,7 +36,9 @@ class API(QtCore.QObject):
   createClientFinished = QtCore.Signal(object)
   createClientFailed = QtCore.Signal(object)
   getSettingsFinished = QtCore.Signal(object)
-  
+  getFeaturesFinished = QtCore.Signal(list)
+  getDocumentTypesFinished = QtCore.Signal(list)
+
   def __init__(self, host = "localhost", port = 3000):
     super(API, self).__init__()
     self.manager = QtNetwork.QNetworkAccessManager()
@@ -126,15 +129,18 @@ class API(QtCore.QObject):
     request = self._new_request("tickets/%s" % ticket.id)
     _ticket = Ticket(ticket.ticket_type_id, ticket.driver_id, 
                      ticket.truck_id, ticket.incoming_weight,
-                     ticket.comment)
+                     ticket.comment, ticket.document_type_id,
+                     ticket.address)
     _ticket.outgoing_weight = ticket.outgoing_weight
     _ticket.provider_weight = ticket.provider_weight
     _ticket.provider_document_number = ticket.provider_document_number
+    _ticket.manual_incoming = ticket.manual_incoming
+    _ticket.manual_outgoing = ticket.manual_outgoing
     _ticket.client_id = ticket.client_id
     _ticket.transactions_attributes = ticket.transactions_attributes
     data = QtCore.QByteArray(_ticket.toJSON())
     self.closeTicketReply = self.manager.put(request, data)
-    self.closeTicketReply.finished.connect(self.close_ticket_finished)
+    self.closeTicketReply.finished.connect( self.close_ticket_finished)
 
   def close_ticket_finished(self):
     self.closeTicketFinished.emit()
@@ -248,3 +254,25 @@ class API(QtCore.QObject):
     if error == QtNetwork.QNetworkReply.NoError:
       settings = Settings.fromJSON(self.getSettingsReply.readAll().data())
       self.getSettingsFinished.emit(settings)
+
+  def get_features(self):
+    request = self._new_request("settings/features.json")
+    self.getFeaturesReply = self.manager.get(request)
+    self.getFeaturesReply.finished.connect(self.get_features_finished)
+
+  def get_features_finished(self):
+    error = self.getFeaturesReply.error()
+    if error == QtNetwork.QNetworkReply.NoError:
+      features = json.loads(self.getFeaturesReply.readAll().data())
+      self.getFeaturesFinished.emit(features)
+
+  def get_document_types(self):
+    request = self._new_request("document_types")
+    self.getDocumentTypesReply = self.manager.get(request)
+    self.getDocumentTypesReply.finished.connect(self.get_document_types_finished)
+
+  def get_document_types_finished(self):
+    error = self.getDocumentTypesReply.error()
+    if error == QtNetwork.QNetworkReply.NoError:
+      document_types = DocumentType.fromJSON(self.getDocumentTypesReply.readAll().data())
+      self.getDocumentTypesFinished.emit(document_types)
