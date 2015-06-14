@@ -249,7 +249,7 @@ class CloseTicket(QtGui.QDialog):
 
       self.ticket.client_id = self.client.id
       self.ticket.manual_outgoing = manualEnabled
-      self.ticket.manual_incoming = self.previous_incoming_weight != self.ticket.incoming_weight
+      self.ticket.manual_incoming |= self.previous_incoming_weight != self.ticket.incoming_weight
 
       self.accept()
     else:
