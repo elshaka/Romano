@@ -60,12 +60,12 @@ class CloseTicket(QtGui.QDialog):
     horizontalHeader.resizeSection(4, 50)
     horizontalHeader.resizeSection(5, 80)
 
-    if self.ticket.ticket_type_id == 1:
-      self.ui.providerWidget.show()
-      self.ui.receptionButton.setChecked(True)
-    else:
-      self.ui.providerWidget.hide()
-      self.ui.dispatchButton.setChecked(True)
+    #if self.ticket.ticket_type_id == 1:
+    self.ui.providerWidget.show()
+    self.ui.receptionButton.setChecked(True)
+    #else:
+    #  self.ui.providerWidget.hide()
+    #  self.ui.dispatchButton.setChecked(True)
 
     self.ui.addClientButton.clicked.connect(self.addClient)
     self.ui.manualCheckBox.stateChanged.connect(self.setManualCapture)
@@ -99,6 +99,7 @@ class CloseTicket(QtGui.QDialog):
 
   def updateDiff(self):
     net_weight = self.ui.netWeightSpinBox.value()
+    total1 = self.ui.transactionsTotalSpinBox.value()
     total = self.ui.transactionsTotalSpinBox.value()
     if total == 0:
       diff = 999
@@ -221,11 +222,11 @@ class CloseTicket(QtGui.QDialog):
       self.ticket.address = self.client.address
     if not weight_captured and not manualEnabled:
       errors.append('El peso de salida no ha sido capturado')
-    if self.ticket.ticket_type_id == 1:
+    #if self.ticket.ticket_type_id == 1:
       #if abs(provider_weight - net_weight) > self.tolerance:
       #  errors.append('La diferencia entre el peso neto y el peso del proveedor es muy grande')
-      if provider_document_number == '':
-        errors.append('El número de guía no ha sido indicado')
+    if provider_document_number == '':
+      errors.append('El número de documento no ha sido indicado')
 
     if not errors:
       if "document_types" in self.features:
@@ -235,9 +236,9 @@ class CloseTicket(QtGui.QDialog):
           self.ticket.document_type_id = dt.id
       self.ticket.comment = self.ui.commentPlainTextEdit.toPlainText()
       self.ticket.outgoing_weight = outgoing_weight
-      if self.ticket.ticket_type_id == 1:
-        self.ticket.provider_weight = provider_weight
-        self.ticket.provider_document_number = provider_document_number
+      #if self.ticket.ticket_type_id == 1:
+      self.ticket.provider_weight = provider_weight
+      self.ticket.provider_document_number = provider_document_number
       self.ticket.transactions_attributes = self.transactionsTableModel.getTransactions()
 
       for transaction in self.ticket.transactions_attributes:
