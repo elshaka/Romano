@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'close_ticket.ui'
 #
-# Created: Thu Aug  6 16:46:51 2015
+# Created: Tue Aug 11 12:28:34 2015
 #      by: pyside-uic 0.2.15 running on PySide 1.2.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -387,6 +387,7 @@ class Ui_CloseTicket(object):
 "color: rgb(0, 170, 0);")
         self.netWeightSpinBox.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
         self.netWeightSpinBox.setButtonSymbols(QtGui.QAbstractSpinBox.NoButtons)
+        self.netWeightSpinBox.setMinimum(-999999.0)
         self.netWeightSpinBox.setMaximum(999999.0)
         self.netWeightSpinBox.setProperty("value", 999999.0)
         self.netWeightSpinBox.setObjectName("netWeightSpinBox")

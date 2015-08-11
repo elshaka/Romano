@@ -102,10 +102,7 @@ class CloseTicket(QtGui.QDialog):
 
   def updateDiff(self):
     net_weight = self.ui.netWeightSpinBox.value()
-    if self.ui.receptionButton.isChecked():
-      total = self.ui.providerWeightSpinBox.value()
-    else:
-      total = self.ui.transactionsTotalSpinBox.value()
+    total = self.ui.providerWeightSpinBox.value()
     if total == 0:
       diff = 999
     else:
@@ -220,6 +217,8 @@ class CloseTicket(QtGui.QDialog):
         else:
           errors.append('La diferencia entre el peso neto y el total de transacciones es muy grande')
 
+    if net_weight < 0:
+      errors.append('El peso neto no puede ser negativo')
     if transactions_total == 0:
       errors.append('El total de transacciones no puede ser 0')
     if self.client == None:
@@ -230,9 +229,6 @@ class CloseTicket(QtGui.QDialog):
       self.ticket.address = self.client.address
     if not weight_captured and not manualEnabled:
       errors.append('El peso de salida no ha sido capturado')
-    #if self.ticket.ticket_type_id == 1:
-      #if abs(provider_weight - net_weight) > self.tolerance:
-      #  errors.append('La diferencia entre el peso neto y el peso del proveedor es muy grande')
     if provider_document_number == '':
       errors.append('El número de documento no ha sido indicado')
 
