@@ -72,6 +72,7 @@ class CloseTicket(QtGui.QDialog):
     self.ui.outgoingWeightSpinBox.valueChanged.connect(self.weightChanged)
     self.ui.incomingWeightSpinBox.valueChanged.connect(self.updateTicketType)
     self.ui.netWeightSpinBox.valueChanged.connect(self.updateDiff)
+    self.ui.providerWeightSpinBox.valueChanged.connect(self.updateDiff)
     self.ui.diffSpinBox.valueChanged.connect(self.updateDiffStyle)
     self.ui.receptionButton.clicked.connect(self.updateTicketType)
     self.ui.dispatchButton.clicked.connect(self.updateTicketType)
@@ -99,8 +100,10 @@ class CloseTicket(QtGui.QDialog):
 
   def updateDiff(self):
     net_weight = self.ui.netWeightSpinBox.value()
-    total1 = self.ui.transactionsTotalSpinBox.value()
-    total2 = self.ui.transactionsTotalSpinBox.value()
+    if self.ui.receptionButton.isChecked():
+      total = self.ui.providerWeightSpinBox.value()
+    else:
+      total = self.ui.transactionsTotalSpinBox.value()
     if total == 0:
       diff = 999
     else:

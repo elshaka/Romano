@@ -36,7 +36,7 @@ class SerialThread(QtCore.QThread):
         if not self.simulate:
           data = float(re.search(self.regex, data_string).group())
         else: 
-          data = round(1000 * random.random(), 2)
+          data = round(10000 *(1 + random.random()), 2)
       except:
         data = -1
       self.dataReady.emit(data)
