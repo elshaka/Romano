@@ -419,6 +419,9 @@ color: rgb(0, 170, 0);</string>
          </item>
          <item>
           <widget class="QPushButton" name="addTransactionButton">
+           <property name="focusPolicy">
+            <enum>Qt::NoFocus</enum>
+           </property>
            <property name="text">
             <string>Agregar</string>
            </property>

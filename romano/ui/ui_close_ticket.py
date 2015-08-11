@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'close_ticket.ui'
 #
-# Created: Tue Aug 11 12:28:34 2015
+# Created: Tue Aug 11 14:43:14 2015
 #      by: pyside-uic 0.2.15 running on PySide 1.2.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -192,6 +192,7 @@ class Ui_CloseTicket(object):
         self.transactionsLabel.setObjectName("transactionsLabel")
         self.transactionsTitleLayout.addWidget(self.transactionsLabel)
         self.addTransactionButton = QtGui.QPushButton(CloseTicket)
+        self.addTransactionButton.setFocusPolicy(QtCore.Qt.NoFocus)
         self.addTransactionButton.setIcon(icon)
         self.addTransactionButton.setObjectName("addTransactionButton")
         self.transactionsTitleLayout.addWidget(self.addTransactionButton)
