@@ -96,6 +96,8 @@ class CloseTicket(QtGui.QDialog):
 
   def updateTotal(self, total):
     self.ui.transactionsTotalSpinBox.setValue(total)
+    if self.ui.dispatchButton.isChecked():
+      self.ui.providerWeightSpinBox.setValue(self.ui.transactionsTotalSpinBox.value())
     self.updateDiff()
 
   def updateDiff(self):
@@ -148,10 +150,13 @@ class CloseTicket(QtGui.QDialog):
       self.ui.providerWidget.show()
       gross_weight = self.ticket.incoming_weight
       tare_weight = weight
+      self.ui.providerWeightSpinBox.setReadOnly(False)
     else:
-      #self.ui.providerWidget.hide()
       gross_weight = weight
       tare_weight = self.ticket.incoming_weight
+      self.ui.providerWeightSpinBox.setReadOnly(True)
+      self.ui.providerWeightSpinBox.setValue(self.ui.transactionsTotalSpinBox.value())
+
     net_weight = gross_weight - tare_weight
     self.ui.grossWeightSpinBox.setValue(gross_weight)
     self.ui.tareWeightSpinBox.setValue(tare_weight)
