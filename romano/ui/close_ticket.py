@@ -60,12 +60,10 @@ class CloseTicket(QtGui.QDialog):
     horizontalHeader.resizeSection(4, 50)
     horizontalHeader.resizeSection(5, 80)
 
-    #if self.ticket.ticket_type_id == 1:
-    self.ui.providerWidget.show()
-    self.ui.receptionButton.setChecked(True)
-    #else:
-    #  self.ui.providerWidget.hide()
-    #  self.ui.dispatchButton.setChecked(True)
+    if self.ticket.ticket_type_id == 1:
+      self.ui.receptionButton.setChecked(True)
+    else:
+      self.ui.dispatchButton.setChecked(True)
 
     self.ui.addClientButton.clicked.connect(self.addClient)
     self.ui.manualCheckBox.stateChanged.connect(self.setManualCapture)
@@ -82,7 +80,8 @@ class CloseTicket(QtGui.QDialog):
     self.ui.transactionsTableView.clicked.connect(self.enableDeleteTransaction)
     self.ui.removeTransactionButton.clicked.connect(self.removeTransaction)
     self.transactionsTableModel.totalChanged.connect(self.updateTotal)
-      
+    self.updateTicketType()
+
     self.st = SerialThread(
       config.get('Serial','PortName'),
       config.get('Serial','Regex'),
