@@ -51,7 +51,7 @@ class CloseTicket(QtGui.QDialog):
 
     self.transactionsTableModel = TransactionsTableModel([], [], self)
     self.ui.transactionsTableView.setModel(self.transactionsTableModel)
-    
+
     horizontalHeader = self.ui.transactionsTableView.horizontalHeader()
     horizontalHeader.resizeSection(0, 80)
     horizontalHeader.resizeSection(1, 80)
@@ -95,8 +95,8 @@ class CloseTicket(QtGui.QDialog):
 
   def updateTotal(self, total):
     self.ui.transactionsTotalSpinBox.setValue(total)
-    if self.ui.dispatchButton.isChecked():
-      self.ui.providerWeightSpinBox.setValue(self.ui.transactionsTotalSpinBox.value())
+    #if self.ui.dispatchButton.isChecked():
+    self.ui.providerWeightSpinBox.setValue(self.ui.transactionsTotalSpinBox.value())
     self.updateDiff()
 
   def updateDiff(self):
@@ -146,12 +146,13 @@ class CloseTicket(QtGui.QDialog):
       self.ui.providerWidget.show()
       gross_weight = self.ticket.incoming_weight
       tare_weight = weight
-      self.ui.providerWeightSpinBox.setReadOnly(False)
+      #self.ui.providerWeightSpinBox.setReadOnly(False)
     else:
       gross_weight = weight
       tare_weight = self.ticket.incoming_weight
-      self.ui.providerWeightSpinBox.setReadOnly(True)
-      self.ui.providerWeightSpinBox.setValue(self.ui.transactionsTotalSpinBox.value())
+
+    self.ui.providerWeightSpinBox.setReadOnly(True)
+    self.ui.providerWeightSpinBox.setValue(self.ui.transactionsTotalSpinBox.value())
 
     net_weight = gross_weight - tare_weight
     self.ui.grossWeightSpinBox.setValue(gross_weight)
@@ -205,7 +206,7 @@ class CloseTicket(QtGui.QDialog):
 
     if not self.diff_ok:
       if not self.allow_manual:
-        errors.append('La diferencia entre el peso neto y el total de transacciones es muy grande')
+        errors.append('La diferencia entre el peso neto y peso proveedor es muy grande')
       else:
         flags = QtGui.QMessageBox.StandardButton.Yes
         flags |= QtGui.QMessageBox.StandardButton.No
@@ -214,7 +215,7 @@ class CloseTicket(QtGui.QDialog):
         if response == QtGui.QMessageBox.Yes:
           pass
         else:
-          errors.append('La diferencia entre el peso neto y el total de transacciones es muy grande')
+          errors.append('La diferencia entre el peso neto y peso proveedor es muy grande')
 
     if net_weight < 0:
       errors.append('El peso neto no puede ser negativo')
