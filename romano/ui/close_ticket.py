@@ -28,6 +28,8 @@ class CloseTicket(QtGui.QDialog):
 
     self.reception_diff = self.dispatch_diff = self.max_diff = 0.5
     self.diff_ok = False
+    self.transactions_diff_ok = False
+    self.transactions_diff = 999
 
     self.api.getSettingsFinished.connect(self.updateSettings)
     self.api.get_settings()
@@ -95,18 +97,24 @@ class CloseTicket(QtGui.QDialog):
 
   def updateTotal(self, total):
     self.ui.transactionsTotalSpinBox.setValue(total)
-    #if self.ui.dispatchButton.isChecked():
-    self.ui.providerWeightSpinBox.setValue(self.ui.transactionsTotalSpinBox.value())
+    if self.ui.dispatchButton.isChecked():
+      self.ui.providerWeightSpinBox.setValue(self.ui.transactionsTotalSpinBox.value())
     self.updateDiff()
 
   def updateDiff(self):
     net_weight = self.ui.netWeightSpinBox.value()
     total = self.ui.providerWeightSpinBox.value()
+    transactions_total = self.ui.transactionsTotalSpinBox.value()
     if total == 0:
       diff = 999
     else:
       diff = (net_weight - total) / total * 100
+    if transactions_total == 0:
+      self.transactions_diff = 999
+    else:
+      self.transactions_diff = (net_weight - transactions_total) / transactions_total * 100
     self.ui.diffSpinBox.setValue(diff)
+    self.updateDiffStyle()
 
   def updateDiffStyle(self):
     diff = self.ui.diffSpinBox.value()
@@ -122,6 +130,7 @@ class CloseTicket(QtGui.QDialog):
       bkg_color = "255, 0, 0"
       self.diff_ok = False
 
+    self.transactions_diff_ok = self.transactions_diff >= -1 * self.max_diff and self.transactions_diff <= self.max_diff
     self.ui.diffSpinBox.setStyleSheet("background-color: rgb(%s);\ncolor: rgb(0, 170, 0);" % bkg_color)
 
   def updateSettings(self, settings):
@@ -146,13 +155,12 @@ class CloseTicket(QtGui.QDialog):
       self.ui.providerWidget.show()
       gross_weight = self.ticket.incoming_weight
       tare_weight = weight
-      #self.ui.providerWeightSpinBox.setReadOnly(False)
+      self.ui.providerWeightSpinBox.setReadOnly(False)
     else:
       gross_weight = weight
       tare_weight = self.ticket.incoming_weight
-
-    self.ui.providerWeightSpinBox.setReadOnly(True)
-    self.ui.providerWeightSpinBox.setValue(self.ui.transactionsTotalSpinBox.value())
+      self.ui.providerWeightSpinBox.setReadOnly(True)
+      self.ui.providerWeightSpinBox.setValue(self.ui.transactionsTotalSpinBox.value())
 
     net_weight = gross_weight - tare_weight
     self.ui.grossWeightSpinBox.setValue(gross_weight)
@@ -204,18 +212,29 @@ class CloseTicket(QtGui.QDialog):
 
     errors = []
 
-    if not self.diff_ok:
+    if not (self.diff_ok and self.transactions_diff_ok):
       if not self.allow_manual:
-        errors.append('La diferencia entre el peso neto y peso proveedor es muy grande')
+        if not self.diff_ok:
+          errors.append('La diferencia entre el peso neto y peso proveedor es muy grande')
+        if not self.transactions_diff_ok:
+          errors.append('La diferencia entre el peso neto y el total de transacciones es muy grande')
       else:
         flags = QtGui.QMessageBox.StandardButton.Yes
         flags |= QtGui.QMessageBox.StandardButton.No
-        question = "¿Esta seguro de permitir una diferencia mayor a %s %%?" % self.max_diff
+        diff_fields = []
+        if not self.diff_ok:
+          diff_fields.append("peso proveedor")
+        if not self.transactions_diff_ok:
+          diff_fields.append("transacciones")
+        question = "¿Esta seguro de permitir una diferencia mayor a %s %% (%s)?" % (self.max_diff, ", ".join(diff_fields))
         response = QtGui.QMessageBox.question(self, "Advertencia", question, flags)
         if response == QtGui.QMessageBox.Yes:
           pass
         else:
-          errors.append('La diferencia entre el peso neto y peso proveedor es muy grande')
+          if not self.diff_ok:
+            errors.append('La diferencia entre el peso neto y peso proveedor es muy grande')
+          if not self.transactions_diff_ok:
+            errors.append('La diferencia entre el peso neto y el total de transacciones es muy grande')
 
     if net_weight < 0:
       errors.append('El peso neto no puede ser negativo')
@@ -240,7 +259,7 @@ class CloseTicket(QtGui.QDialog):
           self.ticket.document_type_id = dt.id
       self.ticket.comment = self.ui.commentPlainTextEdit.toPlainText()
       self.ticket.outgoing_weight = outgoing_weight
-      #if self.ticket.ticket_type_id == 1:
+
       self.ticket.provider_weight = provider_weight
       self.ticket.provider_document_number = provider_document_number
       self.ticket.transactions_attributes = self.transactionsTableModel.getTransactions()
