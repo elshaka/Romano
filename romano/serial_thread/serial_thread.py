@@ -28,7 +28,7 @@ class SerialThread(QtCore.QThread):
           char = self.s.read().decode()
           if char not in ['\n', '\r']:
             data_string += char
-          else:
+          elif data_string is not '':
             break
       else:
         time.sleep(0.3)
@@ -37,9 +37,9 @@ class SerialThread(QtCore.QThread):
           data = float(re.search(self.regex, data_string).group())
         else: 
           data = round(10000 *(1 + random.random()), 2)
-      except:
-        data = -1
-      self.dataReady.emit(data)
+        self.dataReady.emit(data)
+      except Exception as e:
+        self.serialException.emit(e)
     if not self.simulate:
       self.s.close()
 
