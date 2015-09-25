@@ -26,6 +26,7 @@ class CloseTicket(QtGui.QDialog):
     self.setModal(True)
 
     self.client = None
+    self.old_driver = self.ticket.driver
 
     self.reception_diff = self.dispatch_diff = self.max_diff = 0.5
     self.diff_ok = False
@@ -79,7 +80,7 @@ class CloseTicket(QtGui.QDialog):
     self.ui.receptionButton.clicked.connect(self.updateTicketType)
     self.ui.dispatchButton.clicked.connect(self.updateTicketType)
     self.ui.addTransactionButton.clicked.connect(self.addTransaction)
-    self.ui.cancelButton.clicked.connect(self.reject)
+    self.ui.cancelButton.clicked.connect(self.cancel)
     self.ui.closeTicketButton.clicked.connect(self.closeTicket)
     self.ui.transactionsTableView.clicked.connect(self.enableDeleteTransaction)
     self.ui.removeTransactionButton.clicked.connect(self.removeTransaction)
@@ -96,6 +97,10 @@ class CloseTicket(QtGui.QDialog):
     )
     self.st.dataReady.connect(self.getWeight, QtCore.Qt.QueuedConnection)
     self.st.start()
+
+  def cancel(self):
+    self.ticket.driver = self.old_driver
+    self.reject()
 
   def updateTotal(self, total):
     self.ui.transactionsTotalSpinBox.setValue(total)

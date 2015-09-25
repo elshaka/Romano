@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'change_driver.ui'
 #
-# Created: Fri Sep 25 06:47:32 2015
+# Created: Fri Sep 25 07:22:31 2015
 #      by: pyside-uic 0.2.15 running on PySide 1.2.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -55,7 +55,7 @@ class Ui_ChangeDriver(object):
         QtCore.QMetaObject.connectSlotsByName(ChangeDriver)
 
     def retranslateUi(self, ChangeDriver):
-        ChangeDriver.setWindowTitle(QtGui.QApplication.translate("ChangeDriver", "Agregar chofer", None, QtGui.QApplication.UnicodeUTF8))
+        ChangeDriver.setWindowTitle(QtGui.QApplication.translate("ChangeDriver", "Cambiar chofer", None, QtGui.QApplication.UnicodeUTF8))
         self.label_2.setText(QtGui.QApplication.translate("ChangeDriver", "Filtrar", None, QtGui.QApplication.UnicodeUTF8))
         self.changeButton.setText(QtGui.QApplication.translate("ChangeDriver", "Cambiar", None, QtGui.QApplication.UnicodeUTF8))
         self.cancelButton.setText(QtGui.QApplication.translate("ChangeDriver", "Cancelar", None, QtGui.QApplication.UnicodeUTF8))

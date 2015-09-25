@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Agregar chofer</string>
+   <string>Cambiar chofer</string>
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
