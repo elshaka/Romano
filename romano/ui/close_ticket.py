@@ -5,6 +5,7 @@ from PySide import QtGui, QtCore
 from .ui_close_ticket import Ui_CloseTicket
 from mango.models.ticket import Ticket
 from serial_thread.serial_thread import SerialThread
+from .change_driver import ChangeDriver
 from .add_client import AddClient
 from .add_transaction import AddTransaction
 from .error_message_box import ErrorMessageBox
@@ -67,6 +68,7 @@ class CloseTicket(QtGui.QDialog):
     else:
       self.ui.dispatchButton.setChecked(True)
 
+    self.ui.changeDriverButton.clicked.connect(self.changeDriver)
     self.ui.addClientButton.clicked.connect(self.addClient)
     self.ui.manualCheckBox.stateChanged.connect(self.setManualCapture)
     self.ui.outgoingWeightSpinBox.valueChanged.connect(self.weightChanged)
@@ -190,11 +192,11 @@ class CloseTicket(QtGui.QDialog):
     currentRow = self.ui.transactionsTableView.currentIndex().row()
     if currentRow == -1:
       self.ui.removeTransactionButton.setEnabled(False)
-    
+
   def enableDeleteTransaction(self, index):
     if index.row() != -1:
       self.ui.removeTransactionButton.setEnabled(True)
-  
+
   def closeTicket(self):
     outgoing_weight = self.ui.outgoingWeightSpinBox.value()
     weight_captured = self.ui.captureWeightButton.isChecked()
@@ -272,6 +274,7 @@ class CloseTicket(QtGui.QDialog):
         delattr(transaction, 'content_comment')
 
       self.ticket.client_id = self.client.id
+      self.ticket.driver_id = self.ticket.driver.id
       self.ticket.manual_outgoing = manualEnabled
       self.ticket.manual_incoming |= self.previous_incoming_weight != self.ticket.incoming_weight
 
@@ -319,6 +322,15 @@ class CloseTicket(QtGui.QDialog):
       self.ui.addressComboBox.addItem(client.address)
       self.ui.addressComboBox.addItems(client.addresses)
 
+  def changeDriver(self):
+    changeDriverDialog = ChangeDriver(self)
+    if changeDriverDialog.exec_() == QtGui.QDialog.Accepted:
+      self.setDriver(changeDriverDialog.driver)
+
+  def setDriver(self, driver):
+    self.ticket.driver = driver
+    self.ui.driverLineEdit.setText("%s - %s" % (self.ticket.driver.ci, self.ticket.driver.name))
+
 class TransactionsTableModel(QtCore.QAbstractTableModel):
   totalChanged = QtCore.Signal(float)
   def __init__(self, transactions, lots, parent):
@@ -346,7 +358,7 @@ class TransactionsTableModel(QtCore.QAbstractTableModel):
     self._lots.remove(lot)
     self.endResetModel()
     self._recalculateTotal()
-    
+
   def _recalculateTotal(self):
     total = 0.0
     for t in self._transactions:
@@ -357,7 +369,7 @@ class TransactionsTableModel(QtCore.QAbstractTableModel):
     if role == QtCore.Qt.DisplayRole:
       if orientation == QtCore.Qt.Horizontal:
         return self._headers[section]
-        
+
   def rowCount(self, parent):
     return len(self._lots)
 

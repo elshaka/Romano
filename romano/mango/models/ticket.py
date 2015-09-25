@@ -21,7 +21,7 @@ class Ticket(JSONableModel):
     ticket_type = TicketType.fromDict(dict_['ticket_type'])
     driver = Driver.fromDict(dict_['driver'])
     truck = Truck.fromDict(dict_['truck'])
-    ticket = cls(dict_['ticket_type_id'], dict_['driver_id'], 
+    ticket = cls(dict_['ticket_type_id'], dict_['driver_id'],
                  dict_['truck_id'], dict_['incoming_weight'],
                  dict_['comment'])
     ticket.id = dict_['id']

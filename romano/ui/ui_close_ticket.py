@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'close_ticket.ui'
 #
-# Created: Tue Aug 11 14:43:14 2015
+# Created: Fri Sep 25 07:01:37 2015
 #      by: pyside-uic 0.2.15 running on PySide 1.2.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -58,10 +58,22 @@ class Ui_CloseTicket(object):
         self.driverLabel = QtGui.QLabel(self.ticketWidget)
         self.driverLabel.setObjectName("driverLabel")
         self.ticketFormLayout.setWidget(2, QtGui.QFormLayout.LabelRole, self.driverLabel)
-        self.driverLineEdit = QtGui.QLineEdit(self.ticketWidget)
+        self.driverWidget = QtGui.QWidget(self.ticketWidget)
+        self.driverWidget.setObjectName("driverWidget")
+        self.horizontalLayout_5 = QtGui.QHBoxLayout(self.driverWidget)
+        self.horizontalLayout_5.setContentsMargins(0, 0, 0, 0)
+        self.horizontalLayout_5.setObjectName("horizontalLayout_5")
+        self.driverLineEdit = QtGui.QLineEdit(self.driverWidget)
         self.driverLineEdit.setEnabled(False)
         self.driverLineEdit.setObjectName("driverLineEdit")
-        self.ticketFormLayout.setWidget(2, QtGui.QFormLayout.FieldRole, self.driverLineEdit)
+        self.horizontalLayout_5.addWidget(self.driverLineEdit)
+        self.changeDriverButton = QtGui.QToolButton(self.driverWidget)
+        icon = QtGui.QIcon()
+        icon.addPixmap(QtGui.QPixmap(":/icons/add-transaction.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.changeDriverButton.setIcon(icon)
+        self.changeDriverButton.setObjectName("changeDriverButton")
+        self.horizontalLayout_5.addWidget(self.changeDriverButton)
+        self.ticketFormLayout.setWidget(2, QtGui.QFormLayout.FieldRole, self.driverWidget)
         self.truckLabel = QtGui.QLabel(self.ticketWidget)
         self.truckLabel.setObjectName("truckLabel")
         self.ticketFormLayout.setWidget(3, QtGui.QFormLayout.LabelRole, self.truckLabel)
@@ -153,8 +165,6 @@ class Ui_CloseTicket(object):
         self.clientLineEdit.setObjectName("clientLineEdit")
         self.horizontalLayout_3.addWidget(self.clientLineEdit)
         self.addClientButton = QtGui.QToolButton(self.ticketWidget)
-        icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap(":/icons/add-transaction.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.addClientButton.setIcon(icon)
         self.addClientButton.setObjectName("addClientButton")
         self.horizontalLayout_3.addWidget(self.addClientButton)
@@ -442,6 +452,7 @@ class Ui_CloseTicket(object):
         self.dispatchButton.setText(QtGui.QApplication.translate("CloseTicket", "Despacho", None, QtGui.QApplication.UnicodeUTF8))
         self.numberLabel.setText(QtGui.QApplication.translate("CloseTicket", "Número", None, QtGui.QApplication.UnicodeUTF8))
         self.driverLabel.setText(QtGui.QApplication.translate("CloseTicket", "Chofer", None, QtGui.QApplication.UnicodeUTF8))
+        self.changeDriverButton.setText(QtGui.QApplication.translate("CloseTicket", "...", None, QtGui.QApplication.UnicodeUTF8))
         self.truckLabel.setText(QtGui.QApplication.translate("CloseTicket", "Camión", None, QtGui.QApplication.UnicodeUTF8))
         self.label_6.setText(QtGui.QApplication.translate("CloseTicket", "Peso de entrada", None, QtGui.QApplication.UnicodeUTF8))
         self.label_4.setText(QtGui.QApplication.translate("CloseTicket", "Peso de salida", None, QtGui.QApplication.UnicodeUTF8))
