@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'close_ticket.ui'
 #
-# Created: Fri Sep 25 07:01:37 2015
+# Created: Sat Sep 26 09:41:07 2015
 #      by: pyside-uic 0.2.15 running on PySide 1.2.1
 #
 # WARNING! All changes made in this file will be lost!
@@ -77,10 +77,20 @@ class Ui_CloseTicket(object):
         self.truckLabel = QtGui.QLabel(self.ticketWidget)
         self.truckLabel.setObjectName("truckLabel")
         self.ticketFormLayout.setWidget(3, QtGui.QFormLayout.LabelRole, self.truckLabel)
-        self.truckLineEdit = QtGui.QLineEdit(self.ticketWidget)
+        self.widget_2 = QtGui.QWidget(self.ticketWidget)
+        self.widget_2.setObjectName("widget_2")
+        self.horizontalLayout_6 = QtGui.QHBoxLayout(self.widget_2)
+        self.horizontalLayout_6.setContentsMargins(0, 0, 0, 0)
+        self.horizontalLayout_6.setObjectName("horizontalLayout_6")
+        self.truckLineEdit = QtGui.QLineEdit(self.widget_2)
         self.truckLineEdit.setEnabled(False)
         self.truckLineEdit.setObjectName("truckLineEdit")
-        self.ticketFormLayout.setWidget(3, QtGui.QFormLayout.FieldRole, self.truckLineEdit)
+        self.horizontalLayout_6.addWidget(self.truckLineEdit)
+        self.changeTruckButton = QtGui.QToolButton(self.widget_2)
+        self.changeTruckButton.setIcon(icon)
+        self.changeTruckButton.setObjectName("changeTruckButton")
+        self.horizontalLayout_6.addWidget(self.changeTruckButton)
+        self.ticketFormLayout.setWidget(3, QtGui.QFormLayout.FieldRole, self.widget_2)
         self.weightLabelsLayout = QtGui.QVBoxLayout()
         self.weightLabelsLayout.setObjectName("weightLabelsLayout")
         self.label_6 = QtGui.QLabel(self.ticketWidget)
@@ -452,8 +462,11 @@ class Ui_CloseTicket(object):
         self.dispatchButton.setText(QtGui.QApplication.translate("CloseTicket", "Despacho", None, QtGui.QApplication.UnicodeUTF8))
         self.numberLabel.setText(QtGui.QApplication.translate("CloseTicket", "Número", None, QtGui.QApplication.UnicodeUTF8))
         self.driverLabel.setText(QtGui.QApplication.translate("CloseTicket", "Chofer", None, QtGui.QApplication.UnicodeUTF8))
+        self.changeDriverButton.setToolTip(QtGui.QApplication.translate("CloseTicket", "Cambiar chofer", None, QtGui.QApplication.UnicodeUTF8))
         self.changeDriverButton.setText(QtGui.QApplication.translate("CloseTicket", "...", None, QtGui.QApplication.UnicodeUTF8))
         self.truckLabel.setText(QtGui.QApplication.translate("CloseTicket", "Camión", None, QtGui.QApplication.UnicodeUTF8))
+        self.changeTruckButton.setToolTip(QtGui.QApplication.translate("CloseTicket", "Cambiar camion", None, QtGui.QApplication.UnicodeUTF8))
+        self.changeTruckButton.setText(QtGui.QApplication.translate("CloseTicket", "...", None, QtGui.QApplication.UnicodeUTF8))
         self.label_6.setText(QtGui.QApplication.translate("CloseTicket", "Peso de entrada", None, QtGui.QApplication.UnicodeUTF8))
         self.label_4.setText(QtGui.QApplication.translate("CloseTicket", "Peso de salida", None, QtGui.QApplication.UnicodeUTF8))
         self.captureWeightButton.setText(QtGui.QApplication.translate("CloseTicket", "Capturar peso", None, QtGui.QApplication.UnicodeUTF8))

@@ -6,6 +6,7 @@ from .ui_close_ticket import Ui_CloseTicket
 from mango.models.ticket import Ticket
 from serial_thread.serial_thread import SerialThread
 from .change_driver import ChangeDriver
+from .change_truck import ChangeTruck
 from .add_client import AddClient
 from .add_transaction import AddTransaction
 from .error_message_box import ErrorMessageBox
@@ -27,6 +28,7 @@ class CloseTicket(QtGui.QDialog):
 
     self.client = None
     self.old_driver = self.ticket.driver
+    self.old_truck = self.ticket.truck
 
     self.reception_diff = self.dispatch_diff = self.max_diff = 0.5
     self.diff_ok = False
@@ -70,6 +72,7 @@ class CloseTicket(QtGui.QDialog):
       self.ui.dispatchButton.setChecked(True)
 
     self.ui.changeDriverButton.clicked.connect(self.changeDriver)
+    self.ui.changeTruckButton.clicked.connect(self.changeTruck)
     self.ui.addClientButton.clicked.connect(self.addClient)
     self.ui.manualCheckBox.stateChanged.connect(self.setManualCapture)
     self.ui.outgoingWeightSpinBox.valueChanged.connect(self.weightChanged)
@@ -280,6 +283,7 @@ class CloseTicket(QtGui.QDialog):
 
       self.ticket.client_id = self.client.id
       self.ticket.driver_id = self.ticket.driver.id
+      self.ticket.truck_id = self.ticket.truck.id
       self.ticket.manual_outgoing = manualEnabled
       self.ticket.manual_incoming |= self.previous_incoming_weight != self.ticket.incoming_weight
 
@@ -335,6 +339,15 @@ class CloseTicket(QtGui.QDialog):
   def setDriver(self, driver):
     self.ticket.driver = driver
     self.ui.driverLineEdit.setText("%s - %s" % (self.ticket.driver.ci, self.ticket.driver.name))
+
+  def changeTruck(self):
+    changeTruckDialog = ChangeTruck(self)
+    if changeTruckDialog.exec_() == QtGui.QDialog.Accepted:
+      self.setTruck(changeTruckDialog.truck)
+
+  def setTruck(self, truck):
+    self.ticket.truck = truck
+    self.ui.truckLineEdit.setText("%s - %s" % (self.ticket.truck.license_plate, self.ticket.truck.carrier.name))
 
 class TransactionsTableModel(QtCore.QAbstractTableModel):
   totalChanged = QtCore.Signal(float)
