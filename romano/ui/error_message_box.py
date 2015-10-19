@@ -16,19 +16,21 @@ class NewErrorMessageBox(QMessageBox):
     super(NewErrorMessageBox, self).__init__()
     errors_list_string = ""
     t = {
-        'description': "La descripción",
-        'number': "El número",
-        'start_date': "La fecha de inicio",
-        'end_date': "La fecha de finalización",
-        'name': "El nombre",
-        'prog_batches': "Los baches programados",
-        'code': "El código",
-        'wet_time': "El tiempo húmedo",
-        'dry_time': "El tiempo seco",
-        'address': "La dirección",
-        'tel1': "El teléfono",
-        'license_plate': "La placa",
-        'ci_rif': "La Cédula/RIF"
+      'description': "La descripción",
+      'number': "El número",
+      'start_date': "La fecha de inicio",
+      'end_date': "La fecha de finalización",
+      'name': "El nombre",
+      'prog_batches': "Los baches programados",
+      'code': "El código",
+      'wet_time': "El tiempo húmedo",
+      'dry_time': "El tiempo seco",
+      'address': "La dirección",
+      'tel1': "El teléfono",
+      'license_plate': "La placa",
+      'ci_rif': "La Cédula/RIF",
+      'ci': "La Cédula",
+      'carrier': "La transportista"
     }
     for field, field_errors in list(errors.items()):
       for field_error in field_errors:

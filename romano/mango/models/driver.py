@@ -1,14 +1,14 @@
 from .jsonable import JSONableModel
 
 class Driver(JSONableModel):
-  def __init__(self, ci, name, address, tel1, tel2):
+  def __init__(self, ci, name, frequent = False, address = '', tel1 = '', tel2 = ''):
     self.ci = ci
     self.name = name
     self.address = address
     self.tel1 = tel1
     self.tel2 = tel2
-    self.frequent = False
-  
+    self.frequent = frequent
+
   @classmethod
   def fromDict(cls, dict_):
     driver = cls(dict_['ci'], dict_['name'], dict_['address'],

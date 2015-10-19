@@ -16,7 +16,7 @@ class NewTicket(QtGui.QDialog):
     config.read('settings.ini')
 
     self.api = parent.api
-    self.ticket_type_id = ticket_type_id    
+    self.ticket_type_id = ticket_type_id
     self.ui = Ui_NewTicket()
     self.ui.setupUi(self)
     if ticket_type_id == 1:
@@ -61,11 +61,11 @@ class NewTicket(QtGui.QDialog):
       errors.append("El camión no ha sido seleccionado")
     if not manualEnabled and not weightCaptured:
       errors.append("El peso de entrada no ha sido capturado")
-    
+
     if not errors:
       incoming_weight = self.ui.incomingWeightSpinBox.value()
       comment = self.ui.commentPlainTextEdit.toPlainText()
-      self.ticket = Ticket(self.ticket_type_id, self.driver.id, self.truck.id, 
+      self.ticket = Ticket(self.ticket_type_id, self.driver.id, self.truck.id,
                            incoming_weight, comment)
       self.ticket.manual_incoming = manualEnabled
       self.accept()
@@ -75,10 +75,7 @@ class NewTicket(QtGui.QDialog):
   def addDriver(self):
     addDriverDialog = AddDriver(self)
     if addDriverDialog.exec_() == QtGui.QDialog.Accepted:
-      if addDriverDialog.new:
-        self.api.create_driver(addDriverDialog.driver)
-      else:
-        self.setDriver(addDriverDialog.driver)
+      self.setDriver(addDriverDialog.driver)
 
   def setDriver(self, driver):
     self.driver = driver
@@ -87,10 +84,7 @@ class NewTicket(QtGui.QDialog):
   def addTruck(self):
     addTruckDialog = AddTruck(self)
     if addTruckDialog.exec_() == QtGui.QDialog.Accepted:
-      if addTruckDialog.new:
-        self.api.create_truck(addTruckDialog.truck)
-      else:
-        self.setTruck(addTruckDialog.truck)
+      self.setTruck(addTruckDialog.truck)
 
   def setTruck(self, truck):
     self.truck = truck
@@ -113,7 +107,7 @@ class NewTicket(QtGui.QDialog):
     self.trucksListModel = TrucksListModel(trucks, self)
     self.ui.trucksComboBox.setModel(self.trucksListModel)
     self.ui.trucksComboBox.setCurrentIndex(-1)
-    
+
 class DriversListModel(QtCore.QAbstractListModel):
   def __init__(self, drivers, parent):
     super(DriversListModel, self).__init__(parent)
@@ -123,13 +117,13 @@ class DriversListModel(QtCore.QAbstractListModel):
     self.beginResetModel()
     self._drivers = drivers
     self.endResetModel()
-    
+
   def getDriver(self, row):
     return self._drivers[row]
-      
+
   def rowCount(self, parent):
     return len(self._drivers)
-    
+
   def data(self, index, role):
     row = index.row()
     if role == QtCore.Qt.EditRole or role == QtCore.Qt.DisplayRole:
@@ -144,13 +138,13 @@ class TrucksListModel(QtCore.QAbstractListModel):
     self.beginResetModel()
     self._trucks = trucks
     self.endResetModel()
-    
+
   def getTruck(self, row):
     return self._trucks[row]
-    
+
   def rowCount(self, parent):
     return len(self._trucks)
-    
+
   def data(self, index, role):
     row = index.row()
     if role == QtCore.Qt.DisplayRole or role == QtCore.Qt.EditRole:

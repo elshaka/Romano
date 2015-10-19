@@ -2,11 +2,11 @@ from .jsonable import JSONableModel
 from .carrier import Carrier
 
 class Truck(JSONableModel):
-  def __init__(self, carrier_id, license_plate):
+  def __init__(self, carrier_id, license_plate, frequent = False):
     self.carrier_id = carrier_id
     self.license_plate = license_plate
-    self.frequent = False
-    
+    self.frequent = frequent
+
   @classmethod
   def fromDict(cls, dict_):
     truck = cls(dict_['carrier_id'], dict_['license_plate'])

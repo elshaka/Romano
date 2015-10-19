@@ -31,7 +31,9 @@ class API(QtCore.QObject):
   closeTicketFinished = QtCore.Signal()
   printTicketFinished = QtCore.Signal(QtCore.QByteArray)
   createDriverFinished = QtCore.Signal(object)
+  createDriverFailed = QtCore.Signal(object)
   createTruckFinished = QtCore.Signal(object)
+  createTruckFailed = QtCore.Signal(object)
   createCarrierFinished = QtCore.Signal(object)
   createClientFinished = QtCore.Signal(object)
   createClientFailed = QtCore.Signal(object)
@@ -54,7 +56,7 @@ class API(QtCore.QObject):
 
   def _parse_errors(self, errors_json):
     return json.loads(errors_json)
- 
+
   def login(self, username, password):
     request = self._new_request("sessions")
     data = QtCore.QByteArray("{\"user\":{\"login\":\""+username+"\", \"password\":\""+password+"\"}}")
@@ -75,7 +77,7 @@ class API(QtCore.QObject):
     request = self._new_request("tickets")
     self.getTicketsReply = self.manager.get(request)
     self.getTicketsReply.finished.connect(self.get_tickets_finished)
-    
+
   def get_tickets_finished(self):
     tickets = Ticket.fromJSON(self.getTicketsReply.readAll().data())
     self.getTicketsFinished.emit(tickets)
@@ -127,7 +129,7 @@ class API(QtCore.QObject):
 
   def close_ticket(self, ticket):
     request = self._new_request("tickets/%s" % ticket.id)
-    _ticket = Ticket(ticket.ticket_type_id, ticket.driver_id, 
+    _ticket = Ticket(ticket.ticket_type_id, ticket.driver_id,
                      ticket.truck_id, ticket.incoming_weight,
                      ticket.comment, ticket.document_type_id,
                      ticket.address)
@@ -158,7 +160,7 @@ class API(QtCore.QObject):
     request = self._new_request("lots")
     self.getLotsReply = self.manager.get(request)
     self.getLotsReply.finished.connect(self.get_lots_finished)
-  
+
   def get_lots_finished(self):
     lots = Lot.fromJSON(self.getLotsReply.readAll().data())
     self.getLotsFinished.emit(lots)
@@ -167,7 +169,7 @@ class API(QtCore.QObject):
     request = self._new_request("product_lots")
     self.getProductLotsReply = self.manager.get(request)
     self.getProductLotsReply.finished.connect(self.get_product_lots_finished)
-  
+
   def get_product_lots_finished(self):
     product_lots = ProductLot.fromJSON(self.getProductLotsReply.readAll().data())
     self.getProductLotsFinished.emit(product_lots)
@@ -193,8 +195,8 @@ class API(QtCore.QObject):
       driver = Driver.fromJSON((self.createDriverReply.readAll().data()))
       self.createDriverFinished.emit(driver)
     else:
-      print(error)
-      print(self.createDriverReply.readAll().data())
+      errors = self._parse_errors(self.createDriverReply.readAll().data())
+      self.createDriverFailed.emit(errors)
 
   def create_truck(self, truck):
     request = self._new_request("trucks")
@@ -207,6 +209,9 @@ class API(QtCore.QObject):
     if error == QtNetwork.QNetworkReply.NoError:
       truck = Truck.fromJSON(self.createTruckReply.readAll().data())
       self.createTruckFinished.emit(truck)
+    else:
+      errors = self._parse_errors(self.createTruckReply.readAll().data())
+      self.createTruckFailed.emit(errors)
 
   def get_carriers(self):
     request = self._new_request("carriers")

@@ -31,6 +31,8 @@ class AddClient(QtGui.QDialog):
 
     self.api.getClientsFinished.connect(self.getClientsFinished)
     self.api.getFactoriesFinished.connect(self.getFactoriesFinished)
+    self.api.createClientFinished.connect(self.createClientFinished)
+    self.api.createClientFailed.connect(self.createClientFailed)
     self.ui.newButton.clicked.connect(self.enableClientType)
     self.ui.existingButton.clicked.connect(self.enableClientType)
     self.ui.clientButton.clicked.connect(self.showClients)
@@ -52,8 +54,6 @@ class AddClient(QtGui.QDialog):
       client = Client(code, ci_rif, name, tel1, address)
       client.factory = factory
       self.api.create_client(client)
-      self.api.createClientFinished.connect(self.createClientFinished)
-      self.api.createClientFailed.connect(self.createClientFailed)
     else:
       errors = []
       clientsModel = self.filterClientsProxyModel.sourceModel()
@@ -87,7 +87,7 @@ class AddClient(QtGui.QDialog):
 
   def showFactories(self):
     self.filterClientsProxyModel.setSourceModel(self.factoriesTableModel)
-    
+
   def getClientsFinished(self, clients):
     self.clientsTableModel.refreshClients(clients)
     self.ui.clientButton.setEnabled(True)
