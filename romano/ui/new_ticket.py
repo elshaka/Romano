@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+import os
 import configparser
 from PySide import QtGui, QtCore
 from .ui_new_ticket import Ui_NewTicket
@@ -13,7 +14,8 @@ class NewTicket(QtGui.QDialog):
   def __init__(self, ticket_type_id, allow_manual, parent):
     super(NewTicket, self).__init__(parent)
     config = configparser.ConfigParser()
-    config.read('settings.ini')
+    settings_path = os.path.abspath(os.path.dirname(__file__))
+    config.read(os.path.join(settings_path, 'settings.ini'))
 
     self.api = parent.api
     self.ticket_type_id = ticket_type_id

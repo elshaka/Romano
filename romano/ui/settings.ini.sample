@@ -1,6 +1,6 @@
 [Server]
-Host: 192.168.0.79
-Port: 80
+Host: localhost
+Port: 3000
 
 [Serial]
 PortName: COM1
@@ -8,7 +8,5 @@ Baudrate: 2400
 Parity: E
 Bytesize: 7
 Regex: (\d+)
-Simulate: False
+Simulate: True
 
-[Other]
-Tolerance: 1000

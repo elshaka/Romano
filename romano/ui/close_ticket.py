@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+import os
 import configparser
 from PySide import QtGui, QtCore
 from .ui_close_ticket import Ui_CloseTicket
@@ -15,7 +16,8 @@ class CloseTicket(QtGui.QDialog):
   def __init__(self, ticket, allow_manual, parent):
     super(CloseTicket, self).__init__(parent)
     config = configparser.ConfigParser()
-    config.read('settings.ini')
+    settings_path = os.path.abspath(os.path.dirname(__file__))
+    config.read(os.path.join(settings_path, 'settings.ini'))
 
     self.tolerance = config.getint('Other', 'Tolerance')
     self.api = parent.api

@@ -20,7 +20,8 @@ class Main(QtGui.QMainWindow):
     horizontalHeader = self.ui.ticketsTableView.horizontalHeader()
     horizontalHeader.setResizeMode(QtGui.QHeaderView.ResizeToContents)
     config = configparser.ConfigParser()
-    config.read('settings.ini')
+    settings_path = os.path.abspath(os.path.dirname(__file__))
+    config.read(os.path.join(settings_path, 'settings.ini'))
 
     self.api = API(config.get('Server','Host'), config.getint('Server','Port'))
     self.ui.actionNewReception.triggered.connect(self.openTicket)
