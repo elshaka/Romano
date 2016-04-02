@@ -2,8 +2,8 @@
 
 # Form implementation generated from reading ui file 'close_ticket.ui'
 #
-# Created: Sat Sep 26 09:41:07 2015
-#      by: pyside-uic 0.2.15 running on PySide 1.2.1
+# Created: Sat Apr  2 10:29:55 2016
+#      by: pyside-uic 0.2.15 running on PySide 1.2.2
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -23,10 +23,10 @@ class Ui_CloseTicket(object):
         self.ticketWidget.setObjectName("ticketWidget")
         self.ticketLayout = QtGui.QVBoxLayout(self.ticketWidget)
         self.ticketLayout.setContentsMargins(0, 0, 0, 0)
+        self.ticketLayout.setContentsMargins(0, 0, 0, 0)
         self.ticketLayout.setObjectName("ticketLayout")
         self.ticketFormLayout = QtGui.QFormLayout()
         self.ticketFormLayout.setFieldGrowthPolicy(QtGui.QFormLayout.AllNonFixedFieldsGrow)
-        self.ticketFormLayout.setContentsMargins(0, 0, 0, 0)
         self.ticketFormLayout.setObjectName("ticketFormLayout")
         self.ticketTypeLabel = QtGui.QLabel(self.ticketWidget)
         self.ticketTypeLabel.setObjectName("ticketTypeLabel")
@@ -34,6 +34,7 @@ class Ui_CloseTicket(object):
         self.widget = QtGui.QWidget(self.ticketWidget)
         self.widget.setObjectName("widget")
         self.horizontalLayout_2 = QtGui.QHBoxLayout(self.widget)
+        self.horizontalLayout_2.setContentsMargins(0, 0, 0, 0)
         self.horizontalLayout_2.setContentsMargins(0, 0, 0, 0)
         self.horizontalLayout_2.setObjectName("horizontalLayout_2")
         self.receptionButton = QtGui.QRadioButton(self.widget)
@@ -62,6 +63,7 @@ class Ui_CloseTicket(object):
         self.driverWidget.setObjectName("driverWidget")
         self.horizontalLayout_5 = QtGui.QHBoxLayout(self.driverWidget)
         self.horizontalLayout_5.setContentsMargins(0, 0, 0, 0)
+        self.horizontalLayout_5.setContentsMargins(0, 0, 0, 0)
         self.horizontalLayout_5.setObjectName("horizontalLayout_5")
         self.driverLineEdit = QtGui.QLineEdit(self.driverWidget)
         self.driverLineEdit.setEnabled(False)
@@ -80,6 +82,7 @@ class Ui_CloseTicket(object):
         self.widget_2 = QtGui.QWidget(self.ticketWidget)
         self.widget_2.setObjectName("widget_2")
         self.horizontalLayout_6 = QtGui.QHBoxLayout(self.widget_2)
+        self.horizontalLayout_6.setContentsMargins(0, 0, 0, 0)
         self.horizontalLayout_6.setContentsMargins(0, 0, 0, 0)
         self.horizontalLayout_6.setObjectName("horizontalLayout_6")
         self.truckLineEdit = QtGui.QLineEdit(self.widget_2)
@@ -184,6 +187,7 @@ class Ui_CloseTicket(object):
         self.addressWidget.setObjectName("addressWidget")
         self.formLayout = QtGui.QFormLayout(self.addressWidget)
         self.formLayout.setContentsMargins(0, 0, 0, 0)
+        self.formLayout.setContentsMargins(0, 0, 0, 0)
         self.formLayout.setObjectName("formLayout")
         self.label_5 = QtGui.QLabel(self.addressWidget)
         self.label_5.setObjectName("label_5")
@@ -270,6 +274,7 @@ class Ui_CloseTicket(object):
         self.providerWidget.setObjectName("providerWidget")
         self.horizontalLayout = QtGui.QHBoxLayout(self.providerWidget)
         self.horizontalLayout.setSpacing(6)
+        self.horizontalLayout.setContentsMargins(0, 0, 0, 0)
         self.horizontalLayout.setContentsMargins(0, 0, 0, 0)
         self.horizontalLayout.setObjectName("horizontalLayout")
         spacerItem3 = QtGui.QSpacerItem(40, 20, QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Minimum)
@@ -426,6 +431,9 @@ class Ui_CloseTicket(object):
         self.cancelButton = QtGui.QPushButton(CloseTicket)
         self.cancelButton.setObjectName("cancelButton")
         self.dialogButtonsLayout.addWidget(self.cancelButton)
+        self.saveButton = QtGui.QPushButton(CloseTicket)
+        self.saveButton.setObjectName("saveButton")
+        self.dialogButtonsLayout.addWidget(self.saveButton)
         self.closeTicketButton = QtGui.QPushButton(CloseTicket)
         self.closeTicketButton.setObjectName("closeTicketButton")
         self.dialogButtonsLayout.addWidget(self.closeTicketButton)
@@ -493,6 +501,7 @@ class Ui_CloseTicket(object):
         self.label_11.setText(QtGui.QApplication.translate("CloseTicket", "Peso neto", None, QtGui.QApplication.UnicodeUTF8))
         self.netWeightSpinBox.setSuffix(QtGui.QApplication.translate("CloseTicket", " Kg", None, QtGui.QApplication.UnicodeUTF8))
         self.cancelButton.setText(QtGui.QApplication.translate("CloseTicket", "Cancelar", None, QtGui.QApplication.UnicodeUTF8))
+        self.saveButton.setText(QtGui.QApplication.translate("CloseTicket", "Guardar", None, QtGui.QApplication.UnicodeUTF8))
         self.closeTicketButton.setText(QtGui.QApplication.translate("CloseTicket", "Cerrar ticket", None, QtGui.QApplication.UnicodeUTF8))
         self.label_3.setText(QtGui.QApplication.translate("CloseTicket", "Diferencia", None, QtGui.QApplication.UnicodeUTF8))
         self.diffSpinBox.setSuffix(QtGui.QApplication.translate("CloseTicket", " %", None, QtGui.QApplication.UnicodeUTF8))

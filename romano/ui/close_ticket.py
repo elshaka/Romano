@@ -2,6 +2,7 @@
 
 import os
 import configparser
+import pickle
 from PySide import QtGui, QtCore
 from .ui_close_ticket import Ui_CloseTicket
 from mango.models.ticket import Ticket
@@ -86,6 +87,7 @@ class CloseTicket(QtGui.QDialog):
     self.ui.dispatchButton.clicked.connect(self.updateTicketType)
     self.ui.addTransactionButton.clicked.connect(self.addTransaction)
     self.ui.cancelButton.clicked.connect(self.cancel)
+    self.ui.saveButton.clicked.connect(self.saveTicket)
     self.ui.closeTicketButton.clicked.connect(self.closeTicket)
     self.ui.transactionsTableView.clicked.connect(self.enableDeleteTransaction)
     self.ui.removeTransactionButton.clicked.connect(self.removeTransaction)
@@ -350,6 +352,42 @@ class CloseTicket(QtGui.QDialog):
   def setTruck(self, truck):
     self.ticket.truck = truck
     self.ui.truckLineEdit.setText("%s - %s" % (self.ticket.truck.license_plate, self.ticket.truck.carrier.name))
+
+  def saveTicket(self):
+    self.ticket.weight_captured = self.ui.captureWeightButton.isChecked()
+
+    self.ticket.ticket_type_id = 1 if self.ui.receptionButton.isChecked() else 2
+
+    if "multiple_addresses" in self.features:
+      self.ticket.address = self.ui.addressComboBox.currentText()
+    elif self.client:
+      self.ticket.address = self.client.address
+
+    if "document_types" in self.features:
+      index = self.ui.documentTypeComboBox.currentIndex()
+      if index != -1:
+        dt = self.documentTypeListModel.getDocumentType(index)
+        self.ticket.document_type_id = dt.id
+
+    self.ticket.comment = self.ui.commentPlainTextEdit.toPlainText()
+
+    self.ticket.outgoing_weight = self.ui.outgoingWeightSpinBox.value()
+    self.ticket.provider_weight = self.ui.providerWeightSpinBox.value()
+    self.ticket.provider_document_number = self.ui.providerDocumentNumberLineEdit.text()
+    self.ticket.transactions_attributes = self.transactionsTableModel.getTransactions()
+
+    self.ticket.client = self.client
+
+    self.ticket.manual_outgoing = self.ui.manualCheckBox.isChecked()
+    self.ticket.manual_incoming |= self.previous_incoming_weight != self.ticket.incoming_weight
+
+    fileObject = open("%s.ticket" % self.ticket.number, 'wb')
+    pickle.dump(self.ticket, fileObject)
+    fileObject.close()
+
+    print("Se guardó el ticket %s" % self.ticket.number)
+
+    self.reject()
 
 class TransactionsTableModel(QtCore.QAbstractTableModel):
   totalChanged = QtCore.Signal(float)

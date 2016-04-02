@@ -15,6 +15,7 @@ class Ticket(JSONableModel):
     self.document_type_id = document_type_id
     self.manual_incoming = False
     self.manual_outgoing = False
+    self.weight_captured = False
 
   @classmethod
   def fromDict(cls, dict_):

@@ -2,6 +2,7 @@
 
 import os
 import configparser
+import pickle
 import dateutil.parser
 from PySide import QtGui, QtCore
 from .ui_main import Ui_Main
@@ -49,6 +50,14 @@ class Main(QtGui.QMainWindow):
 
   def closeTicket(self, tableIndex):
     ticket = self.ticketsTableModel.getTicket(tableIndex.row())
+
+    #try:
+    fileObject = open("%s.ticket" % ticket.number, 'rb')
+    ticket = pickle.load(fileObject)
+    print("Se cargo el ticket %s" % ticket.number)
+    #except Exception:
+    #  pass
+
     closeTicketDialog = CloseTicket(ticket, self.user.allow_manual, self)
     if closeTicketDialog.exec_() == QtGui.QDialog.Accepted:
       self.api.close_ticket(closeTicketDialog.ticket)

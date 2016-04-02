@@ -1,3 +1,4 @@
 *.pyc
 *~
-romano/settings.ini
+settings.ini
+*.ticket
