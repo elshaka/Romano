@@ -14,7 +14,7 @@ from .add_transaction import AddTransaction
 from .error_message_box import ErrorMessageBox
 
 class CloseTicket(QtGui.QDialog):
-  def __init__(self, ticket, allow_manual, parent):
+  def __init__(self, ticket_data, allow_manual, parent):
     super(CloseTicket, self).__init__(parent)
     config = configparser.ConfigParser()
     settings_path = os.path.abspath(os.path.dirname(__file__))
@@ -22,8 +22,9 @@ class CloseTicket(QtGui.QDialog):
 
     self.tolerance = config.getint('Other', 'Tolerance')
     self.api = parent.api
-    self.ticket = ticket
-    self.previous_incoming_weight = ticket.incoming_weight
+
+    self.ticket = ticket_data['ticket']
+    self.previous_incoming_weight = self.ticket.incoming_weight
     self.allow_manual = allow_manual
     self.ui = Ui_CloseTicket()
     self.ui.setupUi(self)
@@ -52,13 +53,14 @@ class CloseTicket(QtGui.QDialog):
 
     self.ui.addressWidget.hide()
     self.ui.documentTypeWidget.hide()
-    self.ui.numberLineEdit.setText(str(ticket.number))
-    self.ui.driverLineEdit.setText("%s - %s" % (ticket.driver.ci, ticket.driver.name))
-    self.ui.truckLineEdit.setText("%s - %s" % (ticket.truck.license_plate, ticket.truck.carrier.name))
-    self.ui.incomingWeightSpinBox.setValue(ticket.incoming_weight)
-    self.ui.commentPlainTextEdit.setPlainText(ticket.comment)
+    self.ui.numberLineEdit.setText(str(self.ticket.number))
+    self.ui.driverLineEdit.setText("%s - %s" % (self.ticket.driver.ci, self.ticket.driver.name))
+    self.ui.truckLineEdit.setText("%s - %s" % (self.ticket.truck.license_plate, self.ticket.truck.carrier.name))
+    self.ui.incomingWeightSpinBox.setValue(self.ticket.incoming_weight)
+    self.ui.commentPlainTextEdit.setPlainText(self.ticket.comment)
 
-    self.transactionsTableModel = TransactionsTableModel([], [], self)
+
+    self.transactionsTableModel = TransactionsTableModel(self.ticket.transactions_attributes, ticket_data['lots'], self)
     self.ui.transactionsTableView.setModel(self.transactionsTableModel)
 
     horizontalHeader = self.ui.transactionsTableView.horizontalHeader()
@@ -354,8 +356,6 @@ class CloseTicket(QtGui.QDialog):
     self.ui.truckLineEdit.setText("%s - %s" % (self.ticket.truck.license_plate, self.ticket.truck.carrier.name))
 
   def saveTicket(self):
-    self.ticket.weight_captured = self.ui.captureWeightButton.isChecked()
-
     self.ticket.ticket_type_id = 1 if self.ui.receptionButton.isChecked() else 2
 
     if "multiple_addresses" in self.features:
@@ -381,8 +381,14 @@ class CloseTicket(QtGui.QDialog):
     self.ticket.manual_outgoing = self.ui.manualCheckBox.isChecked()
     self.ticket.manual_incoming |= self.previous_incoming_weight != self.ticket.incoming_weight
 
+    ticket_data = {
+      'ticket': self.ticket,
+      'weight_captured': self.ui.captureWeightButton.isChecked(),
+      'lots': self.transactionsTableModel.getLots()
+    }
+
     fileObject = open("%s.ticket" % self.ticket.number, 'wb')
-    pickle.dump(self.ticket, fileObject)
+    pickle.dump(ticket_data, fileObject)
     fileObject.close()
 
     print("Se guardó el ticket %s" % self.ticket.number)
@@ -396,9 +402,13 @@ class TransactionsTableModel(QtCore.QAbstractTableModel):
     self._transactions = transactions
     self._lots = lots
     self._headers = ['Lote', 'Código', 'Nombre', 'Sacos', 'Kg/Saco', 'Cantidad']
+    self._recalculateTotal()
 
   def getTransactions(self):
     return self._transactions
+
+  def getLots(self):
+    return self._lots
 
   def addTransaction(self, transaction, lot):
     row = len(self._lots)

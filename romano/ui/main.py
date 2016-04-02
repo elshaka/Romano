@@ -49,16 +49,20 @@ class Main(QtGui.QMainWindow):
     newTicketDialog.st.alive = False
 
   def closeTicket(self, tableIndex):
-    ticket = self.ticketsTableModel.getTicket(tableIndex.row())
+    ticket_data = {
+      'ticket': self.ticketsTableModel.getTicket(tableIndex.row()),
+      'weight_captured': False,
+      'lots': []
+    }
 
-    #try:
-    fileObject = open("%s.ticket" % ticket.number, 'rb')
-    ticket = pickle.load(fileObject)
-    print("Se cargo el ticket %s" % ticket.number)
-    #except Exception:
-    #  pass
+    try:
+      fileObject = open("%s.ticket" % ticket_data['ticket'].number, 'rb')
+      ticket_data = pickle.load(fileObject)
+      print("Se cargo el ticket")# %s" % ticket_data['ticket'].number)
+    except FileNotFoundError:
+      print("No se encontró el archivo para el ticket %s" % ticket_data['ticket'].number)
 
-    closeTicketDialog = CloseTicket(ticket, self.user.allow_manual, self)
+    closeTicketDialog = CloseTicket(ticket_data, self.user.allow_manual, self)
     if closeTicketDialog.exec_() == QtGui.QDialog.Accepted:
       self.api.close_ticket(closeTicketDialog.ticket)
       self.currentTicket = closeTicketDialog.ticket
