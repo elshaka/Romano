@@ -30,7 +30,13 @@ class CloseTicket(QtGui.QDialog):
     self.ui.setupUi(self)
     self.setModal(True)
 
-    self.client = None
+    if hasattr(self.ticket, 'client'):
+      self.setClient(self.ticket.client)
+
+    if ticket_data['weight_captured']:
+      self.ui.captureWeightButton.setChecked(True)
+      self.ui.outgoingWeightSpinBox.setValue(self.ticket.outgoing_weight)
+
     self.old_driver = self.ticket.driver
     self.old_truck = self.ticket.truck
 
@@ -93,6 +99,7 @@ class CloseTicket(QtGui.QDialog):
     self.ui.transactionsTableView.clicked.connect(self.enableDeleteTransaction)
     self.ui.removeTransactionButton.clicked.connect(self.removeTransaction)
     self.transactionsTableModel.totalChanged.connect(self.updateTotal)
+    self.transactionsTableModel.recalculateTotal()
     self.updateTicketType()
 
     self.st = SerialThread(
@@ -162,6 +169,12 @@ class CloseTicket(QtGui.QDialog):
   def updateDocumentTypes(self, document_types):
     self.documentTypeListModel = DocumentTypeListModel(document_types, self)
     self.ui.documentTypeComboBox.setModel(self.documentTypeListModel)
+
+    try:
+      row = self.documentTypeListModel.findRowById(self.ticket.document_type_id)
+      self.ui.documentTypeComboBox.setCurrentIndex(row)
+    except AttributeError:
+      pass
 
   def updateTicketType(self):
     self.ticket.incoming_weight = self.ui.incomingWeightSpinBox.value()
@@ -329,12 +342,16 @@ class CloseTicket(QtGui.QDialog):
       self.setClient(addClientDialog.client)
 
   def setClient(self, client):
-    self.client = client
-    self.ui.clientLineEdit.setText(self.client.name)
-    if "multiple_addresses" in self.features:
+    try:
+      self.client = client
+      self.ui.clientLineEdit.setText(self.client.name)
       self.ui.addressComboBox.clear()
       self.ui.addressComboBox.addItem(client.address)
       self.ui.addressComboBox.addItems(client.addresses)
+
+      self.ui.addressComboBox.setCurrentIndex(self.ui.addressComboBox.findText(self.ticket.address))
+    except AttributeError:
+      pass
 
   def changeDriver(self):
     changeDriverDialog = ChangeDriver(self)
@@ -401,7 +418,7 @@ class TransactionsTableModel(QtCore.QAbstractTableModel):
     self._transactions = transactions
     self._lots = lots
     self._headers = ['Lote', 'Código', 'Nombre', 'Sacos', 'Kg/Saco', 'Cantidad']
-    self._recalculateTotal()
+    self.recalculateTotal()
 
   def getTransactions(self):
     return self._transactions
@@ -415,7 +432,7 @@ class TransactionsTableModel(QtCore.QAbstractTableModel):
     self._transactions.append(transaction)
     self._lots.append(lot)
     self.endInsertRows()
-    self._recalculateTotal()
+    self.recalculateTotal()
 
   def removeTransaction(self, row):
     self.beginResetModel()
@@ -424,9 +441,9 @@ class TransactionsTableModel(QtCore.QAbstractTableModel):
     self._transactions.remove(transaction)
     self._lots.remove(lot)
     self.endResetModel()
-    self._recalculateTotal()
+    self.recalculateTotal()
 
-  def _recalculateTotal(self):
+  def recalculateTotal(self):
     total = 0.0
     for t in self._transactions:
       total += t.amount
@@ -499,3 +516,11 @@ class DocumentTypeListModel(QtCore.QAbstractListModel):
 
   def getDocumentType(self, row):
     return self._document_types[row]
+
+  def findRowById(self, document_type_id):
+    row = -1
+    for index, dt in enumerate(self._document_types):
+      if dt.id == document_type_id:
+        row = index
+        break
+    return row
