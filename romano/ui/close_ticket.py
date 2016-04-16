@@ -59,7 +59,6 @@ class CloseTicket(QtGui.QDialog):
     self.ui.incomingWeightSpinBox.setValue(self.ticket.incoming_weight)
     self.ui.commentPlainTextEdit.setPlainText(self.ticket.comment)
 
-
     self.transactionsTableModel = TransactionsTableModel(self.ticket.transactions_attributes, ticket_data['lots'], self)
     self.ui.transactionsTableView.setModel(self.transactionsTableModel)
 

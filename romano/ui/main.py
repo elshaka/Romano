@@ -58,9 +58,12 @@ class Main(QtGui.QMainWindow):
     try:
       fileObject = open("%s.ticket" % ticket_data['ticket'].number, 'rb')
       ticket_data = pickle.load(fileObject)
-      print("Se cargo el ticket")# %s" % ticket_data['ticket'].number)
+      print("Se cargo el ticket %s" % ticket_data['ticket'].number)
     except FileNotFoundError:
       print("No se encontró el archivo para el ticket %s" % ticket_data['ticket'].number)
+
+    if not hasattr(ticket_data['ticket'], 'transactions_attributes'):
+      ticket_data['ticket'].transactions_attributes = []
 
     closeTicketDialog = CloseTicket(ticket_data, self.user.allow_manual, self)
     if closeTicketDialog.exec_() == QtGui.QDialog.Accepted:
